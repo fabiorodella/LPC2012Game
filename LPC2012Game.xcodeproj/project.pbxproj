@@ -1,0 +1,353 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		155056FF1598943500D3FC38 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 155056FE1598943500D3FC38 /* libxml2.dylib */; };
+		159DC99D158F54690036D70F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC99C158F54690036D70F /* Cocoa.framework */; };
+		159DC9C3158F568D0036D70F /* liballegro_acodec.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9B7158F568D0036D70F /* liballegro_acodec.dylib */; };
+		159DC9C4158F568D0036D70F /* liballegro_audio.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9B8158F568D0036D70F /* liballegro_audio.dylib */; };
+		159DC9C5158F568D0036D70F /* liballegro_color.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9B9158F568D0036D70F /* liballegro_color.dylib */; };
+		159DC9C6158F568D0036D70F /* liballegro_dialog.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9BA158F568D0036D70F /* liballegro_dialog.dylib */; };
+		159DC9C7158F568D0036D70F /* liballegro_font.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9BB158F568D0036D70F /* liballegro_font.dylib */; };
+		159DC9C8158F568D0036D70F /* liballegro_image.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9BC158F568D0036D70F /* liballegro_image.dylib */; };
+		159DC9C9158F568D0036D70F /* liballegro_main.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9BD158F568D0036D70F /* liballegro_main.dylib */; };
+		159DC9CA158F568D0036D70F /* liballegro_memfile.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9BE158F568D0036D70F /* liballegro_memfile.dylib */; };
+		159DC9CB158F568D0036D70F /* liballegro_physfs.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9BF158F568D0036D70F /* liballegro_physfs.dylib */; };
+		159DC9CC158F568D0036D70F /* liballegro_primitives.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9C0158F568D0036D70F /* liballegro_primitives.dylib */; };
+		159DC9CD158F568D0036D70F /* liballegro_ttf.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9C1158F568D0036D70F /* liballegro_ttf.dylib */; };
+		159DC9CE158F568D0036D70F /* liballegro.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9C2158F568D0036D70F /* liballegro.dylib */; };
+		159DC9D1158F57FE0036D70F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 159DC9D0158F57FE0036D70F /* main.cpp */; };
+		159DC9D4158F59410036D70F /* res in Resources */ = {isa = PBXBuildFile; fileRef = 159DC9D3158F59410036D70F /* res */; };
+		159DC9D7158F5BDA0036D70F /* Spritesheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 159DC9D6158F5BDA0036D70F /* Spritesheet.cpp */; };
+		159DC9DC158F67A50036D70F /* Tilemap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 159DC9DB158F67A50036D70F /* Tilemap.cpp */; };
+		159DC9DF158F6F890036D70F /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 159DC9DE158F6F890036D70F /* Camera.cpp */; };
+		159DC9E2158F736F0036D70F /* Drawable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 159DC9E1158F736F0036D70F /* Drawable.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		155056FE1598943500D3FC38 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/libxml2.dylib; sourceTree = DEVELOPER_DIR; };
+		159DC998158F54690036D70F /* LPC2012Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LPC2012Game.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		159DC99C158F54690036D70F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		159DC99F158F54690036D70F /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		159DC9A0158F54690036D70F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		159DC9A1158F54690036D70F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		159DC9A4158F54690036D70F /* LPC2012Game-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LPC2012Game-Info.plist"; sourceTree = "<group>"; };
+		159DC9B7158F568D0036D70F /* liballegro_acodec.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_acodec.dylib; path = /usr/local/lib/liballegro_acodec.dylib; sourceTree = "<absolute>"; };
+		159DC9B8158F568D0036D70F /* liballegro_audio.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_audio.dylib; path = /usr/local/lib/liballegro_audio.dylib; sourceTree = "<absolute>"; };
+		159DC9B9158F568D0036D70F /* liballegro_color.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_color.dylib; path = /usr/local/lib/liballegro_color.dylib; sourceTree = "<absolute>"; };
+		159DC9BA158F568D0036D70F /* liballegro_dialog.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_dialog.dylib; path = /usr/local/lib/liballegro_dialog.dylib; sourceTree = "<absolute>"; };
+		159DC9BB158F568D0036D70F /* liballegro_font.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_font.dylib; path = /usr/local/lib/liballegro_font.dylib; sourceTree = "<absolute>"; };
+		159DC9BC158F568D0036D70F /* liballegro_image.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_image.dylib; path = /usr/local/lib/liballegro_image.dylib; sourceTree = "<absolute>"; };
+		159DC9BD158F568D0036D70F /* liballegro_main.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_main.dylib; path = /usr/local/lib/liballegro_main.dylib; sourceTree = "<absolute>"; };
+		159DC9BE158F568D0036D70F /* liballegro_memfile.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_memfile.dylib; path = /usr/local/lib/liballegro_memfile.dylib; sourceTree = "<absolute>"; };
+		159DC9BF158F568D0036D70F /* liballegro_physfs.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_physfs.dylib; path = /usr/local/lib/liballegro_physfs.dylib; sourceTree = "<absolute>"; };
+		159DC9C0158F568D0036D70F /* liballegro_primitives.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_primitives.dylib; path = /usr/local/lib/liballegro_primitives.dylib; sourceTree = "<absolute>"; };
+		159DC9C1158F568D0036D70F /* liballegro_ttf.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_ttf.dylib; path = /usr/local/lib/liballegro_ttf.dylib; sourceTree = "<absolute>"; };
+		159DC9C2158F568D0036D70F /* liballegro.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro.dylib; path = /usr/local/lib/liballegro.dylib; sourceTree = "<absolute>"; };
+		159DC9D0158F57FE0036D70F /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		159DC9D3158F59410036D70F /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = SOURCE_ROOT; };
+		159DC9D6158F5BDA0036D70F /* Spritesheet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Spritesheet.cpp; sourceTree = "<group>"; };
+		159DC9D8158F5BE40036D70F /* Spritesheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Spritesheet.h; sourceTree = "<group>"; };
+		159DC9DA158F67960036D70F /* Tilemap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tilemap.h; sourceTree = "<group>"; };
+		159DC9DB158F67A50036D70F /* Tilemap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tilemap.cpp; sourceTree = "<group>"; };
+		159DC9DD158F6F7E0036D70F /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		159DC9DE158F6F890036D70F /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		159DC9E0158F73640036D70F /* Drawable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Drawable.h; sourceTree = "<group>"; };
+		159DC9E1158F736F0036D70F /* Drawable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawable.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		159DC995158F54690036D70F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				155056FF1598943500D3FC38 /* libxml2.dylib in Frameworks */,
+				159DC99D158F54690036D70F /* Cocoa.framework in Frameworks */,
+				159DC9C3158F568D0036D70F /* liballegro_acodec.dylib in Frameworks */,
+				159DC9C4158F568D0036D70F /* liballegro_audio.dylib in Frameworks */,
+				159DC9C5158F568D0036D70F /* liballegro_color.dylib in Frameworks */,
+				159DC9C6158F568D0036D70F /* liballegro_dialog.dylib in Frameworks */,
+				159DC9C7158F568D0036D70F /* liballegro_font.dylib in Frameworks */,
+				159DC9C8158F568D0036D70F /* liballegro_image.dylib in Frameworks */,
+				159DC9C9158F568D0036D70F /* liballegro_main.dylib in Frameworks */,
+				159DC9CA158F568D0036D70F /* liballegro_memfile.dylib in Frameworks */,
+				159DC9CB158F568D0036D70F /* liballegro_physfs.dylib in Frameworks */,
+				159DC9CC158F568D0036D70F /* liballegro_primitives.dylib in Frameworks */,
+				159DC9CD158F568D0036D70F /* liballegro_ttf.dylib in Frameworks */,
+				159DC9CE158F568D0036D70F /* liballegro.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		159DC98B158F54240036D70F = {
+			isa = PBXGroup;
+			children = (
+				159DC9A2158F54690036D70F /* LPC2012Game */,
+				159DC99B158F54690036D70F /* Frameworks */,
+				159DC999158F54690036D70F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		159DC999158F54690036D70F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				159DC998158F54690036D70F /* LPC2012Game.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		159DC99B158F54690036D70F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				155056FE1598943500D3FC38 /* libxml2.dylib */,
+				159DC99C158F54690036D70F /* Cocoa.framework */,
+				159DC9CF158F56A50036D70F /* Allegro */,
+				159DC99E158F54690036D70F /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		159DC99E158F54690036D70F /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				159DC99F158F54690036D70F /* AppKit.framework */,
+				159DC9A0158F54690036D70F /* CoreData.framework */,
+				159DC9A1158F54690036D70F /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		159DC9A2158F54690036D70F /* LPC2012Game */ = {
+			isa = PBXGroup;
+			children = (
+				159DC9D5158F5A7D0036D70F /* src */,
+				159DC9D3158F59410036D70F /* res */,
+				159DC9D0158F57FE0036D70F /* main.cpp */,
+				159DC9A3158F54690036D70F /* Supporting Files */,
+			);
+			path = LPC2012Game;
+			sourceTree = "<group>";
+		};
+		159DC9A3158F54690036D70F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				159DC9A4158F54690036D70F /* LPC2012Game-Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		159DC9CF158F56A50036D70F /* Allegro */ = {
+			isa = PBXGroup;
+			children = (
+				159DC9B7158F568D0036D70F /* liballegro_acodec.dylib */,
+				159DC9B8158F568D0036D70F /* liballegro_audio.dylib */,
+				159DC9B9158F568D0036D70F /* liballegro_color.dylib */,
+				159DC9BA158F568D0036D70F /* liballegro_dialog.dylib */,
+				159DC9BB158F568D0036D70F /* liballegro_font.dylib */,
+				159DC9BC158F568D0036D70F /* liballegro_image.dylib */,
+				159DC9BD158F568D0036D70F /* liballegro_main.dylib */,
+				159DC9BE158F568D0036D70F /* liballegro_memfile.dylib */,
+				159DC9BF158F568D0036D70F /* liballegro_physfs.dylib */,
+				159DC9C0158F568D0036D70F /* liballegro_primitives.dylib */,
+				159DC9C1158F568D0036D70F /* liballegro_ttf.dylib */,
+				159DC9C2158F568D0036D70F /* liballegro.dylib */,
+			);
+			name = Allegro;
+			sourceTree = "<group>";
+		};
+		159DC9D5158F5A7D0036D70F /* src */ = {
+			isa = PBXGroup;
+			children = (
+				159DC9DD158F6F7E0036D70F /* Camera.h */,
+				159DC9DE158F6F890036D70F /* Camera.cpp */,
+				159DC9E0158F73640036D70F /* Drawable.h */,
+				159DC9E1158F736F0036D70F /* Drawable.cpp */,
+				159DC9D8158F5BE40036D70F /* Spritesheet.h */,
+				159DC9D6158F5BDA0036D70F /* Spritesheet.cpp */,
+				159DC9DA158F67960036D70F /* Tilemap.h */,
+				159DC9DB158F67A50036D70F /* Tilemap.cpp */,
+			);
+			name = src;
+			path = ../src;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		159DC997158F54690036D70F /* LPC2012Game */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 159DC9B4158F54690036D70F /* Build configuration list for PBXNativeTarget "LPC2012Game" */;
+			buildPhases = (
+				159DC994158F54690036D70F /* Sources */,
+				159DC995158F54690036D70F /* Frameworks */,
+				159DC996158F54690036D70F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LPC2012Game;
+			productName = AllegroTest;
+			productReference = 159DC998158F54690036D70F /* LPC2012Game.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		159DC98D158F54240036D70F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+				ORGANIZATIONNAME = Crocodella;
+			};
+			buildConfigurationList = 159DC990158F54240036D70F /* Build configuration list for PBXProject "LPC2012Game" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 159DC98B158F54240036D70F;
+			productRefGroup = 159DC999158F54690036D70F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				159DC997158F54690036D70F /* LPC2012Game */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		159DC996158F54690036D70F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				159DC9D4158F59410036D70F /* res in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		159DC994158F54690036D70F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				159DC9D1158F57FE0036D70F /* main.cpp in Sources */,
+				159DC9D7158F5BDA0036D70F /* Spritesheet.cpp in Sources */,
+				159DC9DC158F67A50036D70F /* Tilemap.cpp in Sources */,
+				159DC9DF158F6F890036D70F /* Camera.cpp in Sources */,
+				159DC9E2158F736F0036D70F /* Drawable.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		159DC992158F54250036D70F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		159DC993158F54250036D70F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		159DC9B5158F54690036D70F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"/usr/local/include/**",
+					"/usr/include/libxml2/**",
+				);
+				INFOPLIST_FILE = "LPC2012Game/LPC2012Game-Info.plist";
+				LIBRARY_SEARCH_PATHS = "/usr/local/lib/**";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = LPC2012Game;
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		159DC9B6158F54690036D70F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"/usr/local/include/**",
+					"/usr/include/libxml2/**",
+				);
+				INFOPLIST_FILE = "LPC2012Game/LPC2012Game-Info.plist";
+				LIBRARY_SEARCH_PATHS = "/usr/local/lib/**";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = LPC2012Game;
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		159DC990158F54240036D70F /* Build configuration list for PBXProject "LPC2012Game" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				159DC992158F54250036D70F /* Debug */,
+				159DC993158F54250036D70F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		159DC9B4158F54690036D70F /* Build configuration list for PBXNativeTarget "LPC2012Game" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				159DC9B5158F54690036D70F /* Debug */,
+				159DC9B6158F54690036D70F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 159DC98D158F54240036D70F /* Project object */;
+}
