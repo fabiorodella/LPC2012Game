@@ -69,8 +69,8 @@ Spritesheet::~Spritesheet() {
 
 void Spritesheet::draw() {
             
-    float px = posX;
-    float py = posY;
+    float px = posX - (anchorX * frameWidth);
+    float py = posY - (anchorY * frameHeight);
     
     if (camera != NULL) {
         px -= camera->getTopX();

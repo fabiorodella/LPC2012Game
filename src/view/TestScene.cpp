@@ -41,21 +41,31 @@ void TestScene::setupScene() {
             
     playerSprite = new Spritesheet("res/male_walkcycle.png", 64, 64);
     playerSprite->setTag(1);
-    playerSprite->setCamera(camera);    
+    playerSprite->setCamera(camera);
+    playerSprite->setPosX(100);
+    playerSprite->setPosY(100);
+    playerSprite->setAnchorX(0.5);
+    playerSprite->setAnchorY(0.9);
     playerSprite->setAutoZOrder(true);
     addToDisplayList(playerSprite);
     
     Spritesheet *sprite2 = new Spritesheet("res/male_walkcycle.png", 64, 64);
     sprite2->setTag(2);
     sprite2->setCamera(camera);
-    sprite2->setPosX(100);
+    sprite2->setPosX(200);
+    sprite2->setPosY(200);
+    sprite2->setAnchorX(0.5);
+    sprite2->setAnchorY(0.9);
     sprite2->setAutoZOrder(true);
     addToDisplayList(sprite2);
     
     Spritesheet *sprite3 = new Spritesheet("res/male_walkcycle.png", 64, 64);
     sprite2->setTag(3);
     sprite3->setCamera(camera);
-    sprite3->setPosX(200);
+    sprite3->setPosX(300);
+    sprite3->setPosY(300);
+    sprite3->setAnchorX(0.5);
+    sprite3->setAnchorY(0.9);
     sprite3->setAutoZOrder(true);
     addToDisplayList(sprite3);
     

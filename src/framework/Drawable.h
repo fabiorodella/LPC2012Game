@@ -36,6 +36,9 @@ protected:
     float posX;
     float posY;
     
+    float anchorX;
+    float anchorY;
+    
     Camera *camera;
     
     int zOrder;
@@ -59,6 +62,12 @@ public:
     
     void setPosY(float py);
     float getPosY();
+    
+    void setAnchorX(float px);
+    float getAnchorX();
+    
+    void setAnchorY(float py);
+    float getAnchorY();
     
     void setZOrder(int z);
     int getZOrder();

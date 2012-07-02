@@ -28,6 +28,8 @@ Drawable::Drawable() {
     camera = 0;
     posX = 0;
     posY = 0;
+    anchorX = 0;
+    anchorY = 0;
     zOrder = 0;
     autoZOrder = false;
 }
@@ -62,6 +64,22 @@ void Drawable::setPosY(float py) {
 
 float Drawable::getPosY() {
     return posY;
+}
+
+void Drawable::setAnchorX(float px) {
+    anchorX = px;
+}
+
+float Drawable::getAnchorX() {
+    return anchorX;
+}
+
+void Drawable::setAnchorY(float py) {
+    anchorY = py;
+}
+
+float Drawable::getAnchorY() {
+    return anchorY;
 }
 
 void Drawable::setZOrder(int z) {

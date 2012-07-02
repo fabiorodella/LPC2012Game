@@ -99,7 +99,8 @@ TilemapLayer::~TilemapLayer() {
 
 void TilemapLayer::draw() {
     
-    //TODO for now, maps can only be positioned at origin (0,0)
+    //TODO for now, maps can only be positioned at origin (0,0) and
+    // the anchor point is disregarded.
     
     float topX = 0;
     float topY = 0;
