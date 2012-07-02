@@ -20,15 +20,32 @@
  
  */
 
-#ifndef LPC2012Game_Framework_h
-#define LPC2012Game_Framework_h
+#ifndef LPC2012Game_Scene_h
+#define LPC2012Game_Scene_h
 
-#include "BitmapLoader.h"
-#include "Camera.h"
-#include "Director.h"
+#include <vector>
+
 #include "Drawable.h"
-#include "Scene.h"
-#include "Spritesheet.h"
-#include "TilemapLayer.h"
+
+class Scene {
+    
+    std::vector<Drawable *> displayList;
+    
+    bool deleteDisplayList;
+    
+public:
+    
+    Scene();
+    virtual ~Scene();
+    
+    virtual void setupScene(){};
+    virtual bool tick(double dt);
+    
+    void draw();
+    
+    void addToDisplayList(Drawable *drawable);
+    void removeFromDisplayList(Drawable *drawable);
+    void removeFromDisplayList(int tag);
+};
 
 #endif

@@ -19,16 +19,36 @@
  along with LPC2012Game.  If not, see <http://www.gnu.org/licenses/>.
  
  */
+ 
+#ifndef LPC2012Game_Camera_h
+#define LPC2012Game_Camera_h
 
-#ifndef LPC2012Game_Framework_h
-#define LPC2012Game_Framework_h
-
-#include "BitmapLoader.h"
-#include "Camera.h"
-#include "Director.h"
-#include "Drawable.h"
-#include "Scene.h"
-#include "Spritesheet.h"
-#include "TilemapLayer.h"
+class Camera {
+    
+    int viewportWidth;
+    int viewportHeight;
+    
+    int boundsWidth;
+    int boundsHeight;
+    
+    float centerX;
+    float centerY;
+    
+public:
+    
+    Camera(int vw, int vh, int bw, int bh);
+    
+    int getViewportWidth();
+    int getViewportHeight();
+    
+    float getCenterX();
+    void setCenterX(float cx);
+    
+    float getCenterY();
+    void setCenterY(float cy);
+    
+    float getTopX();
+    float getTopY();
+};
 
 #endif

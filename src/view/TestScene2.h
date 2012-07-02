@@ -9,6 +9,17 @@
 #ifndef LPC2012Game_TestScene2_h
 #define LPC2012Game_TestScene2_h
 
+#include "Framework.h"
 
+class TestScene2 : public Scene {
+    
+    Camera *camera;
+    
+public:
+    
+    virtual void setupScene();
+    virtual bool tick(double dt);
+    
+};
 
 #endif

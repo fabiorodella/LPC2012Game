@@ -20,15 +20,33 @@
  
  */
 
-#ifndef LPC2012Game_Framework_h
-#define LPC2012Game_Framework_h
+#ifndef LPC2012Game_Spritesheet_h
+#define LPC2012Game_Spritesheet_h
 
-#include "BitmapLoader.h"
-#include "Camera.h"
-#include "Director.h"
+#include "allegro5/allegro.h"
 #include "Drawable.h"
-#include "Scene.h"
-#include "Spritesheet.h"
-#include "TilemapLayer.h"
+
+class Spritesheet : public Drawable {
+        
+    int frameWidth;
+    int frameHeight;
+    
+    int numFrames;
+           
+    int frame;
+    
+public:
+    
+    ALLEGRO_BITMAP *image;
+    
+    Spritesheet(char const *file);
+    Spritesheet(char const *file, int fw, int fh);
+    ~Spritesheet();
+    
+    virtual void draw();
+    
+    void setFrame(int frame);
+    int getFrame();
+};
 
 #endif

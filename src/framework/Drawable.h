@@ -20,15 +20,45 @@
  
  */
 
-#ifndef LPC2012Game_Framework_h
-#define LPC2012Game_Framework_h
+#ifndef LPC2012Game_Drawable_h
+#define LPC2012Game_Drawable_h
 
-#include "BitmapLoader.h"
 #include "Camera.h"
-#include "Director.h"
-#include "Drawable.h"
-#include "Scene.h"
-#include "Spritesheet.h"
-#include "TilemapLayer.h"
+
+class Drawable {
+    
+protected:    
+
+    int tag;
+    
+    float posX;
+    float posY;
+    
+    Camera *camera;
+    
+    int zOrder;
+    
+public:
+    
+    Drawable();
+    virtual ~Drawable() {}
+    
+    virtual void draw() = 0;
+    
+    void setTag(int tag);
+    int getTag();
+    
+    void setCamera(Camera *cam);
+    Camera *getCamera();
+            
+    void setPosX(float px);
+    float getPosX();
+    
+    void setPosY(float py);
+    float getPosY();
+    
+    void setZOrder(int z);
+    int getZOrder();
+};
 
 #endif

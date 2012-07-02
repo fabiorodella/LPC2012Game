@@ -20,15 +20,16 @@
  
  */
 
-#ifndef LPC2012Game_Framework_h
-#define LPC2012Game_Framework_h
+#include "TestScene.h"
 
-#include "BitmapLoader.h"
-#include "Camera.h"
-#include "Director.h"
-#include "Drawable.h"
-#include "Scene.h"
-#include "Spritesheet.h"
-#include "TilemapLayer.h"
+int main(int argc, char **argv) {
+    
+    Director::getInstance()->initialize();
+    
+    TestScene *scene = new TestScene();
+            
+    Director::getInstance()->startWithScene(scene);
+    
+    return 0;
+}
 
-#endif

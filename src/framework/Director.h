@@ -20,15 +20,41 @@
  
  */
 
-#ifndef LPC2012Game_Framework_h
-#define LPC2012Game_Framework_h
+#ifndef LPC2012Game_Director_h
+#define LPC2012Game_Director_h
 
-#include "BitmapLoader.h"
-#include "Camera.h"
-#include "Director.h"
-#include "Drawable.h"
+#include "allegro5/allegro.h"
+#include "allegro5/allegro_image.h"
+
 #include "Scene.h"
-#include "Spritesheet.h"
-#include "TilemapLayer.h"
+
+class Director {
+    
+private:
+    
+    Scene *currentScene;
+    Scene *nextScene;
+    
+    ALLEGRO_TIMER *displayTimer;
+    ALLEGRO_EVENT_QUEUE *eventQueue;
+    
+    double lastTime;
+    
+    static Director *instance;
+    
+    void displayTick();
+    
+    Director(){};
+    Director(Director const&){};
+    
+public:
+    
+    static Director *getInstance();
+  
+    void initialize();
+    
+    void startWithScene(Scene *scene);
+    void enqueueScene(Scene *scene);
+};
 
 #endif

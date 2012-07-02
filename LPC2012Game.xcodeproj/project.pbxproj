@@ -8,6 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		155056FF1598943500D3FC38 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 155056FE1598943500D3FC38 /* libxml2.dylib */; };
+		1565FB6815A2124B00C2FF83 /* BitmapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB5915A2124B00C2FF83 /* BitmapLoader.cpp */; };
+		1565FB6915A2124B00C2FF83 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB5B15A2124B00C2FF83 /* Camera.cpp */; };
+		1565FB6A15A2124B00C2FF83 /* Director.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB5D15A2124B00C2FF83 /* Director.cpp */; };
+		1565FB6B15A2124B00C2FF83 /* Drawable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB5F15A2124B00C2FF83 /* Drawable.cpp */; };
+		1565FB6C15A2124B00C2FF83 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB6115A2124B00C2FF83 /* Scene.cpp */; };
+		1565FB6D15A2124B00C2FF83 /* Spritesheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB6315A2124B00C2FF83 /* Spritesheet.cpp */; };
+		1565FB6E15A2124B00C2FF83 /* TilemapLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB6515A2124B00C2FF83 /* TilemapLayer.cpp */; };
+		1565FB6F15A2124B00C2FF83 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB6715A2124B00C2FF83 /* main.cpp */; };
+		1565FB7515A212EE00C2FF83 /* TestScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB7415A212EE00C2FF83 /* TestScene.cpp */; };
+		1565FB7815A21D6600C2FF83 /* TestScene2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB7715A21D6600C2FF83 /* TestScene2.cpp */; };
 		159DC99D158F54690036D70F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC99C158F54690036D70F /* Cocoa.framework */; };
 		159DC9C3158F568D0036D70F /* liballegro_acodec.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9B7158F568D0036D70F /* liballegro_acodec.dylib */; };
 		159DC9C4158F568D0036D70F /* liballegro_audio.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9B8158F568D0036D70F /* liballegro_audio.dylib */; };
@@ -21,16 +31,31 @@
 		159DC9CC158F568D0036D70F /* liballegro_primitives.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9C0158F568D0036D70F /* liballegro_primitives.dylib */; };
 		159DC9CD158F568D0036D70F /* liballegro_ttf.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9C1158F568D0036D70F /* liballegro_ttf.dylib */; };
 		159DC9CE158F568D0036D70F /* liballegro.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9C2158F568D0036D70F /* liballegro.dylib */; };
-		159DC9D1158F57FE0036D70F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 159DC9D0158F57FE0036D70F /* main.cpp */; };
 		159DC9D4158F59410036D70F /* res in Resources */ = {isa = PBXBuildFile; fileRef = 159DC9D3158F59410036D70F /* res */; };
-		159DC9D7158F5BDA0036D70F /* Spritesheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 159DC9D6158F5BDA0036D70F /* Spritesheet.cpp */; };
-		159DC9DC158F67A50036D70F /* Tilemap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 159DC9DB158F67A50036D70F /* Tilemap.cpp */; };
-		159DC9DF158F6F890036D70F /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 159DC9DE158F6F890036D70F /* Camera.cpp */; };
-		159DC9E2158F736F0036D70F /* Drawable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 159DC9E1158F736F0036D70F /* Drawable.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		155056FE1598943500D3FC38 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/libxml2.dylib; sourceTree = DEVELOPER_DIR; };
+		1565FB5915A2124B00C2FF83 /* BitmapLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitmapLoader.cpp; sourceTree = "<group>"; };
+		1565FB5A15A2124B00C2FF83 /* BitmapLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapLoader.h; sourceTree = "<group>"; };
+		1565FB5B15A2124B00C2FF83 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		1565FB5C15A2124B00C2FF83 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		1565FB5D15A2124B00C2FF83 /* Director.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Director.cpp; sourceTree = "<group>"; };
+		1565FB5E15A2124B00C2FF83 /* Director.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Director.h; sourceTree = "<group>"; };
+		1565FB5F15A2124B00C2FF83 /* Drawable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawable.cpp; sourceTree = "<group>"; };
+		1565FB6015A2124B00C2FF83 /* Drawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Drawable.h; sourceTree = "<group>"; };
+		1565FB6115A2124B00C2FF83 /* Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
+		1565FB6215A2124B00C2FF83 /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
+		1565FB6315A2124B00C2FF83 /* Spritesheet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Spritesheet.cpp; sourceTree = "<group>"; };
+		1565FB6415A2124B00C2FF83 /* Spritesheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Spritesheet.h; sourceTree = "<group>"; };
+		1565FB6515A2124B00C2FF83 /* TilemapLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TilemapLayer.cpp; sourceTree = "<group>"; };
+		1565FB6615A2124B00C2FF83 /* TilemapLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TilemapLayer.h; sourceTree = "<group>"; };
+		1565FB6715A2124B00C2FF83 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		1565FB7315A212E300C2FF83 /* TestScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestScene.h; sourceTree = "<group>"; };
+		1565FB7415A212EE00C2FF83 /* TestScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestScene.cpp; sourceTree = "<group>"; };
+		1565FB7615A2149200C2FF83 /* Framework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Framework.h; sourceTree = "<group>"; };
+		1565FB7715A21D6600C2FF83 /* TestScene2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestScene2.cpp; sourceTree = "<group>"; };
+		1565FB7915A21D7100C2FF83 /* TestScene2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestScene2.h; sourceTree = "<group>"; };
 		159DC998158F54690036D70F /* LPC2012Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LPC2012Game.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		159DC99C158F54690036D70F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		159DC99F158F54690036D70F /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -49,16 +74,7 @@
 		159DC9C0158F568D0036D70F /* liballegro_primitives.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_primitives.dylib; path = /usr/local/lib/liballegro_primitives.dylib; sourceTree = "<absolute>"; };
 		159DC9C1158F568D0036D70F /* liballegro_ttf.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_ttf.dylib; path = /usr/local/lib/liballegro_ttf.dylib; sourceTree = "<absolute>"; };
 		159DC9C2158F568D0036D70F /* liballegro.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro.dylib; path = /usr/local/lib/liballegro.dylib; sourceTree = "<absolute>"; };
-		159DC9D0158F57FE0036D70F /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		159DC9D3158F59410036D70F /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = SOURCE_ROOT; };
-		159DC9D6158F5BDA0036D70F /* Spritesheet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Spritesheet.cpp; sourceTree = "<group>"; };
-		159DC9D8158F5BE40036D70F /* Spritesheet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Spritesheet.h; sourceTree = "<group>"; };
-		159DC9DA158F67960036D70F /* Tilemap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tilemap.h; sourceTree = "<group>"; };
-		159DC9DB158F67A50036D70F /* Tilemap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tilemap.cpp; sourceTree = "<group>"; };
-		159DC9DD158F6F7E0036D70F /* Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
-		159DC9DE158F6F890036D70F /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
-		159DC9E0158F73640036D70F /* Drawable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Drawable.h; sourceTree = "<group>"; };
-		159DC9E1158F736F0036D70F /* Drawable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawable.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +102,65 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1565FB5715A2124B00C2FF83 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				1565FB5815A2124B00C2FF83 /* framework */,
+				1565FB7115A212C100C2FF83 /* model */,
+				1565FB7215A212C100C2FF83 /* view */,
+				1565FB7015A212C100C2FF83 /* controller */,
+				1565FB6715A2124B00C2FF83 /* main.cpp */,
+			);
+			path = src;
+			sourceTree = SOURCE_ROOT;
+		};
+		1565FB5815A2124B00C2FF83 /* framework */ = {
+			isa = PBXGroup;
+			children = (
+				1565FB5915A2124B00C2FF83 /* BitmapLoader.cpp */,
+				1565FB5A15A2124B00C2FF83 /* BitmapLoader.h */,
+				1565FB5B15A2124B00C2FF83 /* Camera.cpp */,
+				1565FB5C15A2124B00C2FF83 /* Camera.h */,
+				1565FB5D15A2124B00C2FF83 /* Director.cpp */,
+				1565FB5E15A2124B00C2FF83 /* Director.h */,
+				1565FB5F15A2124B00C2FF83 /* Drawable.cpp */,
+				1565FB6015A2124B00C2FF83 /* Drawable.h */,
+				1565FB6115A2124B00C2FF83 /* Scene.cpp */,
+				1565FB6215A2124B00C2FF83 /* Scene.h */,
+				1565FB6315A2124B00C2FF83 /* Spritesheet.cpp */,
+				1565FB6415A2124B00C2FF83 /* Spritesheet.h */,
+				1565FB6515A2124B00C2FF83 /* TilemapLayer.cpp */,
+				1565FB6615A2124B00C2FF83 /* TilemapLayer.h */,
+				1565FB7615A2149200C2FF83 /* Framework.h */,
+			);
+			path = framework;
+			sourceTree = "<group>";
+		};
+		1565FB7015A212C100C2FF83 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
+		1565FB7115A212C100C2FF83 /* model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		1565FB7215A212C100C2FF83 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				1565FB7415A212EE00C2FF83 /* TestScene.cpp */,
+				1565FB7315A212E300C2FF83 /* TestScene.h */,
+				1565FB7715A21D6600C2FF83 /* TestScene2.cpp */,
+				1565FB7915A21D7100C2FF83 /* TestScene2.h */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
 		159DC98B158F54240036D70F = {
 			isa = PBXGroup;
 			children = (
@@ -127,9 +202,8 @@
 		159DC9A2158F54690036D70F /* LPC2012Game */ = {
 			isa = PBXGroup;
 			children = (
-				159DC9D5158F5A7D0036D70F /* src */,
+				1565FB5715A2124B00C2FF83 /* src */,
 				159DC9D3158F59410036D70F /* res */,
-				159DC9D0158F57FE0036D70F /* main.cpp */,
 				159DC9A3158F54690036D70F /* Supporting Files */,
 			);
 			path = LPC2012Game;
@@ -160,22 +234,6 @@
 				159DC9C2158F568D0036D70F /* liballegro.dylib */,
 			);
 			name = Allegro;
-			sourceTree = "<group>";
-		};
-		159DC9D5158F5A7D0036D70F /* src */ = {
-			isa = PBXGroup;
-			children = (
-				159DC9DD158F6F7E0036D70F /* Camera.h */,
-				159DC9DE158F6F890036D70F /* Camera.cpp */,
-				159DC9E0158F73640036D70F /* Drawable.h */,
-				159DC9E1158F736F0036D70F /* Drawable.cpp */,
-				159DC9D8158F5BE40036D70F /* Spritesheet.h */,
-				159DC9D6158F5BDA0036D70F /* Spritesheet.cpp */,
-				159DC9DA158F67960036D70F /* Tilemap.h */,
-				159DC9DB158F67A50036D70F /* Tilemap.cpp */,
-			);
-			name = src;
-			path = ../src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -240,11 +298,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				159DC9D1158F57FE0036D70F /* main.cpp in Sources */,
-				159DC9D7158F5BDA0036D70F /* Spritesheet.cpp in Sources */,
-				159DC9DC158F67A50036D70F /* Tilemap.cpp in Sources */,
-				159DC9DF158F6F890036D70F /* Camera.cpp in Sources */,
-				159DC9E2158F736F0036D70F /* Drawable.cpp in Sources */,
+				1565FB6815A2124B00C2FF83 /* BitmapLoader.cpp in Sources */,
+				1565FB6915A2124B00C2FF83 /* Camera.cpp in Sources */,
+				1565FB6A15A2124B00C2FF83 /* Director.cpp in Sources */,
+				1565FB6B15A2124B00C2FF83 /* Drawable.cpp in Sources */,
+				1565FB6C15A2124B00C2FF83 /* Scene.cpp in Sources */,
+				1565FB6D15A2124B00C2FF83 /* Spritesheet.cpp in Sources */,
+				1565FB6E15A2124B00C2FF83 /* TilemapLayer.cpp in Sources */,
+				1565FB6F15A2124B00C2FF83 /* main.cpp in Sources */,
+				1565FB7515A212EE00C2FF83 /* TestScene.cpp in Sources */,
+				1565FB7815A21D6600C2FF83 /* TestScene2.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

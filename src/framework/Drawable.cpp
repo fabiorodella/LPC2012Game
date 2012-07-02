@@ -20,15 +20,53 @@
  
  */
 
-#ifndef LPC2012Game_Framework_h
-#define LPC2012Game_Framework_h
-
-#include "BitmapLoader.h"
-#include "Camera.h"
-#include "Director.h"
 #include "Drawable.h"
-#include "Scene.h"
-#include "Spritesheet.h"
-#include "TilemapLayer.h"
 
-#endif
+Drawable::Drawable() {
+    
+    tag = 0;
+    camera = 0;
+    posX = 0;
+    posY = 0;
+    zOrder = 0;
+}
+
+void Drawable::setTag(int t) {
+    tag = t;
+}
+
+int Drawable::getTag() {
+    return tag;
+}
+
+void Drawable::setCamera(Camera *cam) {
+    camera = cam;
+}
+
+Camera *Drawable::getCamera() {
+    return camera;
+}
+
+void Drawable::setPosX(float px) {
+    posX = px;
+}
+
+float Drawable::getPosX() {
+    return posX;
+}
+
+void Drawable::setPosY(float py) {
+    posY = py;
+}
+
+float Drawable::getPosY() {
+    return posY;
+}
+
+void Drawable::setZOrder(int z) {
+    zOrder = z;
+}
+
+int Drawable::getZOrder() {
+    return zOrder;
+}

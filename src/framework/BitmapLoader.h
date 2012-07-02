@@ -20,15 +20,36 @@
  
  */
 
-#ifndef LPC2012Game_Framework_h
-#define LPC2012Game_Framework_h
+#ifndef LPC2012Game_BitmapLoader_h
+#define LPC2012Game_BitmapLoader_h
 
-#include "BitmapLoader.h"
-#include "Camera.h"
-#include "Director.h"
-#include "Drawable.h"
-#include "Scene.h"
-#include "Spritesheet.h"
-#include "TilemapLayer.h"
+#include <map>
+
+#include "allegro5/allegro.h"
+
+struct Bitmap {
+    ALLEGRO_BITMAP *bitmap;
+    int refCount;
+};
+
+class BitmapLoader {
+    
+private:
+
+    std::map<const char *, Bitmap *> bitmaps;
+    
+    static BitmapLoader *instance;
+
+    BitmapLoader(){};
+    BitmapLoader(BitmapLoader const&){};
+    
+public:
+
+    static BitmapLoader *getInstance();
+    
+    ALLEGRO_BITMAP *getBitmap(const char *file);
+    
+    void releaseBitmap(ALLEGRO_BITMAP *bitmap);
+};
 
 #endif
