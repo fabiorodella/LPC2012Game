@@ -26,17 +26,23 @@ void TestScene::setupScene() {
     }
             
     playerSprite = new Spritesheet("res/male_walkcycle.png", 64, 64);
+    playerSprite->setTag(1);
     playerSprite->setCamera(camera);    
+    playerSprite->setAutoZOrder(true);
     addToDisplayList(playerSprite);
     
     Spritesheet *sprite2 = new Spritesheet("res/male_walkcycle.png", 64, 64);
+    sprite2->setTag(2);
     sprite2->setCamera(camera);
     sprite2->setPosX(100);
+    sprite2->setAutoZOrder(true);
     addToDisplayList(sprite2);
     
     Spritesheet *sprite3 = new Spritesheet("res/male_walkcycle.png", 64, 64);
+    sprite2->setTag(3);
     sprite3->setCamera(camera);
     sprite3->setPosX(200);
+    sprite3->setAutoZOrder(true);
     addToDisplayList(sprite3);
     
     camera->setCenterX(playerSprite->getPosX());
@@ -58,10 +64,9 @@ bool TestScene::tick(double dt) {
     al_get_keyboard_state(&kbdstate);
     if (al_key_down(&kbdstate, ALLEGRO_KEY_ESCAPE)) {
         
-        //Testing scene flow
-        
-        TestScene2 *next = new TestScene2();
-        Director::getInstance()->enqueueScene(next);
+        //Uncomment to test scene flow
+        //TestScene2 *next = new TestScene2();
+        //Director::getInstance()->enqueueScene(next);
         return false;
     }
     

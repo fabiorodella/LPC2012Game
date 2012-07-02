@@ -28,6 +28,8 @@
 #include <libxml/tree.h>
 #include "Spritesheet.h"
 
+#define LAYER_Z_ORDER_PROPERTY "z_order"
+
 class TilemapLayer : public Drawable {
     
     Spritesheet *tileset;

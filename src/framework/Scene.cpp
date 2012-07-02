@@ -20,7 +20,18 @@
  
  */
 
+#include <algorithm>
+
 #include "Scene.h"
+
+bool AutoZOrderSortPredicate(Drawable *d1, Drawable *d2) {
+    return d1->getPosY() < d2->getPosY();
+}
+
+bool ZOrderSortPredicate(Drawable *d1, Drawable *d2) {
+    return d1->getZOrder() < d2->getZOrder();
+}
+
 
 Scene::Scene() {
     deleteDisplayList = true;
@@ -48,8 +59,38 @@ bool Scene::tick(double dt) {
 
 void Scene::draw() {
     
+    // This whole process can be VERY optimized if needed
+    
+    std::vector<Drawable *> autoSort;
     std::vector<Drawable *>::iterator it;
     
+    // Gather all auto-sort Drawables in a vector
+    for(it = displayList.begin(); it < displayList.end(); ++it) {
+        
+        Drawable *drawable = (Drawable *) *it;
+        
+        if (drawable->isAutoZOrder()) {
+            autoSort.push_back(drawable);
+        }
+    }
+    
+    // Sort this vector by Y position
+    std::sort(autoSort.begin(), autoSort.end(), AutoZOrderSortPredicate);
+    
+    // Assigns z-order values to elements, starting with Z_ORDER_AUTO_START
+    int z = Z_ORDER_AUTO_START;
+    
+    for(it = autoSort.begin(); it < autoSort.end(); ++it) {
+        
+        Drawable *drawable = (Drawable *) *it;
+        drawable->setZOrder(z);
+        z++;
+    }
+    
+    // Sorts the display list based on the z-order values
+    std::sort(displayList.begin(), displayList.end(), ZOrderSortPredicate);
+    
+    // Draws everything in the correct order
     for(it = displayList.begin(); it < displayList.end(); ++it) {
         
         Drawable *drawable = (Drawable *) *it;

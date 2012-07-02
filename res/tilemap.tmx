@@ -808,6 +808,9 @@
   </data>
  </layer>
  <layer name="Tile Layer 2" width="32" height="25">
+  <properties>
+   <property name="z_order" value="200"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>

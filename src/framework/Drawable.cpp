@@ -29,6 +29,7 @@ Drawable::Drawable() {
     posX = 0;
     posY = 0;
     zOrder = 0;
+    autoZOrder = false;
 }
 
 void Drawable::setTag(int t) {
@@ -69,4 +70,12 @@ void Drawable::setZOrder(int z) {
 
 int Drawable::getZOrder() {
     return zOrder;
+}
+
+void Drawable::setAutoZOrder(bool z) {
+    autoZOrder = z;
+}
+
+bool Drawable::isAutoZOrder() {
+    return autoZOrder;
 }

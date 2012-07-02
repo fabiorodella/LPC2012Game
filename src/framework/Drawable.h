@@ -25,6 +25,8 @@
 
 #include "Camera.h"
 
+#define Z_ORDER_AUTO_START 2
+
 class Drawable {
     
 protected:    
@@ -37,6 +39,7 @@ protected:
     Camera *camera;
     
     int zOrder;
+    bool autoZOrder;
     
 public:
     
@@ -59,6 +62,9 @@ public:
     
     void setZOrder(int z);
     int getZOrder();
+    
+    void setAutoZOrder(bool z);
+    bool isAutoZOrder();
 };
 
 #endif

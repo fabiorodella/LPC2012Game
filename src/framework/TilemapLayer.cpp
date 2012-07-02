@@ -47,7 +47,7 @@ std::vector<TilemapLayer *> TilemapLayer::parseTMXFile(const char *file) {
     xmlNode *imageNode = getFirstChildForName(tilesetNode, "image");
     
     const char *imageFile = getXmlAttribute(imageNode, "source");
-            
+    
     std::vector<xmlNode *> layerNodes = getChildrenForName(root, "layer");
     std::vector<xmlNode *>::iterator layerNodesIt;
     
@@ -67,6 +67,23 @@ std::vector<TilemapLayer *> TilemapLayer::parseTMXFile(const char *file) {
         
         xmlNode *layerNode = (xmlNode *) *layerNodesIt;
         decodeLayerData(getFirstChildForName(layerNode, "data"), layer);
+        
+        xmlNode *propertiesNode = getFirstChildForName(layerNode, "properties");
+        
+        if (propertiesNode != NULL) {
+            
+            std::vector<xmlNode *> propertyNodes = getChildrenForName(propertiesNode, "property");
+            std::vector<xmlNode *>::iterator propertyNodesIt;
+            
+            for(propertyNodesIt = propertyNodes.begin(); propertyNodesIt < propertyNodes.end(); ++propertyNodesIt) {
+                
+                xmlNode *propertyNode = (xmlNode *) *propertyNodesIt;
+                const char *name = getXmlAttribute(propertyNode, "name");
+                if (!strcmp(name, LAYER_Z_ORDER_PROPERTY)) {
+                    layer->setZOrder(atoi(getXmlAttribute(propertyNode, "value")));
+                }
+            }
+        }
         
         ret.push_back(layer);
     }
