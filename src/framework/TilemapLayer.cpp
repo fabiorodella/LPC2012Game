@@ -48,6 +48,10 @@ std::vector<TilemapLayer *> TilemapLayer::parseTMXFile(const char *file) {
     
     const char *imageFile = getXmlAttribute(imageNode, "source");
     
+    ALLEGRO_PATH *tilesetPath = al_create_path(file);
+    al_set_path_filename(tilesetPath, NULL);
+    al_join_paths(tilesetPath, al_create_path(imageFile));
+    
     std::vector<xmlNode *> layerNodes = getChildrenForName(root, "layer");
     std::vector<xmlNode *>::iterator layerNodesIt;
     
@@ -58,7 +62,7 @@ std::vector<TilemapLayer *> TilemapLayer::parseTMXFile(const char *file) {
         layer->mapSize = sizeMake(mapWidth, mapHeight);
         layer->tileSize = sizeMake(tileWidth, tileHeight);
         
-        layer->tileset = new Spritesheet(imageFile, tileWidth, tileHeight);
+        layer->tileset = new Spritesheet(al_path_cstr(tilesetPath, ALLEGRO_NATIVE_PATH_SEP), tileWidth, tileHeight);
         
         layer->data = new short[mapWidth * mapHeight];
         
