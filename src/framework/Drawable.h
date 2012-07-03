@@ -33,12 +33,10 @@ protected:
 
     int tag;
     
-    float posX;
-    float posY;
+    Point position;
     
-    float anchorX;
-    float anchorY;
-    
+    Point anchorPoint;
+        
     Camera *camera;
     
     int zOrder;
@@ -56,19 +54,13 @@ public:
     
     void setCamera(Camera *cam);
     Camera *getCamera();
+    
+    void setPosition(Point p);
+    Point getPosition();
+    
+    void setAnchorPoint(Point p);
+    Point getAnchorPoint();
             
-    void setPosX(float px);
-    float getPosX();
-    
-    void setPosY(float py);
-    float getPosY();
-    
-    void setAnchorX(float px);
-    float getAnchorX();
-    
-    void setAnchorY(float py);
-    float getAnchorY();
-    
     void setZOrder(int z);
     int getZOrder();
     

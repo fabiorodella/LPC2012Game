@@ -23,6 +23,7 @@
 #ifndef LPC2012Game_Framework_h
 #define LPC2012Game_Framework_h
 
+#include "Geometry.h"
 #include "BitmapLoader.h"
 #include "Camera.h"
 #include "Director.h"

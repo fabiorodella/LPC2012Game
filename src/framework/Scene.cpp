@@ -25,7 +25,7 @@
 #include "Scene.h"
 
 bool AutoZOrderSortPredicate(Drawable *d1, Drawable *d2) {
-    return d1->getPosY() < d2->getPosY();
+    return d1->getPosition().y < d2->getPosition().y;
 }
 
 bool ZOrderSortPredicate(Drawable *d1, Drawable *d2) {

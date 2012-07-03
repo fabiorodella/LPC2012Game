@@ -36,6 +36,7 @@ void Director::initialize() {
     
     al_init();    
     al_init_image_addon();
+    al_init_primitives_addon();
     al_install_keyboard();
     
     display = al_create_display(800,600);

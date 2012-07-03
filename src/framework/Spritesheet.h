@@ -27,10 +27,9 @@
 #include "Drawable.h"
 
 class Spritesheet : public Drawable {
-        
-    int frameWidth;
-    int frameHeight;
     
+    Size frameSize;
+        
     int numFrames;
            
     int frame;

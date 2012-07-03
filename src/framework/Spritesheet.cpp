@@ -31,8 +31,7 @@ Spritesheet::Spritesheet(char const *file) {
     
     frame = 0;
     
-    frameWidth = al_get_bitmap_width(image);
-    frameHeight = al_get_bitmap_height(image);
+    frameSize = SIZE_MAKE(al_get_bitmap_width(image), al_get_bitmap_height(image));
 }
 
 Spritesheet::Spritesheet(char const *file, int fw, int fh) {
@@ -43,8 +42,7 @@ Spritesheet::Spritesheet(char const *file, int fw, int fh) {
     
     frame = 0;
     
-    frameWidth = fw;
-    frameHeight = fh;
+    frameSize = SIZE_MAKE(fw, fh);
     
     int x = 0;
     int y = 0;
@@ -69,22 +67,22 @@ Spritesheet::~Spritesheet() {
 
 void Spritesheet::draw() {
             
-    float px = posX - (anchorX * frameWidth);
-    float py = posY - (anchorY * frameHeight);
+    float px = position.x - (anchorPoint.x * frameSize.width);
+    float py = position.y - (anchorPoint.y * frameSize.height);
     
     if (camera != NULL) {
-        px -= camera->getTopX();
-        py -= camera->getTopY();
+        px -= camera->getTop().x;
+        py -= camera->getTop().y;
     }
     
     int imgWidth = al_get_bitmap_width(image);
     
-    int framesPerRow = imgWidth / frameWidth;
+    int framesPerRow = imgWidth / frameSize.width;
     
     int x = frame % framesPerRow;
     int y = frame / framesPerRow;
     
-    al_draw_bitmap_region(image, x * frameWidth, y * frameHeight, frameWidth, frameHeight, (int)px, (int)py, 0);
+    al_draw_bitmap_region(image, x * frameSize.width, y * frameSize.height, frameSize.width, frameSize.height, (int)px, (int)py, 0);
 }
 
 void Spritesheet::setFrame(int fr) {
@@ -93,5 +91,6 @@ void Spritesheet::setFrame(int fr) {
     }
 }
 
-int Spritesheet::getFrame() { return frame; }
-
+int Spritesheet::getFrame() {
+    return frame;
+}

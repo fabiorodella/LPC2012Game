@@ -29,20 +29,21 @@
 #include "Spritesheet.h"
 
 #define LAYER_Z_ORDER_PROPERTY "z_order"
+#define LAYER_COLLISION_PROPERTY "collision"
 
 class TilemapLayer : public Drawable {
     
     Spritesheet *tileset;
     
-    int tileWidth;
-    int tileHeight;
+    Size tileSize;
     
-    int mapWidth;
-    int mapHeight;
-    
+    Size mapSize;
+            
     int numLayers;
     
     short *data;
+    
+    bool collision;
     
     TilemapLayer(){};
     TilemapLayer(TilemapLayer const&){};
@@ -66,9 +67,13 @@ public:
     void setTileAt(short tile, int x, int y);
     short getTileAt(int x, int y);
     
-    int getBoundsWidth();
-    int getBoundsHeight();
+    Size getSize();
     
+    Size getBoundsSize();
+    
+    Size getTileSize();
+    
+    bool isCollision();
 };
 
 #endif

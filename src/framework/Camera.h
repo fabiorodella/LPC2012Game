@@ -23,32 +23,26 @@
 #ifndef LPC2012Game_Camera_h
 #define LPC2012Game_Camera_h
 
+#include "Geometry.h"
+
 class Camera {
     
-    int viewportWidth;
-    int viewportHeight;
+    Size viewportSize;
     
-    int boundsWidth;
-    int boundsHeight;
+    Size boundsSize;
     
-    float centerX;
-    float centerY;
+    Point center;
     
 public:
     
     Camera(int vw, int vh, int bw, int bh);
     
-    int getViewportWidth();
-    int getViewportHeight();
+    Size getViewportSize();
     
-    float getCenterX();
-    void setCenterX(float cx);
+    Point getCenter();
+    void setCenter(Point c);
     
-    float getCenterY();
-    void setCenterY(float cy);
-    
-    float getTopX();
-    float getTopY();
+    Point getTop();
 };
 
 #endif

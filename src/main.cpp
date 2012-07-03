@@ -20,13 +20,13 @@
  
  */
 
-#include "TestScene.h"
+#include "GameScene.h"
 
 int main(int argc, char **argv) {
     
     Director::getInstance()->initialize();
     
-    TestScene *scene = new TestScene();
+    GameScene *scene = new GameScene();
             
     Director::getInstance()->startWithScene(scene);
     

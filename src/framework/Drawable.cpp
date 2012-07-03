@@ -26,10 +26,8 @@ Drawable::Drawable() {
     
     tag = 0;
     camera = 0;
-    posX = 0;
-    posY = 0;
-    anchorX = 0;
-    anchorY = 0;
+    position = POINT_MAKE(0, 0);
+    anchorPoint = POINT_MAKE(0, 0);
     zOrder = 0;
     autoZOrder = false;
 }
@@ -50,36 +48,20 @@ Camera *Drawable::getCamera() {
     return camera;
 }
 
-void Drawable::setPosX(float px) {
-    posX = px;
+void Drawable::setPosition(Point p) {
+    position = p;
 }
 
-float Drawable::getPosX() {
-    return posX;
+Point Drawable::getPosition() {
+    return position;
 }
 
-void Drawable::setPosY(float py) {
-    posY = py;
+void Drawable::setAnchorPoint(Point p) {
+    anchorPoint = p;
 }
 
-float Drawable::getPosY() {
-    return posY;
-}
-
-void Drawable::setAnchorX(float px) {
-    anchorX = px;
-}
-
-float Drawable::getAnchorX() {
-    return anchorX;
-}
-
-void Drawable::setAnchorY(float py) {
-    anchorY = py;
-}
-
-float Drawable::getAnchorY() {
-    return anchorY;
+Point Drawable::getAnchorPoint() {
+    return anchorPoint;
 }
 
 void Drawable::setZOrder(int z) {

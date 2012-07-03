@@ -24,55 +24,54 @@
 
 Camera::Camera(int vw, int vh, int bw, int bh) {
     
-    viewportWidth = vw;
-    viewportHeight = vh;
+    viewportSize = SIZE_MAKE(vw, vh);
     
-    boundsWidth = bw;
-    boundsHeight = bh;
+    boundsSize = SIZE_MAKE(bw, bh);
     
-    centerX = centerY = 0;
+    center = POINT_MAKE(0, 0);
 }
 
-int Camera::getViewportWidth() {
-    return viewportWidth;
+Size Camera::getViewportSize() {
+    
+    return viewportSize;
 }
 
-int Camera::getViewportHeight() {
-    return viewportHeight;
+Point Camera::getCenter() {
+    
+    return center;
 }
 
-float Camera::getCenterX() {
-    return centerX;
-}
-
-void Camera::setCenterX(float cx) {
-    if ((cx + (viewportWidth / 2)) > boundsWidth) {
-        centerX = boundsWidth - (viewportWidth / 2);
-    } else if ((cx - (viewportWidth / 2)) < 0) {
-        centerX = viewportWidth / 2;
+void Camera::setCenter(Point c) {
+    
+    float cx = c.x;
+    float cy = c.y;
+    
+    float centerX = center.x;
+    float centerY = center.y;
+    
+    if ((cx + (viewportSize.width / 2)) > boundsSize.width) {
+        centerX = boundsSize.width - (viewportSize.width / 2);
+    } else if ((cx - (viewportSize.width / 2)) < 0) {
+        centerX = viewportSize.width / 2;
     } else {
         centerX = cx;
     }
-}
-
-float Camera::getCenterY() {
-    return centerY;
-}
-
-void Camera::setCenterY(float cy) {
-    if ((cy + (viewportHeight / 2)) > boundsHeight) {
-        centerY = boundsHeight - (viewportHeight / 2);
-    } else if ((cy - (viewportHeight / 2)) < 0) {
-        centerY = viewportHeight / 2;
+    
+    if ((cy + (viewportSize.height / 2)) > boundsSize.height) {
+        centerY = boundsSize.height - (viewportSize.height / 2);
+    } else if ((cy - (viewportSize.height / 2)) < 0) {
+        centerY = viewportSize.height / 2;
     } else {
         centerY = cy;
     }
+    
+    center = POINT_MAKE(centerX, centerY);
 }
 
-float Camera::getTopX() {
-    return centerX - (viewportWidth / 2);
-}
-
-float Camera::getTopY() {
-    return centerY - (viewportHeight / 2);
+Point Camera::getTop() {
+    
+    float cx = center.x - (viewportSize.width / 2);
+    float cy = center.y - (viewportSize.height / 2);
+    
+    return POINT_MAKE(cx, cy);
 }

@@ -40,8 +40,7 @@ public:
     
     virtual void setupScene(){};
     virtual bool tick(double dt);
-    
-    void draw();
+    virtual void draw();
     
     void addToDisplayList(Drawable *drawable);
     void removeFromDisplayList(Drawable *drawable);

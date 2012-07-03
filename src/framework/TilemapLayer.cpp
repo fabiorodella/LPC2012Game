@@ -51,19 +51,18 @@ std::vector<TilemapLayer *> TilemapLayer::parseTMXFile(const char *file) {
     std::vector<xmlNode *> layerNodes = getChildrenForName(root, "layer");
     std::vector<xmlNode *>::iterator layerNodesIt;
     
-    int numLayers = layerNodes.size();
-    
     for(layerNodesIt = layerNodes.begin(); layerNodesIt < layerNodes.end(); ++layerNodesIt) {
         
         TilemapLayer *layer = new TilemapLayer();
-        layer->mapWidth = mapWidth;
-        layer->mapHeight = mapHeight;
-        layer->tileWidth = tileWidth;
-        layer->tileHeight = tileHeight;
+        
+        layer->mapSize = SIZE_MAKE(mapWidth, mapHeight);
+        layer->tileSize = SIZE_MAKE(tileWidth, tileHeight);
         
         layer->tileset = new Spritesheet(imageFile, tileWidth, tileHeight);
         
-        layer->data = new short[mapWidth * mapHeight * numLayers];
+        layer->data = new short[mapWidth * mapHeight];
+        
+        layer->collision = false;
         
         xmlNode *layerNode = (xmlNode *) *layerNodesIt;
         decodeLayerData(getFirstChildForName(layerNode, "data"), layer);
@@ -79,9 +78,16 @@ std::vector<TilemapLayer *> TilemapLayer::parseTMXFile(const char *file) {
                 
                 xmlNode *propertyNode = (xmlNode *) *propertyNodesIt;
                 const char *name = getXmlAttribute(propertyNode, "name");
+                
                 if (!strcmp(name, LAYER_Z_ORDER_PROPERTY)) {
-                    layer->setZOrder(atoi(getXmlAttribute(propertyNode, "value")));
+                    
+                    layer->zOrder = atoi(getXmlAttribute(propertyNode, "value"));
+                    
+                } else if (!strcmp(name, LAYER_COLLISION_PROPERTY)) {
+                    
+                    layer->collision = true;
                 }
+                
             }
         }
         
@@ -110,35 +116,34 @@ void TilemapLayer::draw() {
     
     if (camera != NULL) {
         
-        topX = camera->getTopX();
-        topY = camera->getTopY();
+        topX = camera->getTop().x;
+        topY = camera->getTop().y;
         
-        tilesX = camera->getViewportWidth() / tileWidth;
-        tilesY = camera->getViewportHeight() / tileHeight;
+        tilesX = camera->getViewportSize().width / tileSize.width;
+        tilesY = camera->getViewportSize().height / tileSize.height;
         
     } else {
         
-        tilesX = al_get_display_width(al_get_current_display()) / tileWidth;
-        tilesY = al_get_display_height(al_get_current_display()) / tileHeight;
+        tilesX = al_get_display_width(al_get_current_display()) / tileSize.width;
+        tilesY = al_get_display_height(al_get_current_display()) / tileSize.height;
     }
     
-    int tx = topX / tileWidth;
-    int ty = topY / tileHeight;
+    int tx = topX / tileSize.width;
+    int ty = topY / tileSize.height;
     
-    int ox = -camera->getTopX();
-    int oy = -camera->getTopY();
+    int ox = -camera->getTop().x;
+    int oy = -camera->getTop().y;
     
     al_hold_bitmap_drawing(true);
     
     for (int j = ty; j < (ty + tilesY + 2); j++) {
         for (int i = tx; i < (tx + tilesX + 2); i++) {
                                     
-            if (i >= 0 && i < mapWidth && j >= 0 && j < mapHeight && getTileAt(i, j) > 0) {
+            if (i >= 0 && i < mapSize.width && j >= 0 && j < mapSize.height && getTileAt(i, j) > 0) {
             
                 short tile = getTileAt(i, j) - 1;
-                tileset->setFrame(tile);                                               
-                tileset->setPosX(i * tileWidth + ox);
-                tileset->setPosY(j * tileHeight + oy);
+                tileset->setFrame(tile);
+                tileset->setPosition(POINT_MAKE(i * tileSize.width + ox, j * tileSize.height + oy));
                 tileset->draw();
             }
         }
@@ -149,22 +154,34 @@ void TilemapLayer::draw() {
 
 void TilemapLayer::setTileAt(short tile, int x, int y) {
     
-    data[y * mapWidth + x] = tile;
+    int mw = mapSize.width;
+    data[y * mw + x] = tile;
 }
 
 short TilemapLayer::getTileAt(int x, int y) {
     
-    return data[y * mapWidth + x];
+    int mw = mapSize.width;
+    return data[y * mw + x];
 }
 
-int TilemapLayer::getBoundsWidth() {
+Size TilemapLayer::getSize() {
     
-    return mapWidth * tileWidth;
+    return mapSize;
 }
 
-int TilemapLayer::getBoundsHeight() {
+Size TilemapLayer::getBoundsSize() {
     
-    return mapHeight * tileHeight;
+    return SIZE_MAKE(mapSize.width * tileSize.width, mapSize.height * tileSize.height);
+}
+
+Size TilemapLayer::getTileSize() {
+    
+    return tileSize;
+}
+
+bool TilemapLayer::isCollision() {
+    
+    return collision;
 }
 
 xmlNode *TilemapLayer::getFirstChildForName(xmlNode *parent, const char *name) {
@@ -229,7 +246,7 @@ void TilemapLayer::decodeLayerData(xmlNode *dataNode, TilemapLayer *layer) {
             layer->setTileAt(atoi(gid), i, j);
             i++;
             
-            if (i >= layer->mapWidth) {
+            if (i >= layer->mapSize.width) {
                 i = 0;
                 j++;
             }

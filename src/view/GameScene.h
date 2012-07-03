@@ -20,25 +20,29 @@
  
  */
 
-#ifndef LPC2012Game_TestScene_h
-#define LPC2012Game_TestScene_h
+#ifndef LPC2012Game_GameScene_h
+#define LPC2012Game_GameScene_h
 
 #include "Framework.h"
 
-class TestScene : public Scene {
+class GameScene : public Scene {
     
     Spritesheet *playerSprite;
     
     Camera *camera;
     
+    TilemapLayer *collision;
+    
     int moveDir;
     float curFrame;
+    
+    bool debug;
     
 public:
     
     virtual void setupScene();
     virtual bool tick(double dt);
-    
+    virtual void draw();
 };
 
 #endif

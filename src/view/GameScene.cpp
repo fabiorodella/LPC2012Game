@@ -20,63 +20,63 @@
  
  */
 
-#include "TestScene.h"
-#include "TestScene2.h"
+#include "allegro5/allegro_primitives.h"
 
-void TestScene::setupScene() {
+#include "GameScene.h"
+
+void GameScene::setupScene() {
     
     std::vector<TilemapLayer *> layers = TilemapLayer::parseTMXFile("res/tilemap.tmx");
     std::vector<TilemapLayer *>::iterator it;
     
     TilemapLayer *firstLayer = layers[0];
     
-    camera = new Camera(800, 600, firstLayer->getBoundsWidth(), firstLayer->getBoundsHeight());
+    camera = new Camera(800, 600, firstLayer->getBoundsSize().width, firstLayer->getBoundsSize().height);
     
     for (it = layers.begin(); it < layers.end(); ++it) {
         
         TilemapLayer *layer = (TilemapLayer *) *it;
         layer->setCamera(camera);
         addToDisplayList(layer);
+        
+        if (layer->isCollision()) {
+            collision = layer;
+        }
     }
             
     playerSprite = new Spritesheet("res/male_walkcycle.png", 64, 64);
     playerSprite->setTag(1);
     playerSprite->setCamera(camera);
-    playerSprite->setPosX(100);
-    playerSprite->setPosY(100);
-    playerSprite->setAnchorX(0.5);
-    playerSprite->setAnchorY(0.9);
+    playerSprite->setPosition(POINT_MAKE(100, 100));
+    playerSprite->setAnchorPoint(POINT_MAKE(0.5, 0.9));
     playerSprite->setAutoZOrder(true);
     addToDisplayList(playerSprite);
     
     Spritesheet *sprite2 = new Spritesheet("res/male_walkcycle.png", 64, 64);
     sprite2->setTag(2);
     sprite2->setCamera(camera);
-    sprite2->setPosX(200);
-    sprite2->setPosY(200);
-    sprite2->setAnchorX(0.5);
-    sprite2->setAnchorY(0.9);
+    sprite2->setPosition(POINT_MAKE(200, 200));
+    sprite2->setAnchorPoint(POINT_MAKE(0.5, 0.9));
     sprite2->setAutoZOrder(true);
     addToDisplayList(sprite2);
     
     Spritesheet *sprite3 = new Spritesheet("res/male_walkcycle.png", 64, 64);
     sprite2->setTag(3);
     sprite3->setCamera(camera);
-    sprite3->setPosX(300);
-    sprite3->setPosY(300);
-    sprite3->setAnchorX(0.5);
-    sprite3->setAnchorY(0.9);
+    sprite3->setPosition(POINT_MAKE(300, 300));
+    sprite3->setAnchorPoint(POINT_MAKE(0.5, 0.9));
     sprite3->setAutoZOrder(true);
     addToDisplayList(sprite3);
     
-    camera->setCenterX(playerSprite->getPosX());
-    camera->setCenterY(playerSprite->getPosY());
-    
+    camera->setCenter(playerSprite->getPosition());
+            
     moveDir = 0;
     curFrame = 0;
+    
+    debug = true;
 }
 
-bool TestScene::tick(double dt) {
+bool GameScene::tick(double dt) {
             
     ALLEGRO_KEYBOARD_STATE kbdstate;
     
@@ -87,10 +87,6 @@ bool TestScene::tick(double dt) {
     
     al_get_keyboard_state(&kbdstate);
     if (al_key_down(&kbdstate, ALLEGRO_KEY_ESCAPE)) {
-        
-        //Uncomment to test scene flow
-        //TestScene2 *next = new TestScene2();
-        //Director::getInstance()->enqueueScene(next);
         return false;
     }
     
@@ -125,12 +121,76 @@ bool TestScene::tick(double dt) {
         curFrame = 0;
     }
     
-    playerSprite->setFrame(moveDir + (int)curFrame);
-    playerSprite->setPosX(playerSprite->getPosX() + dx);
-    playerSprite->setPosY(playerSprite->getPosY() + dy);
+    bool collided = false;
     
-    camera->setCenterX(playerSprite->getPosX());
-    camera->setCenterY(playerSprite->getPosY());
+    Rect colRect = RECT_MAKE(playerSprite->getPosition().x - 16, playerSprite->getPosition().y - 16, 32, 32);
+    
+    Rect colRectX = rectOffset(colRect, dx, 0);
+    Rect colRectY = rectOffset(colRect, 0, dy);
+    
+    int tw = collision->getTileSize().width;
+    int th = collision->getTileSize().height;
+    
+    int tpx = playerSprite->getPosition().x / collision->getTileSize().width;
+    int tpy = playerSprite->getPosition().y / collision->getTileSize().height;
+    
+    for (int j = tpy - 2; j <= tpy + 2; j++) {
+        for (int i = tpx - 2; i <= tpx + 2; i++) {
+            
+            if (i >= 0 && i < collision->getSize().width && j >= 0 && j < collision->getSize().height) {
+                int gid = collision->getTileAt(i, j);
+                
+                if (gid != 0) {
+                    
+                    Rect tileRect = RECT_MAKE(i * tw, j * th, tw, th);
+                    
+                    if (rectIntersectsRect(colRectX, tileRect)) {
+                        dx = 0;
+                        collided = true;
+                    }
+                    
+                    if (rectIntersectsRect(colRectY, tileRect)) {
+                        dy = 0;
+                        collided = true;
+                    }
+                }
+            }
+        }
+    }
+    
+    playerSprite->setFrame(moveDir + (int)curFrame);
+    playerSprite->setPosition(pointOffset(playerSprite->getPosition(), dx, dy));
+    
+    camera->setCenter(playerSprite->getPosition());
     
     return true;
+}
+
+void GameScene::draw() {
+    Scene::draw();
+    
+    if (debug) {
+        
+        al_draw_rectangle(playerSprite->getPosition().x - 16 - camera->getTop().x, playerSprite->getPosition().y - 16 - camera->getTop().y, playerSprite->getPosition().x + 16 - camera->getTop().x, playerSprite->getPosition().y + 16 - camera->getTop().y, al_map_rgb(255, 0, 0), 1);
+        
+        int tw = collision->getTileSize().width;
+        int th = collision->getTileSize().height;
+        
+        int tpx = playerSprite->getPosition().x / collision->getTileSize().width;
+        int tpy = playerSprite->getPosition().y / collision->getTileSize().height;
+        
+        for (int j = tpy - 2; j <= tpy + 2; j++) {
+            for (int i = tpx - 2; i <= tpx + 2; i++) {
+                
+                if (i >= 0 && i < collision->getSize().width && j >= 0 && j < collision->getSize().height) {
+                    int gid = collision->getTileAt(i, j);
+                    
+                    if (gid != 0) {
+                        
+                        al_draw_rectangle(i * tw - camera->getTop().x, j * th - camera->getTop().y, i * tw + tw - camera->getTop().x, j * th + th - camera->getTop().y, al_map_rgb(255, 0, 0), 1);
+                    }
+                }
+            }
+        }
+    }
 }
