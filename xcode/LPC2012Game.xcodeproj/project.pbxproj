@@ -74,7 +74,7 @@
 		159DC9C0158F568D0036D70F /* liballegro_primitives.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_primitives.dylib; path = /usr/local/lib/liballegro_primitives.dylib; sourceTree = "<absolute>"; };
 		159DC9C1158F568D0036D70F /* liballegro_ttf.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_ttf.dylib; path = /usr/local/lib/liballegro_ttf.dylib; sourceTree = "<absolute>"; };
 		159DC9C2158F568D0036D70F /* liballegro.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro.dylib; path = /usr/local/lib/liballegro.dylib; sourceTree = "<absolute>"; };
-		159DC9D3158F59410036D70F /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; path = res; sourceTree = SOURCE_ROOT; };
+		159DC9D3158F59410036D70F /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; name = res; path = ../res; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,7 +111,8 @@
 				1565FB7015A212C100C2FF83 /* controller */,
 				1565FB6715A2124B00C2FF83 /* main.cpp */,
 			);
-			path = src;
+			name = src;
+			path = ../src;
 			sourceTree = SOURCE_ROOT;
 		};
 		1565FB5815A2124B00C2FF83 /* framework */ = {
