@@ -9,7 +9,7 @@
 			<Target title="Debug">
 				<Option output="bin/Debug/LPC2012Game" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
-				<Option type="1" />
+				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
@@ -18,7 +18,7 @@
 			<Target title="Release">
 				<Option output="bin/Release/LPC2012Game" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
-				<Option type="1" />
+				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
@@ -30,7 +30,45 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add directory="/usr/include/libxml2" />
+			<Add directory="../src/view" />
+			<Add directory="../src/framework" />
 		</Compiler>
+		<Linker>
+			<Add option="-lxml2" />
+			<Add library="/usr/lib/liballegro.so" />
+			<Add library="/usr/lib/liballegro_acodec.so" />
+			<Add library="/usr/lib/liballegro_audio.so" />
+			<Add library="/usr/lib/liballegro_color.so" />
+			<Add library="/usr/lib/liballegro_dialog.so" />
+			<Add library="/usr/lib/liballegro_font.so" />
+			<Add library="/usr/lib/liballegro_image.so" />
+			<Add library="/usr/lib/liballegro_main.so" />
+			<Add library="/usr/lib/liballegro_memfile.so" />
+			<Add library="/usr/lib/liballegro_physfs.so" />
+			<Add library="/usr/lib/liballegro_primitives.so" />
+			<Add library="/usr/lib/liballegro_ttf.so" />
+		</Linker>
+		<Unit filename="../src/framework/BitmapLoader.cpp" />
+		<Unit filename="../src/framework/BitmapLoader.h" />
+		<Unit filename="../src/framework/Camera.cpp" />
+		<Unit filename="../src/framework/Camera.h" />
+		<Unit filename="../src/framework/Director.cpp" />
+		<Unit filename="../src/framework/Director.h" />
+		<Unit filename="../src/framework/Drawable.cpp" />
+		<Unit filename="../src/framework/Drawable.h" />
+		<Unit filename="../src/framework/Framework.h" />
+		<Unit filename="../src/framework/Scene.cpp" />
+		<Unit filename="../src/framework/Scene.h" />
+		<Unit filename="../src/framework/Spritesheet.cpp" />
+		<Unit filename="../src/framework/Spritesheet.h" />
+		<Unit filename="../src/framework/TilemapLayer.cpp" />
+		<Unit filename="../src/framework/TilemapLayer.h" />
+		<Unit filename="../src/main.cpp" />
+		<Unit filename="../src/view/TestScene.cpp" />
+		<Unit filename="../src/view/TestScene.h" />
+		<Unit filename="../src/view/TestScene2.cpp" />
+		<Unit filename="../src/view/TestScene2.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
