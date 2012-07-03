@@ -31,7 +31,7 @@ Spritesheet::Spritesheet(char const *file) {
     
     frame = 0;
     
-    frameSize = SIZE_MAKE(al_get_bitmap_width(image), al_get_bitmap_height(image));
+    frameSize = sizeMake(al_get_bitmap_width(image), al_get_bitmap_height(image));
 }
 
 Spritesheet::Spritesheet(char const *file, int fw, int fh) {
@@ -42,7 +42,7 @@ Spritesheet::Spritesheet(char const *file, int fw, int fh) {
     
     frame = 0;
     
-    frameSize = SIZE_MAKE(fw, fh);
+    frameSize = sizeMake(fw, fh);
     
     int x = 0;
     int y = 0;

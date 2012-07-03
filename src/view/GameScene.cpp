@@ -47,24 +47,24 @@ void GameScene::setupScene() {
     playerSprite = new Spritesheet("res/male_walkcycle.png", 64, 64);
     playerSprite->setTag(1);
     playerSprite->setCamera(camera);
-    playerSprite->setPosition(POINT_MAKE(100, 100));
-    playerSprite->setAnchorPoint(POINT_MAKE(0.5, 0.9));
+    playerSprite->setPosition(pointMake(100, 100));
+    playerSprite->setAnchorPoint(pointMake(0.5, 0.9));
     playerSprite->setAutoZOrder(true);
     addToDisplayList(playerSprite);
     
     Spritesheet *sprite2 = new Spritesheet("res/male_walkcycle.png", 64, 64);
     sprite2->setTag(2);
     sprite2->setCamera(camera);
-    sprite2->setPosition(POINT_MAKE(200, 200));
-    sprite2->setAnchorPoint(POINT_MAKE(0.5, 0.9));
+    sprite2->setPosition(pointMake(200, 200));
+    sprite2->setAnchorPoint(pointMake(0.5, 0.9));
     sprite2->setAutoZOrder(true);
     addToDisplayList(sprite2);
     
     Spritesheet *sprite3 = new Spritesheet("res/male_walkcycle.png", 64, 64);
     sprite2->setTag(3);
     sprite3->setCamera(camera);
-    sprite3->setPosition(POINT_MAKE(300, 300));
-    sprite3->setAnchorPoint(POINT_MAKE(0.5, 0.9));
+    sprite3->setPosition(pointMake(300, 300));
+    sprite3->setAnchorPoint(pointMake(0.5, 0.9));
     sprite3->setAutoZOrder(true);
     addToDisplayList(sprite3);
     
@@ -123,7 +123,7 @@ bool GameScene::tick(double dt) {
     
     bool collided = false;
     
-    Rect colRect = RECT_MAKE(playerSprite->getPosition().x - 16, playerSprite->getPosition().y - 16, 32, 32);
+    Rect colRect = rectMake(playerSprite->getPosition().x - 16, playerSprite->getPosition().y - 16, 32, 32);
     
     Rect colRectX = rectOffset(colRect, dx, 0);
     Rect colRectY = rectOffset(colRect, 0, dy);
@@ -142,7 +142,7 @@ bool GameScene::tick(double dt) {
                 
                 if (gid != 0) {
                     
-                    Rect tileRect = RECT_MAKE(i * tw, j * th, tw, th);
+                    Rect tileRect = rectMake(i * tw, j * th, tw, th);
                     
                     if (rectIntersectsRect(colRectX, tileRect)) {
                         dx = 0;

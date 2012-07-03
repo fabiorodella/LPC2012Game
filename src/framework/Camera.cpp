@@ -24,11 +24,11 @@
 
 Camera::Camera(int vw, int vh, int bw, int bh) {
     
-    viewportSize = SIZE_MAKE(vw, vh);
+    viewportSize = sizeMake(vw, vh);
     
-    boundsSize = SIZE_MAKE(bw, bh);
+    boundsSize = sizeMake(bw, bh);
     
-    center = POINT_MAKE(0, 0);
+    center = pointMake(0, 0);
 }
 
 Size Camera::getViewportSize() {
@@ -65,7 +65,7 @@ void Camera::setCenter(Point c) {
         centerY = cy;
     }
     
-    center = POINT_MAKE(centerX, centerY);
+    center = pointMake(centerX, centerY);
 }
 
 Point Camera::getTop() {
@@ -73,5 +73,5 @@ Point Camera::getTop() {
     float cx = center.x - (viewportSize.width / 2);
     float cy = center.y - (viewportSize.height / 2);
     
-    return POINT_MAKE(cx, cy);
+    return pointMake(cx, cy);
 }

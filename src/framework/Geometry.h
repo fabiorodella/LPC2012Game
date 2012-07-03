@@ -38,16 +38,33 @@ struct Rect {
     Size size;
 };
 
-#define POINT_MAKE(__X__, __Y__) (Point){.x = __X__, .y = __Y__}
-#define SIZE_MAKE(__W__,__H__) (Size){.width = __W__, .height = __H__}
-#define RECT_MAKE(__X__, __Y__, __W__, __H__) (Rect){.origin = (Point){.x = __X__, .y = __Y__}, .size = (Size){.width = __W__, .height = __H__}}
+inline Point pointMake(float px, float py) {
+    Point p;
+    p.x = px;
+    p.y = py;
+    return p;
+}
 
 inline Point pointOffset(Point p, float dx, float dy) {
-    return POINT_MAKE(p.x + dx, p.y + dy);
+    return pointMake(p.x + dx, p.y + dy);
+}
+
+inline Size sizeMake(float w, float h) {
+    Size s;
+    s.width = w;
+    s.height = h;
+    return s;
+}
+
+inline Rect rectMake(float ox, float oy, float w, float h) {
+    Rect r;
+    r.origin = pointMake(ox, oy);
+    r.size = sizeMake(w, h);
+    return r;
 }
 
 inline Rect rectOffset(Rect r, float dx, float dy) {
-    return RECT_MAKE(r.origin.x + dx, r.origin.y + dy, r.size.width, r.size.height);
+    return rectMake(r.origin.x + dx, r.origin.y + dy, r.size.width, r.size.height);
 }
 
 inline bool rectContainsPoint(Rect r, Point p) {

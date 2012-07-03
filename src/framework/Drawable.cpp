@@ -26,8 +26,8 @@ Drawable::Drawable() {
     
     tag = 0;
     camera = 0;
-    position = POINT_MAKE(0, 0);
-    anchorPoint = POINT_MAKE(0, 0);
+    position = pointMake(0, 0);
+    anchorPoint = pointMake(0, 0);
     zOrder = 0;
     autoZOrder = false;
 }

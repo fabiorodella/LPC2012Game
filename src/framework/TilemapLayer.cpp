@@ -55,8 +55,8 @@ std::vector<TilemapLayer *> TilemapLayer::parseTMXFile(const char *file) {
         
         TilemapLayer *layer = new TilemapLayer();
         
-        layer->mapSize = SIZE_MAKE(mapWidth, mapHeight);
-        layer->tileSize = SIZE_MAKE(tileWidth, tileHeight);
+        layer->mapSize = sizeMake(mapWidth, mapHeight);
+        layer->tileSize = sizeMake(tileWidth, tileHeight);
         
         layer->tileset = new Spritesheet(imageFile, tileWidth, tileHeight);
         
@@ -143,7 +143,7 @@ void TilemapLayer::draw() {
             
                 short tile = getTileAt(i, j) - 1;
                 tileset->setFrame(tile);
-                tileset->setPosition(POINT_MAKE(i * tileSize.width + ox, j * tileSize.height + oy));
+                tileset->setPosition(pointMake(i * tileSize.width + ox, j * tileSize.height + oy));
                 tileset->draw();
             }
         }
@@ -171,7 +171,7 @@ Size TilemapLayer::getSize() {
 
 Size TilemapLayer::getBoundsSize() {
     
-    return SIZE_MAKE(mapSize.width * tileSize.width, mapSize.height * tileSize.height);
+    return sizeMake(mapSize.width * tileSize.width, mapSize.height * tileSize.height);
 }
 
 Size TilemapLayer::getTileSize() {
