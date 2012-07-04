@@ -183,6 +183,10 @@ Size TilemapLayer::getTileSize() {
     return tileSize;
 }
 
+short *TilemapLayer::getData() {
+    return data;
+}
+
 bool TilemapLayer::isCollision() {
     
     return collision;

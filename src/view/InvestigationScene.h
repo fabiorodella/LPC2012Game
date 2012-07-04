@@ -20,18 +20,35 @@
  
  */
 
-#include "GameScene.h"
-#include "InvestigationScene.h"
+#ifndef LPC2012Game_InvestigationScene_h
+#define LPC2012Game_InvestigationScene_h
 
-int main(int argc, char **argv) {
-    
-    Director::getInstance()->initialize();
-    
-    //GameScene *scene = new GameScene();
-    InvestigationScene *scene = new InvestigationScene();  
-    
-    Director::getInstance()->startWithScene(scene);
-    
-    return 0;
-}
+#include "Framework.h"
 
+#include "MysteryController.h"
+
+class InvestigationScene : public Scene {
+    
+    MysteryController *controller;
+    
+    Spritesheet *playerSprite;
+    
+    Camera *camera;
+    
+    TilemapLayer *collision;
+    
+    int moveDir;
+    float curFrame;
+    
+    bool debug;
+    
+public:
+    
+    ~InvestigationScene();
+    
+    virtual void setupScene();
+    virtual bool tick(double dt);
+    virtual void draw();
+};
+
+#endif

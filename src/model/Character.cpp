@@ -20,18 +20,14 @@
  
  */
 
-#include "GameScene.h"
-#include "InvestigationScene.h"
+#include <stdio.h>
 
-int main(int argc, char **argv) {
-    
-    Director::getInstance()->initialize();
-    
-    //GameScene *scene = new GameScene();
-    InvestigationScene *scene = new InvestigationScene();  
-    
-    Director::getInstance()->startWithScene(scene);
-    
-    return 0;
+#include "Character.h"
+
+Character::Character() {
+    name = new char[100];
 }
 
+Character::~Character() {
+    delete name;
+}

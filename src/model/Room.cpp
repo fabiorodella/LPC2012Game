@@ -20,18 +20,4 @@
  
  */
 
-#include "GameScene.h"
-#include "InvestigationScene.h"
-
-int main(int argc, char **argv) {
-    
-    Director::getInstance()->initialize();
-    
-    //GameScene *scene = new GameScene();
-    InvestigationScene *scene = new InvestigationScene();  
-    
-    Director::getInstance()->startWithScene(scene);
-    
-    return 0;
-}
-
+#include "Room.h"

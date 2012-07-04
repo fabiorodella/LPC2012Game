@@ -31,6 +31,12 @@
 		159DC9CD158F568D0036D70F /* liballegro_ttf.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9C1158F568D0036D70F /* liballegro_ttf.dylib */; };
 		159DC9CE158F568D0036D70F /* liballegro.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9C2158F568D0036D70F /* liballegro.dylib */; };
 		159DC9D4158F59410036D70F /* res in Resources */ = {isa = PBXBuildFile; fileRef = 159DC9D3158F59410036D70F /* res */; };
+		15A1C94715A47352000068F4 /* Character.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A1C94615A47352000068F4 /* Character.cpp */; };
+		15A1C94D15A475D9000068F4 /* MysteryController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A1C94C15A475D9000068F4 /* MysteryController.cpp */; };
+		15A1C95015A4AA0C000068F4 /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A1C94F15A4AA0C000068F4 /* Memory.cpp */; };
+		15A1C95315A4B087000068F4 /* POI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A1C95215A4B087000068F4 /* POI.cpp */; };
+		15A1C95615A4B114000068F4 /* Room.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A1C95515A4B114000068F4 /* Room.cpp */; };
+		15A1C95915A4B7A2000068F4 /* InvestigationScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A1C95815A4B7A2000068F4 /* InvestigationScene.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +79,18 @@
 		159DC9C1158F568D0036D70F /* liballegro_ttf.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_ttf.dylib; path = /usr/local/lib/liballegro_ttf.dylib; sourceTree = "<absolute>"; };
 		159DC9C2158F568D0036D70F /* liballegro.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro.dylib; path = /usr/local/lib/liballegro.dylib; sourceTree = "<absolute>"; };
 		159DC9D3158F59410036D70F /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; name = res; path = ../res; sourceTree = SOURCE_ROOT; };
+		15A1C94615A47352000068F4 /* Character.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Character.cpp; sourceTree = "<group>"; };
+		15A1C94815A4735B000068F4 /* Character.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Character.h; sourceTree = "<group>"; };
+		15A1C94C15A475D9000068F4 /* MysteryController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MysteryController.cpp; sourceTree = "<group>"; };
+		15A1C94E15A475F5000068F4 /* MysteryController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MysteryController.h; sourceTree = "<group>"; };
+		15A1C94F15A4AA0C000068F4 /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Memory.cpp; sourceTree = "<group>"; };
+		15A1C95115A4AA1E000068F4 /* Memory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Memory.h; sourceTree = "<group>"; };
+		15A1C95215A4B087000068F4 /* POI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = POI.cpp; sourceTree = "<group>"; };
+		15A1C95415A4B098000068F4 /* POI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = POI.h; sourceTree = "<group>"; };
+		15A1C95515A4B114000068F4 /* Room.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Room.cpp; sourceTree = "<group>"; };
+		15A1C95715A4B11D000068F4 /* Room.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
+		15A1C95815A4B7A2000068F4 /* InvestigationScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InvestigationScene.cpp; sourceTree = "<group>"; };
+		15A1C95A15A4B7AF000068F4 /* InvestigationScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvestigationScene.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +157,8 @@
 		1565FB7015A212C100C2FF83 /* controller */ = {
 			isa = PBXGroup;
 			children = (
+				15A1C94C15A475D9000068F4 /* MysteryController.cpp */,
+				15A1C94E15A475F5000068F4 /* MysteryController.h */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -146,6 +166,14 @@
 		1565FB7115A212C100C2FF83 /* model */ = {
 			isa = PBXGroup;
 			children = (
+				15A1C94615A47352000068F4 /* Character.cpp */,
+				15A1C94815A4735B000068F4 /* Character.h */,
+				15A1C94F15A4AA0C000068F4 /* Memory.cpp */,
+				15A1C95115A4AA1E000068F4 /* Memory.h */,
+				15A1C95215A4B087000068F4 /* POI.cpp */,
+				15A1C95415A4B098000068F4 /* POI.h */,
+				15A1C95515A4B114000068F4 /* Room.cpp */,
+				15A1C95715A4B11D000068F4 /* Room.h */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -155,6 +183,8 @@
 			children = (
 				1565FB7415A212EE00C2FF83 /* GameScene.cpp */,
 				1565FB7315A212E300C2FF83 /* GameScene.h */,
+				15A1C95815A4B7A2000068F4 /* InvestigationScene.cpp */,
+				15A1C95A15A4B7AF000068F4 /* InvestigationScene.h */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -305,6 +335,12 @@
 				1565FB6E15A2124B00C2FF83 /* TilemapLayer.cpp in Sources */,
 				1565FB6F15A2124B00C2FF83 /* main.cpp in Sources */,
 				1565FB7515A212EE00C2FF83 /* GameScene.cpp in Sources */,
+				15A1C94715A47352000068F4 /* Character.cpp in Sources */,
+				15A1C94D15A475D9000068F4 /* MysteryController.cpp in Sources */,
+				15A1C95015A4AA0C000068F4 /* Memory.cpp in Sources */,
+				15A1C95315A4B087000068F4 /* POI.cpp in Sources */,
+				15A1C95615A4B114000068F4 /* Room.cpp in Sources */,
+				15A1C95915A4B7A2000068F4 /* InvestigationScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

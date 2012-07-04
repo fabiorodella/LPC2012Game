@@ -20,18 +20,35 @@
  
  */
 
-#include "GameScene.h"
-#include "InvestigationScene.h"
+#ifndef LPC2012Game_Memory_h
+#define LPC2012Game_Memory_h
 
-int main(int argc, char **argv) {
-    
-    Director::getInstance()->initialize();
-    
-    //GameScene *scene = new GameScene();
-    InvestigationScene *scene = new InvestigationScene();  
-    
-    Director::getInstance()->startWithScene(scene);
-    
-    return 0;
-}
+class Character;
+class Room;
+class POI;
 
+typedef enum tEvent {
+    EventEnteredRoom,
+    EventLeftRoom,
+    EventInteractPOI,
+    EventAll
+} Event;
+
+class Memory {
+
+public:
+    
+    Event event;
+    
+    int when;
+    
+    Character *who;
+    
+    Room *where;
+    
+    POI *what;
+    
+    int suspicion;
+};
+
+#endif

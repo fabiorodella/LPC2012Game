@@ -20,18 +20,34 @@
  
  */
 
-#include "GameScene.h"
-#include "InvestigationScene.h"
+#ifndef LPC2012Game_Character_h
+#define LPC2012Game_Character_h
 
-int main(int argc, char **argv) {
-    
-    Director::getInstance()->initialize();
-    
-    //GameScene *scene = new GameScene();
-    InvestigationScene *scene = new InvestigationScene();  
-    
-    Director::getInstance()->startWithScene(scene);
-    
-    return 0;
-}
+#include <vector>
 
+#include "Memory.h"
+#include "POI.h"
+
+class Character {
+
+private:
+    
+    std::vector<Memory *> memories;
+    
+public:
+    
+    char *name;
+    
+    bool male;
+            
+    Interest interest;
+    
+    bool attentive;
+    
+    bool hasWatch;
+    
+    Character();
+    ~Character();
+};
+
+#endif

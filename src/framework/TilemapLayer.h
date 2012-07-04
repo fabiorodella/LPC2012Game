@@ -73,6 +73,8 @@ public:
     
     Size getTileSize();
     
+    short *getData();
+    
     bool isCollision();
 };
 
