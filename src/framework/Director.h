@@ -23,9 +23,10 @@
 #ifndef LPC2012Game_Director_h
 #define LPC2012Game_Director_h
 
-#include "allegro5/allegro.h"
-#include "allegro5/allegro_image.h"
-#include "allegro5/allegro_primitives.h"
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_ttf.h>
 
 #include "Scene.h"
 

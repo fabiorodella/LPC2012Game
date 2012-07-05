@@ -109,3 +109,18 @@ void Scene::removeFromDisplayList(Drawable *drawable) {
 void Scene::removeFromDisplayList(int tag) {
     
 }
+
+Drawable *Scene::getByTag(int tag) {
+    
+    std::vector<Drawable *>::iterator it;
+    
+    for(it = displayList.begin(); it < displayList.end(); ++it) {
+        
+        Drawable *drawable = (Drawable *) *it;
+        if (drawable->getTag() == tag) {
+            return drawable;
+        }
+    }
+    
+    return NULL;
+}

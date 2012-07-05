@@ -25,7 +25,7 @@
 
 #include <map>
 
-#include "allegro5/allegro.h"
+#include <allegro5/allegro.h>
 
 struct Bitmap {
     ALLEGRO_BITMAP *bitmap;

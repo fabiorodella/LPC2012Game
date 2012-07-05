@@ -45,6 +45,7 @@ public:
     void addToDisplayList(Drawable *drawable);
     void removeFromDisplayList(Drawable *drawable);
     void removeFromDisplayList(int tag);
+    Drawable *getByTag(int tag);
 };
 
 #endif

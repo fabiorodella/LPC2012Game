@@ -22,23 +22,25 @@
 
 #include <algorithm>
 #include <math.h>
+#include <libxml/parser.h>
+#include <libxml/tree.h>
 
 #include "stlastar.h"
 
-#include "MysteryController.h"
+#include "Mystery.h"
 #include "Room.h"
 
-class MapSearchNode
-{
+class MapSearchNode {
+
 public:
     
-    MysteryController *controller;
+    Mystery *mystery;
     
-	unsigned int x;	 // the (x,y) positions of the node
+	unsigned int x;
 	unsigned int y;	
 	
 	MapSearchNode() { x = y = 0; }
-	MapSearchNode( unsigned int px, unsigned int py, MysteryController *mc ) { x=px; y=py; controller=mc; }
+	MapSearchNode( unsigned int px, unsigned int py, Mystery *mc ) { x=px; y=py; mystery=mc; }
     
 	float GoalDistanceEstimate( MapSearchNode &nodeGoal );
 	bool IsGoal( MapSearchNode &nodeGoal );
@@ -49,62 +51,45 @@ public:
 	void PrintNodeInfo();
 };
 
-bool MapSearchNode::IsSameState( MapSearchNode &rhs )
-{
+bool MapSearchNode::IsSameState( MapSearchNode &rhs ) {
     
-	// same state in a maze search is simply when (x,y) are the same
 	if( (x == rhs.x) &&
-       (y == rhs.y) )
-	{
+       (y == rhs.y) ) {
 		return true;
-	}
-	else
-	{
+	} else {
 		return false;
 	}
     
 }
 
-void MapSearchNode::PrintNodeInfo()
-{
+void MapSearchNode::PrintNodeInfo() {
 	cout << "Node position : (" << x << ", " << y << ")" << endl;
 }
 
-// Here's the heuristic function that estimates the distance from a Node
-// to the Goal. 
-
-float MapSearchNode::GoalDistanceEstimate( MapSearchNode &nodeGoal )
-{
+float MapSearchNode::GoalDistanceEstimate( MapSearchNode &nodeGoal ) {
+    
 	float xd = fabs(float(((float)x - (float)nodeGoal.x)));
 	float yd = fabs(float(((float)y - (float)nodeGoal.y)));
     
 	return xd + yd;
 }
 
-bool MapSearchNode::IsGoal( MapSearchNode &nodeGoal )
-{
+bool MapSearchNode::IsGoal( MapSearchNode &nodeGoal ) {
     
 	if( (x == nodeGoal.x) &&
-       (y == nodeGoal.y) )
-	{
+       (y == nodeGoal.y) ){
 		return true;
 	}
     
 	return false;
 }
 
-// This generates the successors to the given Node. It uses a helper function called
-// AddSuccessor to give the successors to the AStar class. The A* specific initialisation
-// is done for each node internally, so here you just set the state information that
-// is specific to the application
-bool MapSearchNode::GetSuccessors( AStarSearch<MapSearchNode> *astarsearch, MapSearchNode *parent_node )
-{
+bool MapSearchNode::GetSuccessors( AStarSearch<MapSearchNode> *astarsearch, MapSearchNode *parent_node ) {
     
 	int parent_x = -1; 
 	int parent_y = -1; 
     
-	if( parent_node )
-	{
+	if( parent_node ) {
 		parent_x = parent_node->x;
 		parent_y = parent_node->y;
 	}
@@ -112,67 +97,47 @@ bool MapSearchNode::GetSuccessors( AStarSearch<MapSearchNode> *astarsearch, MapS
     
 	MapSearchNode NewNode;
     
-	// push each possible move except allowing the search to go backwards
-    
-	if(!controller->isCollision(x - 1, y)
+	if(!mystery->isCollision(x - 1, y)
        && !((parent_x == x-1) && (parent_y == y))
-       ) 
-	{
-		NewNode = MapSearchNode( x-1, y, controller );
+       ) {
+		NewNode = MapSearchNode( x-1, y, mystery );
 		astarsearch->AddSuccessor( NewNode );
 	}	
     
-	if(!controller->isCollision(x, y -1)
+	if(!mystery->isCollision(x, y -1)
        && !((parent_x == x) && (parent_y == y-1))
-       ) 
-	{
-		NewNode = MapSearchNode( x, y-1, controller );
+       ) {
+		NewNode = MapSearchNode( x, y-1, mystery );
 		astarsearch->AddSuccessor( NewNode );
 	}	
     
-	if(!controller->isCollision(x + 1, y)
+	if(!mystery->isCollision(x + 1, y)
        && !((parent_x == x+1) && (parent_y == y))
-       ) 
-	{
-		NewNode = MapSearchNode( x+1, y, controller );
+       ) {
+		NewNode = MapSearchNode( x+1, y, mystery );
 		astarsearch->AddSuccessor( NewNode );
 	}	
     
     
-	if(!controller->isCollision(x, y + 1) 
+	if(!mystery->isCollision(x, y + 1) 
        && !((parent_x == x) && (parent_y == y+1))
-       )
-	{
-		NewNode = MapSearchNode( x, y+1, controller );
+       ) {
+		NewNode = MapSearchNode( x, y+1, mystery );
 		astarsearch->AddSuccessor( NewNode );
 	}	
     
 	return true;
 }
 
-// given this node, what does it cost to move to successor. In the case
-// of our map the answer is the map terrain value at this node since that is 
-// conceptually where we're moving
-
-float MapSearchNode::GetCost( MapSearchNode &successor )
-{
-	return controller->isCollision(x, y) ? 9 : 0;
+float MapSearchNode::GetCost( MapSearchNode &successor ) {
+	return mystery->isCollision(x, y) ? 9 : 0;
 }
 
-bool MysteryController::isCollision(int x, int y) {
-    
-    if (x < 0 || x >= mapWidth || y < 0 || y >= mapHeight) {
-        return true;
-    } else if (mapData[y * mapWidth + x] > 0) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-void MysteryController::generateMystery(unsigned int seed, int numChars, short *collisionData, int mapWidth, int mapHeight) {
+Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int mapWidth, int mapHeight) {
     
     srand(seed);
+    
+    murderHappened = false;
     
     this->mapWidth = mapWidth;
     this->mapHeight = mapHeight;
@@ -181,17 +146,20 @@ void MysteryController::generateMystery(unsigned int seed, int numChars, short *
     Room *room = new Room();
     sprintf(room->name, "Room 1");
     room->bounds = rectMake(1, 1, 15, 10);
-        
+    
+    int numChars = 5;
+    
     for (int i = 0; i < numChars; i++) {
         
         Character *character = new Character();
         
+        character->tag = i + 1;
         character->male = rand() % 2 == 0;
         
         if (character->male) {
-            sprintf(character->name, "Male %d", i);
+            sprintf(character->name, "M%d", i);
         } else {
-            sprintf(character->name, "Female %d", i);
+            sprintf(character->name, "F%d", i);
         }
         
         int iInt = rand() % InterestAll;
@@ -202,9 +170,11 @@ void MysteryController::generateMystery(unsigned int seed, int numChars, short *
         character->hasWatch = rand() % 2 == 0;
         character->position = pointMake(i + 1, 1);
         character->currentRoom = room;
-        character->moving = false;
+        character->idle = true;
+        character->currentTarget = NULL;
+        character->murderTarget = NULL;
         
-        const char *strInt;
+        const char *strInt = NULL;
         
         switch (interest) {
             case InterestBooks:
@@ -230,6 +200,23 @@ void MysteryController::generateMystery(unsigned int seed, int numChars, short *
         characters.push_back(character);
     }
     
+    int murderTargetIdx = rand() % characters.size();
+    Character *murderTarget = characters[murderTargetIdx];
+    
+    printf("*** %s is the murder target! ***\n", murderTarget->name);
+    
+    int murdererIdx = rand() % characters.size();
+    Character *murderer = characters[murdererIdx];
+    
+    while (murderer == murderTarget) {
+        murdererIdx = rand() % characters.size();
+        murderer = characters[murdererIdx];
+    }
+    
+    printf("*** %s is the murderer! ***\n", murderer->name);
+    murderer->murderTarget = murderTarget;
+    murderer->interest = murderTarget->interest;
+    
     rooms.push_back(room);
     
     room = new Room();
@@ -237,128 +224,267 @@ void MysteryController::generateMystery(unsigned int seed, int numChars, short *
     room->bounds = rectMake(17, 1, 14, 10);
     rooms.push_back(room);
     
-    POI *poi = new POI();
-    poi->position = pointMake(30, 2);
-    poi->interest = InterestFood;
-    room->pointsOfInterest.push_back(poi);
+    for (int i = 0; i < InterestAll; i++) {
+        POI *poi = new POI();
+        poi->position = pointMake(30, 2);
+        poi->interest = (Interest) i;
+        room->pointsOfInterest.push_back(poi);
+    }
     
     room = new Room();
     sprintf(room->name, "Room 3");
     room->bounds = rectMake(1, 12, 15, 11);
     rooms.push_back(room);
     
-    poi = new POI();
-    poi->position = pointMake(3, 22);
-    poi->interest = InterestPaintings;
-    room->pointsOfInterest.push_back(poi);
+    for (int i = 0; i < InterestAll; i++) {
+        POI *poi = new POI();
+        poi->position = pointMake(3, 22);
+        poi->interest = (Interest) i;
+        room->pointsOfInterest.push_back(poi);
+    }
     
     room = new Room();
     sprintf(room->name, "Room 4");
     room->bounds = rectMake(17, 12, 14, 11);
     rooms.push_back(room);
     
-    poi = new POI();
-    poi->position = pointMake(30, 20);
-    poi->interest = InterestGames;
-    room->pointsOfInterest.push_back(poi);
+    for (int i = 0; i < InterestAll; i++) {
+        POI *poi = new POI();
+        poi->position = pointMake(30, 20);
+        poi->interest = (Interest) i;
+        room->pointsOfInterest.push_back(poi);
+    }
+
+}
+
+Mystery::~Mystery() {
+    
+    std::vector<Character *>::iterator itChars;
+    for (itChars = characters.begin(); itChars < characters.end(); ++itChars) {
+        delete *itChars;
+    }
+    
+    characters.clear();
+    
+    std::vector<Room *>::iterator itRooms;
+    for (itRooms = rooms.begin(); itRooms < rooms.end(); ++itRooms) {
+        delete *itRooms;
+    }
+    
+    rooms.clear();
+}
+
+bool Mystery::isCollision(int x, int y) {
+    
+    if (x < 0 || x >= mapWidth || y < 0 || y >= mapHeight) {
+        return true;
+    } else if (mapData[y * mapWidth + x] > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void Mystery::step() {
     
     AStarSearch<MapSearchNode> astarsearch;
-    
-    long time = 0;
-    
-    while (time < 100) {
+      
+    std::vector<Character *>::iterator itChars;
+    for (itChars = characters.begin(); itChars < characters.end(); ++itChars) {
         
-        std::vector<Character *>::iterator itChars;
-        for (itChars = characters.begin(); itChars < characters.end(); ++itChars) {
+        Character *character = (Character *) *itChars;
+        
+        if (character->idle) {
             
-            Character *character = (Character *) *itChars;
-                                                         
-            if (!character->moving) {
+            int targetX = 0;
+            int targetY = 0;
+            
+            // Does the character want to chat?
+            bool wantsToTalk = rand() % 2 == 0;
+            
+            if (wantsToTalk) {
                 
-                std::vector<Room *>::iterator itRooms;
-                for (itRooms = rooms.begin(); itRooms < rooms.end(); ++itRooms) {
-                    room = (Room *) *itRooms;
-                    
-                    std::vector<POI *> points = room->getPointsOfInterest(character->interest);
-                    
-                    if (points.size() > 0) {
-                        int idx = rand() % points.size();
-                        POI *poi = points[idx];
-                        
-                        character->target = poi;
-                        character->moving = true;
-                        
-                        MapSearchNode nodeStart;
-                        nodeStart.x = (int) character->position.x;
-                        nodeStart.y = (int) character->position.y;
-                        nodeStart.controller = this;
-                                                
-                        
-                        MapSearchNode nodeEnd;
-                        nodeEnd.x = (int) poi->position.x;						
-                        nodeEnd.y = (int) poi->position.y;
-                        nodeEnd.controller = this;
-                        
-                        astarsearch.SetStartAndGoalStates(nodeStart, nodeEnd);
-                        
-                        unsigned int SearchState;
-                        
-                        do {
-                            
-                            SearchState = astarsearch.SearchStep();
-                            
-                        } while( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING );
-                        
-                        if (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED) {
-                            
-                            MapSearchNode *node = astarsearch.GetSolutionStart();
-                            
-                            while (node) {
-                                
-                                Step *step = new Step();
-                                step->position = pointMake(node->x, node->y);
-                                step->duration = 1;
-                                
-                                character->addStep(step);
-                                
-                                node = astarsearch.GetSolutionNext();
-                            }
-                                                                                    
-                            astarsearch.FreeSolutionNodes();
-                        }
-                    } // if has POIs
-                } // for each room
+                // Goes after another character
+                
+                int idxOption = rand() % characters.size();
+                Character *option = characters[idxOption];
+                targetX = option->position.x;
+                targetY = option->position.y;
+                
+                character->currentTarget = NULL;
                 
             } else {
+            
+                // Looks for a POI matching the characters interest in any room
                 
-                character->updatePath(1);
+                Room *room;
+                std::vector<POI *> points;
                 
-                Room *currentRoom = NULL;
-                
-                std::vector<Room *>::iterator itRooms;
-                for (itRooms = rooms.begin(); itRooms < rooms.end(); ++itRooms) {
-                    room = (Room *) *itRooms;
+                do {
+                    int roomIdx = rand() % rooms.size();
+                    room = rooms[roomIdx];
+                    points = room->getPointsOfInterest(character->interest);
                     
-                    if (rectContainsPoint(room->bounds, character->position)) {
-                        currentRoom = room;
+                } while (points.size() == 0);
+                
+                // Goes after an interesting random POI
+                
+                int idx = rand() % points.size();
+                POI *poi = points[idx];
+                
+                character->currentTarget = poi;
+                
+                targetX = poi->position.x;
+                targetY = poi->position.y;
+            }
+            
+            character->idle = false;
+            
+            MapSearchNode nodeStart;
+            nodeStart.x = (int) character->position.x;
+            nodeStart.y = (int) character->position.y;
+            nodeStart.mystery = this;
+            
+            MapSearchNode nodeEnd;
+            nodeEnd.x = targetX;						
+            nodeEnd.y = targetY;
+            nodeEnd.mystery = this;
+            
+            astarsearch.SetStartAndGoalStates(nodeStart, nodeEnd);
+            
+            unsigned int SearchState;
+            
+            do {
+                
+                SearchState = astarsearch.SearchStep();
+                
+            } while( SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SEARCHING );
+            
+            // Found a path to the target
+            
+            if (SearchState == AStarSearch<MapSearchNode>::SEARCH_STATE_SUCCEEDED) {
+                
+                MapSearchNode *node = astarsearch.GetSolutionStart();
+                
+                while (node) {
+                    
+                    // Builds the steps for the character to reach its target
+                    
+                    Step *step = new Step();
+                    step->position = pointMake(node->x, node->y);
+                    step->conversation = false;
+                    
+                    if (character->currentTarget != NULL && pointEqualsIntegral(step->position, character->currentTarget->position)) {
+                        
+                        // Stops to appreciate/interact with a POI
+                        step->duration = rand() % 30 + 10;
+                        
+                    } else {
+                        step->duration = 1;
+                    }
+                    
+                    character->addStep(step);
+                    
+                    node = astarsearch.GetSolutionNext();
+                }
+                
+                astarsearch.FreeSolutionNodes();
+            }
+            
+        } else {
+            
+            // Updates the character's path by 1 unit of time
+        
+            character->updatePath();
+            
+            Room *currentRoom = NULL;
+            
+            // Determines if the character entered or left a room
+            
+            std::vector<Room *>::iterator itRooms;
+            for (itRooms = rooms.begin(); itRooms < rooms.end(); ++itRooms) {
+                Room *room = (Room *) *itRooms;
+                
+                if (rectContainsPoint(room->bounds, character->position)) {
+                    currentRoom = room;
+                }
+            }
+            
+            if (currentRoom != character->currentRoom) {
+                
+                printf("%s left %s\n", character->name, character->currentRoom->name);
+                character->currentRoom = currentRoom;
+                printf("%s entered %s\n", character->name, character->currentRoom->name);
+            }
+            
+            std::vector<Character *>::iterator itOthers;
+            for (itOthers = characters.begin(); itOthers < characters.end(); ++itOthers) {
+                Character *other = (Character *) *itOthers;
+                
+                // Looks for:
+                // - adjacent characters
+                // - one of them without a POI in mind
+                // - both not already in a conversation
+                
+                if (pointAdjacentIntegral(character->position, other->position) && 
+                    (character->currentTarget == NULL || other->currentTarget == NULL) &&
+                    (!character->havingConversation() && !other->havingConversation())) {
+                    
+                    int duration = rand() % 60 + 60;
+                    
+                    // If both characters have matching interests, the talk is longer
+                    
+                    if (character->interest == other->interest) {
+                        duration *= 3;
+                    }
+                    
+                    character->clearPath();
+                    other->clearPath();
+                                        
+                    Step *step = new Step();
+                    step->position = character->position;
+                    step->duration = duration;
+                    step->conversation = true;
+                    character->addStep(step);
+                    
+                    step = new Step();
+                    step->position = other->position;
+                    step->duration = duration;
+                    step->conversation = true;
+                    other->addStep(step);
+                    
+                    printf("%s and %s are having a conversation\n", character->name, other->name);
+                    
+                }
+            }
+            
+            // TODO improve this
+            
+            /*
+            if (character->murderTarget != NULL && character->currentRoom == character->murderTarget->currentRoom) {
+                
+                std::vector<Character *>::iterator itAlone;
+                bool aloneInTheRoom = true;
+                
+                for (itAlone = characters.begin(); itAlone < characters.end(); ++itAlone) {
+                    Character *other = (Character *) *itAlone;
+                    if (other->currentRoom == character->currentRoom && other != character && other != character->murderTarget) {
+                        aloneInTheRoom = false;
                     }
                 }
                 
-                if (currentRoom != character->currentRoom) {
-                    
-                    printf("%s left %s\n", character->name, character->currentRoom->name);
-                    character->currentRoom = currentRoom;
-                    printf("%s entered %s\n", character->name, character->currentRoom->name);
+                if (aloneInTheRoom) {
+                    printf("*** %s has been murdered! ***\n", character->murderTarget->name);
+                    murderHappened = true;
                 }
             }
+            */
         }
-        
-        time++;
     }
-    
+
     astarsearch.EnsureMemoryFreed();
 }
 
-std::vector<Character *> MysteryController::getCharacters() {
+std::vector<Character *> Mystery::getCharacters() {
     return characters;
 }

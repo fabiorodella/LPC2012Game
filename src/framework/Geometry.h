@@ -61,6 +61,25 @@ inline bool pointEqualsIntegral(Point p1, Point p2) {
     return p1x == p2x && p1y == p2y;
 }
 
+inline bool pointAdjacentIntegral(Point p1, Point p2) {
+    int p1x = p1.x;
+    int p1y = p1.y;
+    int p2x = p2.x;
+    int p2y = p2.y;
+    
+    bool adjacent = false;
+    
+    for (int j = p1y - 1; j <= (p1y + 1); j++) {
+        for (int i = p1x - 1; i <= (p1x + 1); i++) {
+            if ((i != p1x || j != p1y) && i == p2x && j == p2y) {
+                adjacent = true;
+            }
+        }
+    }
+    
+    return adjacent;
+}
+
 inline Size sizeMake(float w, float h) {
     Size s;
     s.width = w;

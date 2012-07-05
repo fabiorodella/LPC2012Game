@@ -23,7 +23,8 @@
 #ifndef LPC2012Game_Spritesheet_h
 #define LPC2012Game_Spritesheet_h
 
-#include "allegro5/allegro.h"
+#include <allegro5/allegro.h>
+
 #include "Drawable.h"
 
 class Spritesheet : public Drawable {

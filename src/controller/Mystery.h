@@ -20,14 +20,14 @@
  
  */
 
-#ifndef LPC2012Game_MysteryController_h
-#define LPC2012Game_MysteryController_h
+#ifndef LPC2012Game_Mystery_h
+#define LPC2012Game_Mystery_h
 
 #include <vector>
 
 #include "Character.h"
 
-class MysteryController {
+class Mystery {
 
 private:
     
@@ -39,10 +39,15 @@ public:
     short *mapData;
     int mapWidth;
     int mapHeight;
+            
+    bool murderHappened;
+    
+    Mystery(const char *file, unsigned int seed, short *collisionData, int mapWidth, int mapHeight);
+    ~Mystery();
     
     bool isCollision(int x, int y);
-    
-    void generateMystery(unsigned int seed, int numChars, short *collisionData, int mapWidth, int mapHeight);
+            
+    void step();
     
     std::vector<Character *> getCharacters();
 };

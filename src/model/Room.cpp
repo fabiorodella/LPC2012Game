@@ -28,6 +28,13 @@ Room::Room() {
 
 Room::~Room() {
     delete name;
+    
+    std::vector<POI *>::iterator itPOI;
+    for (itPOI = pointsOfInterest.begin(); itPOI < pointsOfInterest.end(); ++itPOI) {
+        delete *itPOI;
+    }
+    
+    pointsOfInterest.clear();
 }
 
 std::vector<POI *> Room::getPointsOfInterest(Interest interest) {

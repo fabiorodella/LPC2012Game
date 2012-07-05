@@ -20,12 +20,12 @@
  
  */
 
-#include "allegro5/allegro_primitives.h"
+#include <allegro5/allegro_primitives.h>
 
 #include "InvestigationScene.h"
 
 InvestigationScene::~InvestigationScene() {
-    delete controller;
+    delete mystery;
 }
 
 void InvestigationScene::setupScene() {
@@ -56,10 +56,9 @@ void InvestigationScene::setupScene() {
     playerSprite->setAutoZOrder(true);
     addToDisplayList(playerSprite);
     
-    controller = new MysteryController();
-    controller->generateMystery((unsigned int) time(0), 10, collision->getData(), (int) collision->getSize().width, (int) collision->getSize().height);  
-    
-    std::vector<Character *> characters = controller->getCharacters();
+    mystery = new Mystery("", (unsigned int) time(0), collision->getData(), collision->getSize().width, collision->getSize().height);
+        
+    std::vector<Character *> characters = mystery->getCharacters();
     std::vector<Character *>::iterator itChars;
     
     int tag = 1;

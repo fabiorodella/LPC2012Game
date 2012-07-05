@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mystery numCharacters="5">
+    <rooms>
+        <room name="Room 1" boundsOriginX="1" boundsOriginY="1", boundsWidth="15" boundsHeight="10">
+            <pointsOfInterest>
+                <pointOfInterest positionX="1" positionY="1" interest="1"/>
+            </pointsOfInterest>
+        </room>
+    </rooms>
+</mystery>

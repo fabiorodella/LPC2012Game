@@ -25,11 +25,11 @@
 
 #include "Framework.h"
 
-#include "MysteryController.h"
+#include "Mystery.h"
 
 class InvestigationScene : public Scene {
     
-    MysteryController *controller;
+    Mystery *mystery;
     
     Spritesheet *playerSprite;
     

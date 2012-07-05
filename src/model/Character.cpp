@@ -30,6 +30,20 @@ Character::Character() {
 
 Character::~Character() {
     delete name;
+    
+    std::vector<Memory *>::iterator itMem;
+    for (itMem = memories.begin(); itMem < memories.end(); itMem++) {
+        delete *itMem;
+    }
+    
+    memories.clear();
+    
+    std::vector<Step *>::iterator itSteps;
+    for (itSteps = path.begin(); itSteps < path.end(); itSteps++) {
+        delete *itSteps;
+    }
+    
+    path.clear();
 }
 
 void Character::addMemory(Memory *m) {
@@ -40,21 +54,36 @@ void Character::addStep(Step *s) {
     path.push_back(s);
 }
 
-void Character::updatePath(long time) {
+void Character::updatePath() {
     
-    if (moving) {
+    if (!idle) {
         
         Step *s = path[0];
         
-        s->duration -= time;
+        s->duration -= 1;
+        position = s->position;
         
         if (s->duration <= 0) {
-            position = s->position;
+            
             path.erase(path.begin());
+            delete s;
             
             if (path.size() == 0) {
-                moving = false;
+                idle = true;
             }
         }
     }
+}
+
+void Character::clearPath() {
+    
+    path.clear();
+    idle = true;
+}
+
+bool Character::havingConversation() {
+    if (path.size() > 0) {
+        return path[0]->conversation;
+    }
+    return false;
 }

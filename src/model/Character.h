@@ -34,6 +34,7 @@ struct Step {
     
     Point position;
     long duration;
+    bool conversation;
 };
 
 class Character {
@@ -46,11 +47,15 @@ private:
     
 public:
     
+    int tag;
+    
     Point position;
     
-    POI *target;
+    POI *currentTarget;
     
-    bool moving;    
+    Character *murderTarget;
+    
+    bool idle;    
     
     char *name;
     
@@ -71,7 +76,11 @@ public:
     
     void addStep(Step *s);
     
-    void updatePath(long time);
+    void updatePath();
+    
+    void clearPath();
+    
+    bool havingConversation();
 };
 
 #endif
