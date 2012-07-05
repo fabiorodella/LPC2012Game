@@ -37,6 +37,8 @@
 		15A1C95315A4B087000068F4 /* POI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A1C95215A4B087000068F4 /* POI.cpp */; };
 		15A1C95615A4B114000068F4 /* Room.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A1C95515A4B114000068F4 /* Room.cpp */; };
 		15A1C95915A4B7A2000068F4 /* InvestigationScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A1C95815A4B7A2000068F4 /* InvestigationScene.cpp */; };
+		15FF755715A5AE9300D5EDFB /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 15FF755215A5AE9300D5EDFB /* license.txt */; };
+		15FF755815A5AE9300D5EDFB /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 15FF755315A5AE9300D5EDFB /* readme.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -91,6 +93,10 @@
 		15A1C95715A4B11D000068F4 /* Room.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
 		15A1C95815A4B7A2000068F4 /* InvestigationScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InvestigationScene.cpp; sourceTree = "<group>"; };
 		15A1C95A15A4B7AF000068F4 /* InvestigationScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvestigationScene.h; sourceTree = "<group>"; };
+		15FF755115A5AE9300D5EDFB /* fsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fsa.h; sourceTree = "<group>"; };
+		15FF755215A5AE9300D5EDFB /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
+		15FF755315A5AE9300D5EDFB /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
+		15FF755415A5AE9300D5EDFB /* stlastar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stlastar.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +236,7 @@
 		159DC9A2158F54690036D70F /* LPC2012Game */ = {
 			isa = PBXGroup;
 			children = (
+				15FF754D15A5AE9300D5EDFB /* lib */,
 				1565FB5715A2124B00C2FF83 /* src */,
 				159DC9D3158F59410036D70F /* res */,
 				159DC9A3158F54690036D70F /* Supporting Files */,
@@ -262,6 +269,25 @@
 				159DC9C2158F568D0036D70F /* liballegro.dylib */,
 			);
 			name = Allegro;
+			sourceTree = "<group>";
+		};
+		15FF754D15A5AE9300D5EDFB /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				15FF754E15A5AE9300D5EDFB /* astar */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		15FF754E15A5AE9300D5EDFB /* astar */ = {
+			isa = PBXGroup;
+			children = (
+				15FF755215A5AE9300D5EDFB /* license.txt */,
+				15FF755315A5AE9300D5EDFB /* readme.txt */,
+				15FF755115A5AE9300D5EDFB /* fsa.h */,
+				15FF755415A5AE9300D5EDFB /* stlastar.h */,
+			);
+			path = astar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -316,6 +342,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				159DC9D4158F59410036D70F /* res in Resources */,
+				15FF755715A5AE9300D5EDFB /* license.txt in Resources */,
+				15FF755815A5AE9300D5EDFB /* readme.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

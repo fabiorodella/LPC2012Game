@@ -27,13 +27,23 @@
 
 #include "Geometry.h"
 
+#include "Character.h"
 #include "POI.h"
 
 class Room {
 
+public:
+    
+    char *name;
+    
     std::vector<POI *> pointsOfInterest;
     
-    Rect bounds;    
+    Rect bounds;
+    
+    Room();
+    ~Room();
+    
+    std::vector<POI *> getPointsOfInterest(Interest interest);
 };
 
 #endif

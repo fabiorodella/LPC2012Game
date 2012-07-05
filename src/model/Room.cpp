@@ -21,3 +21,26 @@
  */
 
 #include "Room.h"
+
+Room::Room() {
+    name = new char[100];
+}
+
+Room::~Room() {
+    delete name;
+}
+
+std::vector<POI *> Room::getPointsOfInterest(Interest interest) {
+    
+    std::vector<POI *> ret;
+    
+    std::vector<POI *>::iterator it;
+    for (it = pointsOfInterest.begin(); it < pointsOfInterest.end(); ++it) {
+        POI *poi = (POI *) *it;
+        if (poi->interest == interest) {
+            ret.push_back(poi);
+        }
+    }
+    
+    return ret;
+}

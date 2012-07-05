@@ -73,6 +73,8 @@ public:
     
     Size getTileSize();
     
+    Rect getTileRect(int x, int y);
+    
     short *getData();
     
     bool isCollision();

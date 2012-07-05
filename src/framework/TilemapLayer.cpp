@@ -183,6 +183,10 @@ Size TilemapLayer::getTileSize() {
     return tileSize;
 }
 
+Rect TilemapLayer::getTileRect(int x, int y) {
+    return rectMake(x * tileSize.width, y * tileSize.height, tileSize.width, tileSize.height);    
+}
+
 short *TilemapLayer::getData() {
     return data;
 }

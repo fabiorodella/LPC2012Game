@@ -49,6 +49,18 @@ inline Point pointOffset(Point p, float dx, float dy) {
     return pointMake(p.x + dx, p.y + dy);
 }
 
+inline bool pointEquals(Point p1, Point p2) {
+    return p1.x == p2.x && p1.y == p2.y;
+}
+
+inline bool pointEqualsIntegral(Point p1, Point p2) {
+    int p1x = p1.x;
+    int p1y = p1.y;
+    int p2x = p2.x;
+    int p2y = p2.y;
+    return p1x == p2x && p1y == p2y;
+}
+
 inline Size sizeMake(float w, float h) {
     Size s;
     s.width = w;
@@ -65,6 +77,10 @@ inline Rect rectMake(float ox, float oy, float w, float h) {
 
 inline Rect rectOffset(Rect r, float dx, float dy) {
     return rectMake(r.origin.x + dx, r.origin.y + dy, r.size.width, r.size.height);
+}
+
+inline Point rectMidPoint(Rect r) {
+    return pointOffset(r.origin, r.size.width / 2, r.size.height / 2);
 }
 
 inline bool rectContainsPoint(Rect r, Point p) {

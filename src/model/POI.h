@@ -38,6 +38,8 @@ typedef enum tInterest {
 } Interest;
 
 class POI {
+
+public:
     
     Point position;
     

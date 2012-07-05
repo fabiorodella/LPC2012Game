@@ -25,8 +25,16 @@
 
 #include <vector>
 
+#include "Geometry.h"
+
 #include "Memory.h"
 #include "POI.h"
+
+struct Step {
+    
+    Point position;
+    long duration;
+};
 
 class Character {
 
@@ -34,7 +42,15 @@ private:
     
     std::vector<Memory *> memories;
     
+    std::vector<Step *> path;
+    
 public:
+    
+    Point position;
+    
+    POI *target;
+    
+    bool moving;    
     
     char *name;
     
@@ -46,8 +62,16 @@ public:
     
     bool hasWatch;
     
+    Room *currentRoom;
+    
     Character();
     ~Character();
+    
+    void addMemory(Memory *m);
+    
+    void addStep(Step *s);
+    
+    void updatePath(long time);
 };
 
 #endif

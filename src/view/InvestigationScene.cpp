@@ -47,17 +47,38 @@ void InvestigationScene::setupScene() {
             collision = layer;
         }
     }
-    
-    controller = new MysteryController();
-    controller->generateMystery(1, 10, collision->getData());    
-    
+            
     playerSprite = new Spritesheet("res/male_walkcycle.png", 64, 64);
-    playerSprite->setTag(1);
+    playerSprite->setTag(666);
     playerSprite->setCamera(camera);
     playerSprite->setPosition(pointMake(100, 100));
     playerSprite->setAnchorPoint(pointMake(0.5, 0.9));
     playerSprite->setAutoZOrder(true);
     addToDisplayList(playerSprite);
+    
+    controller = new MysteryController();
+    controller->generateMystery((unsigned int) time(0), 10, collision->getData(), (int) collision->getSize().width, (int) collision->getSize().height);  
+    
+    std::vector<Character *> characters = controller->getCharacters();
+    std::vector<Character *>::iterator itChars;
+    
+    int tag = 1;
+    
+    for (itChars = characters.begin(); itChars < characters.end(); ++itChars) {
+        
+        Character *character = (Character *) *itChars;
+        
+        Spritesheet *sprite = new Spritesheet("res/male_walkcycle.png", 64, 64);
+        sprite->setTag(tag);
+        sprite->setCamera(camera);
+        sprite->setAnchorPoint(pointMake(0.5, 0.9));
+        sprite->setAutoZOrder(true);
+        
+        Rect tileRect = collision->getTileRect(character->position.x, character->position.y);
+        sprite->setPosition(rectMidPoint(tileRect));
+        
+        addToDisplayList(sprite);        
+    }
     
     camera->setCenter(playerSprite->getPosition());
     

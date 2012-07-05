@@ -31,3 +31,30 @@ Character::Character() {
 Character::~Character() {
     delete name;
 }
+
+void Character::addMemory(Memory *m) {
+    memories.push_back(m);
+}
+
+void Character::addStep(Step *s) {
+    path.push_back(s);
+}
+
+void Character::updatePath(long time) {
+    
+    if (moving) {
+        
+        Step *s = path[0];
+        
+        s->duration -= time;
+        
+        if (s->duration <= 0) {
+            position = s->position;
+            path.erase(path.begin());
+            
+            if (path.size() == 0) {
+                moving = false;
+            }
+        }
+    }
+}

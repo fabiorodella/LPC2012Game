@@ -36,7 +36,15 @@ private:
     
 public:
     
-    void generateMystery(unsigned int seed, int numChars, short *collisionData);
+    short *mapData;
+    int mapWidth;
+    int mapHeight;
+    
+    bool isCollision(int x, int y);
+    
+    void generateMystery(unsigned int seed, int numChars, short *collisionData, int mapWidth, int mapHeight);
+    
+    std::vector<Character *> getCharacters();
 };
 
 

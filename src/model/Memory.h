@@ -40,7 +40,7 @@ public:
     
     Event event;
     
-    int when;
+    long when;
     
     Character *who;
     
