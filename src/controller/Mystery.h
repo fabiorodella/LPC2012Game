@@ -34,6 +34,8 @@ private:
     std::vector<Character *> characters;
     std::vector<Room *> rooms;
     
+    POI *parsePOINode(xmlNode *node);
+    
 public:
     
     short *mapData;

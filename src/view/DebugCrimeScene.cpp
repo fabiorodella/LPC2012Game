@@ -143,6 +143,6 @@ void DebugCrimeScene::draw() {
         
         Drawable *sprite = getByTag(character->tag);
         
-        al_draw_text(font, al_map_rgb(0, 0, 0), sprite->getPosition().x - camera->getTop().x,  sprite->getPosition().y - camera->getTop().y, 0, character->name);
+        al_draw_text(font, al_map_rgb(0, 0, 0), sprite->getPosition().x - camera->getTop().x,  sprite->getPosition().y - camera->getTop().y, 0, character->name.c_str());
     }
 }

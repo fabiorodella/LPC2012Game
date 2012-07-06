@@ -23,6 +23,7 @@
 #ifndef LPC2012Game_Room_h
 #define LPC2012Game_Room_h
 
+#include <string>
 #include <vector>
 
 #include "Geometry.h"
@@ -34,13 +35,12 @@ class Room {
 
 public:
     
-    char *name;
+    std::string name;
     
     std::vector<POI *> pointsOfInterest;
     
     Rect bounds;
     
-    Room();
     ~Room();
     
     std::vector<POI *> getPointsOfInterest(Interest interest);

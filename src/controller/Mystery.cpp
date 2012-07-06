@@ -28,6 +28,7 @@
 #include "XmlHelper.h"
 #include "Mystery.h"
 #include "Room.h"
+#include "NameGenerator.h"
 
 class MapSearchNode {
 
@@ -132,6 +133,31 @@ float MapSearchNode::GetCost( MapSearchNode &successor ) {
 	return mystery->isCollision(x, y) ? 9 : 0;
 }
 
+POI *Mystery::parsePOINode(xmlNode *node) {
+    
+    POI *poi = new POI();
+    
+    int x = atoi(xmlGetAttribute(node, "positionX"));
+    int y = atoi(xmlGetAttribute(node, "positionY"));
+    int interest = atoi(xmlGetAttribute(node, "interest"));
+    
+    poi->position = pointMake(x, y);
+    poi->interest = (Interest) interest;
+    
+    std::vector<xmlNode *> childNodes = xmlGetChildrenForName(node, "pointOfInterest");
+    std::vector<xmlNode *>::iterator it;
+    
+    for (it = childNodes.begin(); it < childNodes.end(); ++it) {
+        
+        xmlNode *childNode = (xmlNode *) *it;
+        
+        POI *child = parsePOINode(childNode);
+        poi->contents.push_back(child);
+    }
+    
+    return poi;
+}
+
 Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int mapWidth, int mapHeight) {
     
     srand(seed);
@@ -178,15 +204,7 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
             
             xmlNode *POInode = (xmlNode *) *itPOI;
             
-            POI *poi = new POI();
-            
-            int x = atoi(xmlGetAttribute(POInode, "positionX"));
-            int y = atoi(xmlGetAttribute(POInode, "positionY"));
-            int interest = atoi(xmlGetAttribute(POInode, "interest"));
-            
-            poi->position = pointMake(x, y);
-            poi->interest = (Interest) interest;
-            
+            POI *poi = parsePOINode(POInode);            
             room->pointsOfInterest.push_back(poi);
         }
         
@@ -199,12 +217,8 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
         
         character->tag = i + 1;
         character->male = rand() % 2 == 0;
-        
-        if (character->male) {
-            sprintf(character->name, "M%d", i);
-        } else {
-            sprintf(character->name, "F%d", i);
-        }
+                        
+        character->name = generateName(character->male);
         
         int iInt = rand() % InterestContainer;
         Interest interest = (Interest) iInt;
@@ -239,7 +253,7 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
                 break;
         }
         
-        printf("%s interested in %s\n", character->name, strInt);
+        printf("%s interested in %s\n", character->name.c_str(), strInt);
         
         characters.push_back(character);
     }
@@ -247,7 +261,7 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
     int murderTargetIdx = rand() % characters.size();
     Character *murderTarget = characters[murderTargetIdx];
     
-    printf("*** %s is the murder target! ***\n", murderTarget->name);
+    printf("*** %s is the murder target! ***\n", murderTarget->name.c_str());
     
     int murdererIdx = rand() % characters.size();
     Character *murderer = characters[murdererIdx];
@@ -257,7 +271,7 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
         murderer = characters[murdererIdx];
     }
     
-    printf("*** %s is the murderer! ***\n", murderer->name);
+    printf("*** %s is the murderer! ***\n", murderer->name.c_str());
     murderer->murderTarget = murderTarget;
     murderer->interest = murderTarget->interest;
 }
@@ -417,9 +431,9 @@ void Mystery::step() {
             
             if (currentRoom != character->currentRoom) {
                 
-                printf("%s left %s\n", character->name, character->currentRoom->name);
+                printf("%s left %s\n", character->name.c_str(), character->currentRoom->name.c_str());
                 character->currentRoom = currentRoom;
-                printf("%s entered %s\n", character->name, character->currentRoom->name);
+                printf("%s entered %s\n", character->name.c_str(), character->currentRoom->name.c_str());
             }
             
             std::vector<Character *>::iterator itOthers;
@@ -458,7 +472,7 @@ void Mystery::step() {
                     step->conversation = true;
                     other->addStep(step);
                     
-                    printf("%s and %s are having a conversation\n", character->name, other->name);
+                    printf("%s and %s are having a conversation\n", character->name.c_str(), other->name.c_str());
                     
                 }
             }

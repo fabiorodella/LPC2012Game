@@ -37,17 +37,20 @@ xmlNode *xmlGetFirstChildForName(xmlNode *parent, const char *name) {
 }
 
 std::vector<xmlNode *> xmlGetChildrenForName(xmlNode *parent, const char *name) {
-    
+            
     std::vector<xmlNode *> ret;
     
-	xmlNode *child = parent->children->next;
-    
-	while (child != NULL) {
-		if (!strcmp((const char*)child->name, name))
-			ret.push_back(child);
+    if (parent->children != NULL) {
         
-		child = child->next;
-	}
+        xmlNode *child = parent->children->next;
+        
+        while (child != NULL) {
+            if (!strcmp((const char*)child->name, name))
+                ret.push_back(child);
+            
+            child = child->next;
+        }
+    }
     
 	return ret;
 }

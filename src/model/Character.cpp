@@ -24,12 +24,7 @@
 
 #include "Character.h"
 
-Character::Character() {
-    name = new char[100];
-}
-
 Character::~Character() {
-    delete name;
     
     std::vector<Memory *>::iterator itMem;
     for (itMem = memories.begin(); itMem < memories.end(); itMem++) {

@@ -23,6 +23,7 @@
 #ifndef LPC2012Game_POI_h
 #define LPC2012Game_POI_h
 
+#include <string>
 #include <vector>
 
 #include "Geometry.h"
@@ -42,15 +43,17 @@ class POI {
 
 public:
     
-    Point position;
+    std::string description;
     
-    std::vector<POI *> contents;
+    std::string location;
+    
+    Point position;
     
     Interest interest;
     
-    char *description;
+    std::vector<POI *> contents;
     
-    char *location;
+    ~POI();
 };
 
 #endif

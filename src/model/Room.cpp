@@ -22,13 +22,8 @@
 
 #include "Room.h"
 
-Room::Room() {
-    name = new char[100];
-}
-
 Room::~Room() {
-    delete name;
-    
+
     std::vector<POI *>::iterator itPOI;
     for (itPOI = pointsOfInterest.begin(); itPOI < pointsOfInterest.end(); ++itPOI) {
         delete *itPOI;

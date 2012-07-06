@@ -21,3 +21,13 @@
  */
 
 #include "POI.h"
+
+POI::~POI() {
+    
+    std::vector<POI *>::iterator it;
+    for (it = contents.begin(); it < contents.end(); it++) {
+        delete *it;
+    }
+    
+    contents.clear();
+}

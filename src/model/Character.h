@@ -23,6 +23,7 @@
 #ifndef LPC2012Game_Character_h
 #define LPC2012Game_Character_h
 
+#include <string>
 #include <vector>
 
 #include "Geometry.h"
@@ -57,7 +58,7 @@ public:
     
     bool idle;    
     
-    char *name;
+    std::string name;
     
     bool male;
             
@@ -69,7 +70,6 @@ public:
     
     Room *currentRoom;
     
-    Character();
     ~Character();
     
     void addMemory(Memory *m);
