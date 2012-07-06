@@ -51,7 +51,7 @@ void DebugCrimeScene::setupScene() {
         }
     }
     
-    mystery = new Mystery("", (unsigned int) time(0), collision->getData(), collision->getSize().width, collision->getSize().height);
+    mystery = new Mystery("res/mansion.xml", (unsigned int) time(0), collision->getData(), collision->getSize().width, collision->getSize().height);
     
     std::vector<Character *> characters = mystery->getCharacters();
     std::vector<Character *>::iterator itChars;

@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mystery numCharacters="5">
-    <rooms>
-        <room name="Room 1" boundsOriginX="1" boundsOriginY="1", boundsWidth="15" boundsHeight="10">
-            <pointsOfInterest>
-                <pointOfInterest positionX="1" positionY="1" interest="1"/>
-            </pointsOfInterest>
-        </room>
-    </rooms>
+    <room name="Room 1" boundsOriginX="1" boundsOriginY="1" boundsWidth="15" boundsHeight="10" firstRoom="true">
+        <pointOfInterest positionX="2" positionY="10" interest="0"/>
+        <pointOfInterest positionX="12" positionY="10" interest="1"/>
+        <pointOfInterest positionX="15" positionY="1" interest="2"/>
+    </room>
+    <room name="Room 2" boundsOriginX="17" boundsOriginY="1" boundsWidth="14" boundsHeight="10">
+        <pointOfInterest positionX="19" positionY="1" interest="3"/>
+        <pointOfInterest positionX="30" positionY="3" interest="4"/>
+        <pointOfInterest positionX="19" positionY="10" interest="1"/>
+    </room>
+    <room name="Room 3" boundsOriginX="1" boundsOriginY="12" boundsWidth="15" boundsHeight="11">
+        <pointOfInterest positionX="1" positionY="16" interest="0"/>
+        <pointOfInterest positionX="13" positionY="22" interest="2"/>
+    </room>
+    <room name="Room 4" boundsOriginX="17" boundsOriginY="12" boundsWidth="14" boundsHeight="11">
+        <pointOfInterest positionX="18" positionY="12" interest="3"/>
+        <pointOfInterest positionX="29" positionY="22" interest="4"/>
+    </room>
 </mystery>

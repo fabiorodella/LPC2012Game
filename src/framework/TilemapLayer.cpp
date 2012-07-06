@@ -38,21 +38,21 @@ std::vector<TilemapLayer *> TilemapLayer::parseTMXFile(const char *file) {
     
     xmlNode *root = xmlDocGetRootElement(doc);
     
-	int mapWidth = atoi(getXmlAttribute(root, "width"));
-	int mapHeight = atoi(getXmlAttribute(root, "height"));
-	int tileWidth = atoi(getXmlAttribute(root, "tilewidth"));
-	int tileHeight = atoi(getXmlAttribute(root, "tileheight"));
+	int mapWidth = atoi(xmlGetAttribute(root, "width"));
+	int mapHeight = atoi(xmlGetAttribute(root, "height"));
+	int tileWidth = atoi(xmlGetAttribute(root, "tilewidth"));
+	int tileHeight = atoi(xmlGetAttribute(root, "tileheight"));
     
-    xmlNode *tilesetNode = getFirstChildForName(root, "tileset");
-    xmlNode *imageNode = getFirstChildForName(tilesetNode, "image");
+    xmlNode *tilesetNode = xmlGetFirstChildForName(root, "tileset");
+    xmlNode *imageNode = xmlGetFirstChildForName(tilesetNode, "image");
     
-    const char *imageFile = getXmlAttribute(imageNode, "source");
+    const char *imageFile = xmlGetAttribute(imageNode, "source");
     
     ALLEGRO_PATH *tilesetPath = al_create_path(file);
     al_set_path_filename(tilesetPath, NULL);
     al_join_paths(tilesetPath, al_create_path(imageFile));
     
-    std::vector<xmlNode *> layerNodes = getChildrenForName(root, "layer");
+    std::vector<xmlNode *> layerNodes = xmlGetChildrenForName(root, "layer");
     std::vector<xmlNode *>::iterator layerNodesIt;
     
     for(layerNodesIt = layerNodes.begin(); layerNodesIt < layerNodes.end(); ++layerNodesIt) {
@@ -69,23 +69,23 @@ std::vector<TilemapLayer *> TilemapLayer::parseTMXFile(const char *file) {
         layer->collision = false;
         
         xmlNode *layerNode = (xmlNode *) *layerNodesIt;
-        decodeLayerData(getFirstChildForName(layerNode, "data"), layer);
+        decodeLayerData(xmlGetFirstChildForName(layerNode, "data"), layer);
         
-        xmlNode *propertiesNode = getFirstChildForName(layerNode, "properties");
+        xmlNode *propertiesNode = xmlGetFirstChildForName(layerNode, "properties");
         
         if (propertiesNode != NULL) {
             
-            std::vector<xmlNode *> propertyNodes = getChildrenForName(propertiesNode, "property");
+            std::vector<xmlNode *> propertyNodes = xmlGetChildrenForName(propertiesNode, "property");
             std::vector<xmlNode *>::iterator propertyNodesIt;
             
             for(propertyNodesIt = propertyNodes.begin(); propertyNodesIt < propertyNodes.end(); ++propertyNodesIt) {
                 
                 xmlNode *propertyNode = (xmlNode *) *propertyNodesIt;
-                const char *name = getXmlAttribute(propertyNode, "name");
+                const char *name = xmlGetAttribute(propertyNode, "name");
                 
                 if (!strcmp(name, LAYER_Z_ORDER_PROPERTY)) {
                     
-                    layer->zOrder = atoi(getXmlAttribute(propertyNode, "value"));
+                    layer->zOrder = atoi(xmlGetAttribute(propertyNode, "value"));
                     
                 } else if (!strcmp(name, LAYER_COLLISION_PROPERTY)) {
                     
@@ -196,65 +196,21 @@ bool TilemapLayer::isCollision() {
     return collision;
 }
 
-xmlNode *TilemapLayer::getFirstChildForName(xmlNode *parent, const char *name) {
-    
-	xmlNode *child = parent->children->next;
-    
-	while  (child != NULL) {
-		if (!strcmp((const char*)child->name, name))
-			return child;
-        
-		child = child->next;
-	}
-    
-	return NULL;
-}
-
-std::vector<xmlNode *> TilemapLayer::getChildrenForName(xmlNode *parent, const char *name) {
-    
-    std::vector<xmlNode *> ret;
-    
-	xmlNode *child = parent->children->next;
-    
-	while (child != NULL) {
-		if (!strcmp((const char*)child->name, name))
-			ret.push_back(child);
-        
-		child = child->next;
-	}
-    
-	return ret;
-}
-
-char *TilemapLayer::getXmlAttribute(xmlNode *node, const char *name) {
-    
-	xmlAttr *attrs = node->properties;
-    
-	while (attrs != NULL) {
-		if (!strcmp((const char*)attrs->name, name))
-			return (char *)attrs->children->content;
-        
-		attrs = attrs->next;
-	}
-    
-	return NULL;
-}
-
 void TilemapLayer::decodeLayerData(xmlNode *dataNode, TilemapLayer *layer) {
     
-	char *encoding = getXmlAttribute(dataNode, "encoding");
+	char *encoding = xmlGetAttribute(dataNode, "encoding");
 	if (!encoding) {
         
 		int i = 0;
         int j = 0;
         
-        std::vector<xmlNode *> tiles = getChildrenForName(dataNode, "tile");
+        std::vector<xmlNode *> tiles = xmlGetChildrenForName(dataNode, "tile");
         std::vector<xmlNode *>::iterator it;
         
         for(it = tiles.begin(); it < tiles.end(); ++it) {
             
             xmlNode *tileNode = (xmlNode *) *it;
-            char *gid = getXmlAttribute(tileNode, "gid");
+            char *gid = xmlGetAttribute(tileNode, "gid");
             layer->setTileAt(atoi(gid), i, j);
             i++;
             

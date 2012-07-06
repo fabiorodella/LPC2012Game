@@ -24,8 +24,8 @@
 #define LPC2012Game_Tilemap_h
 
 #include <vector>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
+
+#include "XmlHelper.h"
 #include "Spritesheet.h"
 
 #define LAYER_Z_ORDER_PROPERTY "z_order"
@@ -47,12 +47,6 @@ class TilemapLayer : public Drawable {
     
     TilemapLayer(){};
     TilemapLayer(TilemapLayer const&){};
-    
-    static xmlNode *getFirstChildForName(xmlNode *parent, const char *name);
-    
-    static std::vector<xmlNode *> getChildrenForName(xmlNode *parent, const char *name);
-    
-    static char *getXmlAttribute(xmlNode *node, const char *name);
     
     static void decodeLayerData(xmlNode *dataNode, TilemapLayer *layer);
     

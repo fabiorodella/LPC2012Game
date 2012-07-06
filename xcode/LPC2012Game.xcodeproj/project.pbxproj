@@ -37,6 +37,7 @@
 		15A1C95315A4B087000068F4 /* POI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A1C95215A4B087000068F4 /* POI.cpp */; };
 		15A1C95615A4B114000068F4 /* Room.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A1C95515A4B114000068F4 /* Room.cpp */; };
 		15A1C95915A4B7A2000068F4 /* InvestigationScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A1C95815A4B7A2000068F4 /* InvestigationScene.cpp */; };
+		15F7345F15A7055D00B25066 /* XmlHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15F7345E15A7055D00B25066 /* XmlHelper.cpp */; };
 		15FF755715A5AE9300D5EDFB /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 15FF755215A5AE9300D5EDFB /* license.txt */; };
 		15FF755815A5AE9300D5EDFB /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 15FF755315A5AE9300D5EDFB /* readme.txt */; };
 		15FF755B15A5D63400D5EDFB /* DebugCrimeScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15FF755A15A5D63400D5EDFB /* DebugCrimeScene.cpp */; };
@@ -85,7 +86,7 @@
 		15A1C94615A47352000068F4 /* Character.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Character.cpp; sourceTree = "<group>"; };
 		15A1C94815A4735B000068F4 /* Character.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Character.h; sourceTree = "<group>"; };
 		15A1C94C15A475D9000068F4 /* Mystery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mystery.cpp; sourceTree = "<group>"; };
-		15A1C94E15A475F5000068F4 /* Mystery.h */ = {isa = PBXFileReference; path = Mystery.h; sourceTree = "<group>"; };
+		15A1C94E15A475F5000068F4 /* Mystery.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Mystery.h; sourceTree = "<group>"; };
 		15A1C94F15A4AA0C000068F4 /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Memory.cpp; sourceTree = "<group>"; };
 		15A1C95115A4AA1E000068F4 /* Memory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Memory.h; sourceTree = "<group>"; };
 		15A1C95215A4B087000068F4 /* POI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = POI.cpp; sourceTree = "<group>"; };
@@ -94,6 +95,8 @@
 		15A1C95715A4B11D000068F4 /* Room.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
 		15A1C95815A4B7A2000068F4 /* InvestigationScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InvestigationScene.cpp; sourceTree = "<group>"; };
 		15A1C95A15A4B7AF000068F4 /* InvestigationScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvestigationScene.h; sourceTree = "<group>"; };
+		15F7345C15A7046B00B25066 /* XmlHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XmlHelper.h; sourceTree = "<group>"; };
+		15F7345E15A7055D00B25066 /* XmlHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XmlHelper.cpp; sourceTree = "<group>"; };
 		15FF755115A5AE9300D5EDFB /* fsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fsa.h; sourceTree = "<group>"; };
 		15FF755215A5AE9300D5EDFB /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		15FF755315A5AE9300D5EDFB /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
@@ -144,6 +147,8 @@
 			isa = PBXGroup;
 			children = (
 				1571E15115A3109600F98680 /* Geometry.h */,
+				15F7345E15A7055D00B25066 /* XmlHelper.cpp */,
+				15F7345C15A7046B00B25066 /* XmlHelper.h */,
 				1565FB5915A2124B00C2FF83 /* BitmapLoader.cpp */,
 				1565FB5A15A2124B00C2FF83 /* BitmapLoader.h */,
 				1565FB5B15A2124B00C2FF83 /* Camera.cpp */,
@@ -375,6 +380,7 @@
 				15A1C95615A4B114000068F4 /* Room.cpp in Sources */,
 				15A1C95915A4B7A2000068F4 /* InvestigationScene.cpp in Sources */,
 				15FF755B15A5D63400D5EDFB /* DebugCrimeScene.cpp in Sources */,
+				15F7345F15A7055D00B25066 /* XmlHelper.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

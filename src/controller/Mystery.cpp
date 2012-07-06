@@ -22,11 +22,10 @@
 
 #include <algorithm>
 #include <math.h>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
 
 #include "stlastar.h"
 
+#include "XmlHelper.h"
 #include "Mystery.h"
 #include "Room.h"
 
@@ -143,11 +142,56 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
     this->mapHeight = mapHeight;
     this->mapData = collisionData;
     
-    Room *room = new Room();
-    sprintf(room->name, "Room 1");
-    room->bounds = rectMake(1, 1, 15, 10);
+    Room *firstRoom = NULL;
     
-    int numChars = 5;
+    xmlDoc *doc = xmlReadFile(file, NULL, 0);
+    
+    xmlNode *root = xmlDocGetRootElement(doc);
+    
+    int numChars = atoi(xmlGetAttribute(root, "numCharacters"));
+            
+    std::vector<xmlNode *> roomNodes = xmlGetChildrenForName(root, "room");
+    std::vector<xmlNode *>::iterator it;
+    
+    for (it = roomNodes.begin(); it < roomNodes.end(); ++it) {
+        
+        xmlNode *roomNode = (xmlNode *) *it;
+        
+        Room *room = new Room();
+        room->name = xmlGetAttribute(roomNode, "name");
+        
+        int ox = atoi(xmlGetAttribute(roomNode, "boundsOriginX"));
+        int oy = atoi(xmlGetAttribute(roomNode, "boundsOriginY"));
+        int w = atoi(xmlGetAttribute(roomNode, "boundsWidth"));
+        int h = atoi(xmlGetAttribute(roomNode, "boundsHeight"));
+        
+        room->bounds = rectMake(ox, oy, w, h);
+        
+        if (xmlGetAttribute(roomNode, "firstRoom") != NULL) {
+            firstRoom = room;
+        }
+        
+        std::vector<xmlNode *> POINodes = xmlGetChildrenForName(roomNode, "pointOfInterest");
+        std::vector<xmlNode *>::iterator itPOI;
+        
+        for (itPOI = POINodes.begin(); itPOI < POINodes.end(); itPOI++) {
+            
+            xmlNode *POInode = (xmlNode *) *itPOI;
+            
+            POI *poi = new POI();
+            
+            int x = atoi(xmlGetAttribute(POInode, "positionX"));
+            int y = atoi(xmlGetAttribute(POInode, "positionY"));
+            int interest = atoi(xmlGetAttribute(POInode, "interest"));
+            
+            poi->position = pointMake(x, y);
+            poi->interest = (Interest) interest;
+            
+            room->pointsOfInterest.push_back(poi);
+        }
+        
+        rooms.push_back(room);
+    }
     
     for (int i = 0; i < numChars; i++) {
         
@@ -162,14 +206,14 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
             sprintf(character->name, "F%d", i);
         }
         
-        int iInt = rand() % InterestAll;
+        int iInt = rand() % InterestContainer;
         Interest interest = (Interest) iInt;
         
         character->interest = interest;
         character->attentive = rand() % 2 == 0;
         character->hasWatch = rand() % 2 == 0;
         character->position = pointMake(i + 1, 1);
-        character->currentRoom = room;
+        character->currentRoom = firstRoom;
         character->idle = true;
         character->currentTarget = NULL;
         character->murderTarget = NULL;
@@ -216,45 +260,6 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
     printf("*** %s is the murderer! ***\n", murderer->name);
     murderer->murderTarget = murderTarget;
     murderer->interest = murderTarget->interest;
-    
-    rooms.push_back(room);
-    
-    room = new Room();
-    sprintf(room->name, "Room 2");
-    room->bounds = rectMake(17, 1, 14, 10);
-    rooms.push_back(room);
-    
-    for (int i = 0; i < InterestAll; i++) {
-        POI *poi = new POI();
-        poi->position = pointMake(30, 2);
-        poi->interest = (Interest) i;
-        room->pointsOfInterest.push_back(poi);
-    }
-    
-    room = new Room();
-    sprintf(room->name, "Room 3");
-    room->bounds = rectMake(1, 12, 15, 11);
-    rooms.push_back(room);
-    
-    for (int i = 0; i < InterestAll; i++) {
-        POI *poi = new POI();
-        poi->position = pointMake(3, 22);
-        poi->interest = (Interest) i;
-        room->pointsOfInterest.push_back(poi);
-    }
-    
-    room = new Room();
-    sprintf(room->name, "Room 4");
-    room->bounds = rectMake(17, 12, 14, 11);
-    rooms.push_back(room);
-    
-    for (int i = 0; i < InterestAll; i++) {
-        POI *poi = new POI();
-        poi->position = pointMake(30, 20);
-        poi->interest = (Interest) i;
-        room->pointsOfInterest.push_back(poi);
-    }
-
 }
 
 Mystery::~Mystery() {
