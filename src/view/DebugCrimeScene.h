@@ -37,6 +37,7 @@ class DebugCrimeScene : public Scene {
     
     TilemapLayer *collision;
     
+    long mysteryTime;
     long totalTime;
     
 public:

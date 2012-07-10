@@ -74,6 +74,7 @@ void DebugCrimeScene::setupScene() {
     
     camera->setCenter(pointMake(400, 300));
     
+    mysteryTime = 0;
     totalTime = 0;
 }
 
@@ -108,10 +109,12 @@ bool DebugCrimeScene::tick(double dt) {
     camera->setCenter(pointOffset(camera->getCenter(), dx, dy));
     
     totalTime += 1;
-    
+        
     if (totalTime % 3 == 0) {
         
         mystery->step();
+        
+        mysteryTime++;
                         
         std::vector<Character *> characters = mystery->getCharacters();
         std::vector<Character *>::iterator itChars;
@@ -145,4 +148,16 @@ void DebugCrimeScene::draw() {
         
         al_draw_text(font, al_map_rgb(0, 0, 0), sprite->getPosition().x - camera->getTop().x,  sprite->getPosition().y - camera->getTop().y, 0, character->name.c_str());
     }
+    
+    char *txt = new char[50];
+    
+    int hr = mysteryTime / (60 * 60);
+	int min = (((int)mysteryTime / 60) % 60);
+	int sec = (int)mysteryTime % 60; 
+    
+    sprintf(txt, "%ld %.2d:%.2d:%.2d",mysteryTime, hr,min,sec);
+    
+    al_draw_text(font, al_map_rgb(0, 0, 0), 10,  10, 0, txt);
+    
+    delete txt;
 }

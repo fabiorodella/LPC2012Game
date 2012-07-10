@@ -31,3 +31,7 @@ POI::~POI() {
     
     contents.clear();
 }
+
+bool POI::isWeapon() {
+    return interest == InterestWeaponCutting || interest == InterestWeaponGun || interest == InterestWeaponBlunt;
+}

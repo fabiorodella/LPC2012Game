@@ -56,6 +56,8 @@ public:
     std::vector<POI *> contents;
     
     ~POI();
+    
+    bool isWeapon();
 };
 
 #endif
