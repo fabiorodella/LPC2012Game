@@ -17,5 +17,6 @@
     <room name="Room 4" boundsOriginX="17" boundsOriginY="12" boundsWidth="14" boundsHeight="11">
         <pointOfInterest positionX="18" positionY="12" interest="3"/>
         <pointOfInterest positionX="29" positionY="22" interest="4"/>
+        <pointOfInterest positionX="28" positionY="22" interest="6"/>
     </room>
 </mystery>

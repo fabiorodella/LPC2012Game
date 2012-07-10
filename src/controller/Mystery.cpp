@@ -267,7 +267,8 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
         murderer = characters[murdererIdx];
     }
     
-    murderer->weaponInterest = (Interest) (rand() % 3 + InterestWeaponCutting);
+    //TODO randomize weapon types
+    murderer->weaponInterest = InterestWeaponCutting;
     murderer->timeBeforeSearchWeapon = rand() % MAX_DURATION_BEFORE_SEARCH_WEAPON + MIN_DURATION_BEFORE_SEARCH_WEAPON;
     murderer->timeBeforeTryMurder = rand() % MAX_DURATION_BEFORE_TRY_MURDER + MIN_DURATION_BEFORE_TRY_MURDER;
     
@@ -538,6 +539,19 @@ void Mystery::step() {
                     
                     character->carryingWeapon = character->currentTarget;
                     character->currentRoom->removePointOfInterest(character->currentTarget);
+                }
+                
+                // Kills the victim if:
+                // - already got a weapon
+                // - near the victim
+                // - alone in the room with victim
+                
+                if (character->carryingWeapon != NULL && character->timeBeforeTryMurder == 0 &&
+                    pointAdjacentIntegral(character->position, character->murderTarget->position) &&
+                    aloneInRoomWithVictim) {
+                    
+                    printf("*** %s murdered %s! ***", character->name.c_str(), character->murderTarget->name.c_str());
+                    murderHappened = true;
                 }
             }
         }
