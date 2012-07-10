@@ -46,3 +46,8 @@ std::vector<POI *> Room::getPointsOfInterest(Interest interest) {
     
     return ret;
 }
+
+void Room::removePointOfInterest(POI *poi) {
+    
+    pointsOfInterest.erase(std::remove(pointsOfInterest.begin(), pointsOfInterest.end(), poi), pointsOfInterest.end());
+}

@@ -64,9 +64,15 @@ public:
             
     Interest interest;
     
-    bool attentive;
+    Interest weaponInterest;
     
-    bool hasWatch;
+    POI *carryingWeapon;
+    
+    long timeBeforeSearchWeapon;
+    
+    long timeBeforeTryMurder;
+    
+    long conversationInterval;
     
     Room *currentRoom;
     

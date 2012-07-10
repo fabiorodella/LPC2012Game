@@ -219,22 +219,18 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
         character->male = rand() % 2 == 0;
                         
         character->name = generateName(character->male);
-        
-        int iInt = rand() % InterestContainer;
-        Interest interest = (Interest) iInt;
-        
-        character->interest = interest;
-        character->attentive = rand() % 2 == 0;
-        character->hasWatch = rand() % 2 == 0;
+        character->interest = (Interest) (rand() % InterestContainer);
         character->position = pointMake(i + 1, 1);
         character->currentRoom = firstRoom;
         character->idle = true;
         character->currentTarget = NULL;
         character->murderTarget = NULL;
+        character->carryingWeapon = NULL;
+        character->conversationInterval = 0;
         
         const char *strInt = NULL;
         
-        switch (interest) {
+        switch (character->interest) {
             case InterestBooks:
                 strInt = "books";
                 break;
@@ -270,6 +266,10 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
         murdererIdx = rand() % characters.size();
         murderer = characters[murdererIdx];
     }
+    
+    murderer->weaponInterest = (Interest) (rand() % 3 + InterestWeaponCutting);
+    murderer->timeBeforeSearchWeapon = rand() % MAX_DURATION_BEFORE_SEARCH_WEAPON + MIN_DURATION_BEFORE_SEARCH_WEAPON;
+    murderer->timeBeforeTryMurder = rand() % MAX_DURATION_BEFORE_TRY_MURDER + MIN_DURATION_BEFORE_TRY_MURDER;
     
     printf("*** %s is the murderer! ***\n", murderer->name.c_str());
     murderer->murderTarget = murderTarget;
@@ -321,7 +321,16 @@ void Mystery::step() {
             // Does the character want to chat?
             bool wantsToTalk = rand() % 2 == 0;
             
-            if (wantsToTalk) {
+            if (character->murderTarget != NULL && character->carryingWeapon != NULL && character->timeBeforeTryMurder == 0) {
+                
+                // Murderer goes after its target
+                    
+                targetX = character->murderTarget->position.x;
+                targetY = character->murderTarget->position.y;
+                    
+                character->currentTarget = NULL;
+                
+            } else if (wantsToTalk) {
                 
                 // Goes after another character
                 
@@ -331,13 +340,21 @@ void Mystery::step() {
                 targetY = option->position.y;
                 
                 character->currentTarget = NULL;
-                
+            
             } else {
             
                 // Looks for a POI matching the characters interest in any room
                 
                 Room *room;
                 std::vector<POI *> points;
+                
+                Interest interest = character->interest;
+                if (character->murderTarget != NULL && character->carryingWeapon == NULL && character->timeBeforeSearchWeapon == 0) {
+                    
+                    // Murderer goes after its weapon of choice
+                    
+                    interest = character->weaponInterest;
+                }
                 
                 do {
                     int roomIdx = rand() % rooms.size();
@@ -396,10 +413,10 @@ void Mystery::step() {
                     if (character->currentTarget != NULL && pointEqualsIntegral(step->position, character->currentTarget->position)) {
                         
                         // Stops to appreciate/interact with a POI
-                        step->duration = rand() % 30 + 10;
+                        step->duration = rand() % MAX_DURATION_POI_INTERACTION + MIN_DURATION_POI_INTERACTION;
                         
                     } else {
-                        step->duration = 1;
+                        step->duration = STEP_DURATION;
                     }
                     
                     character->addStep(step);
@@ -415,6 +432,19 @@ void Mystery::step() {
             // Updates the character's path by 1 unit of time
         
             character->updatePath();
+            
+            if (!character->havingConversation() && character->conversationInterval > 0) {
+                character->conversationInterval--;
+            }
+            
+            if (character->timeBeforeSearchWeapon > 0) {
+                character->timeBeforeSearchWeapon--;
+            } else {
+                
+                if (character->timeBeforeTryMurder > 0 && character->carryingWeapon != NULL) {
+                    character->timeBeforeTryMurder--;
+                }
+            }
             
             Room *currentRoom = NULL;
             
@@ -436,25 +466,38 @@ void Mystery::step() {
                 printf("%s entered %s\n", character->name.c_str(), character->currentRoom->name.c_str());
             }
             
+            bool aloneInRoom = false;
+            bool aloneInRoomWithVictim = false;
+            
             std::vector<Character *>::iterator itOthers;
             for (itOthers = characters.begin(); itOthers < characters.end(); ++itOthers) {
                 Character *other = (Character *) *itOthers;
+                
+                if (character->currentRoom == other->currentRoom) {
+                    aloneInRoom = false;
+                    
+                    if (other != character->murderTarget) {
+                        aloneInRoomWithVictim = false;
+                    }
+                }
                 
                 // Looks for:
                 // - adjacent characters
                 // - one of them without a POI in mind
                 // - both not already in a conversation
+                // - both conversation intervals expired
                 
                 if (pointAdjacentIntegral(character->position, other->position) && 
                     (character->currentTarget == NULL || other->currentTarget == NULL) &&
-                    (!character->havingConversation() && !other->havingConversation())) {
+                    (!character->havingConversation() && !other->havingConversation()) &&
+                    (character->conversationInterval == 0 && other->conversationInterval == 0)) {
                     
-                    int duration = rand() % 60 + 60;
+                    int duration = rand() % MAX_DURATION_CONVERSATION + MIN_DURATION_CONVERSATION;
                     
                     // If both characters have matching interests, the talk is longer
                     
                     if (character->interest == other->interest) {
-                        duration *= 3;
+                        duration *= CONVERSATION_INTEREST_FACTOR;
                     }
                     
                     character->clearPath();
@@ -472,32 +515,31 @@ void Mystery::step() {
                     step->conversation = true;
                     other->addStep(step);
                     
+                    character->conversationInterval = CONVERSATION_INTERVAL;
+                    other->conversationInterval = CONVERSATION_INTERVAL;
+                    
                     printf("%s and %s are having a conversation\n", character->name.c_str(), other->name.c_str());
                     
                 }
             }
             
-            // TODO improve this
+            // Murderer-specific actions
             
-            /*
-            if (character->murderTarget != NULL && character->currentRoom == character->murderTarget->currentRoom) {
+            if (character->murderTarget != NULL) {
                 
-                std::vector<Character *>::iterator itAlone;
-                bool aloneInTheRoom = true;
+                // Grabs a weapon if:
+                // - not carrying a weapon already
+                // - near a weapon of choice
+                // - alone in the room
                 
-                for (itAlone = characters.begin(); itAlone < characters.end(); ++itAlone) {
-                    Character *other = (Character *) *itAlone;
-                    if (other->currentRoom == character->currentRoom && other != character && other != character->murderTarget) {
-                        aloneInTheRoom = false;
-                    }
-                }
-                
-                if (aloneInTheRoom) {
-                    printf("*** %s has been murdered! ***\n", character->murderTarget->name);
-                    murderHappened = true;
+                if (character->carryingWeapon == NULL && character->currentTarget != NULL &&
+                    pointEqualsIntegral(character->position, character->currentTarget->position) &&
+                    aloneInRoom) {
+                    
+                    character->carryingWeapon = character->currentTarget;
+                    character->currentRoom->removePointOfInterest(character->currentTarget);
                 }
             }
-            */
         }
     }
 

@@ -35,7 +35,9 @@ typedef enum tInterest {
     InterestPottery,
     InterestFood,
     InterestContainer,
-    InterestWeapon,
+    InterestWeaponCutting,
+    InterestWeaponGun,
+    InterestWeaponBlunt,
     InterestAll
 } Interest;
 

@@ -44,6 +44,8 @@ public:
     ~Room();
     
     std::vector<POI *> getPointsOfInterest(Interest interest);
+    
+    void removePointOfInterest(POI *poi);
 };
 
 #endif
