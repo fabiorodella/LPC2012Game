@@ -72,6 +72,11 @@ void Character::updatePath() {
 
 void Character::clearPath() {
     
+    std::vector<Step *>::iterator itSteps;
+    for (itSteps = path.begin(); itSteps < path.end(); itSteps++) {
+        delete *itSteps;
+    }
+    
     path.clear();
     idle = true;
 }

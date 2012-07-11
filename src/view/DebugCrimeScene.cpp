@@ -33,7 +33,7 @@ void DebugCrimeScene::setupScene() {
     
     font = al_load_font("res/DejaVuSans.ttf", 16, 0);
     
-    std::vector<TilemapLayer *> layers = TilemapLayer::parseTMXFile("res/rooms.tmx");
+    std::vector<TilemapLayer *> layers = TilemapLayer::parseTMXFile("res/mansion.tmx");
     std::vector<TilemapLayer *>::iterator it;
     
     TilemapLayer *firstLayer = layers[0];

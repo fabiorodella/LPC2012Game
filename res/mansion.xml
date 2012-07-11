@@ -1,22 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mystery numCharacters="5">
-    <room name="Room 1" boundsOriginX="1" boundsOriginY="1" boundsWidth="15" boundsHeight="10" firstRoom="true">
-        <pointOfInterest positionX="2" positionY="10" interest="0"/>
-        <pointOfInterest positionX="12" positionY="10" interest="1"/>
-        <pointOfInterest positionX="15" positionY="1" interest="2"/>
+    <room name="Living room" boundsOriginX="24" boundsOriginY="43" boundsWidth="24" boundsHeight="14" firstRoom="true">
+        <pointOfInterest positionX="24" positionY="43" interest="0"/>
+        <pointOfInterest positionX="24" positionY="43" interest="1"/>
     </room>
-    <room name="Room 2" boundsOriginX="17" boundsOriginY="1" boundsWidth="14" boundsHeight="10">
-        <pointOfInterest positionX="19" positionY="1" interest="3"/>
-        <pointOfInterest positionX="30" positionY="3" interest="4"/>
-        <pointOfInterest positionX="19" positionY="10" interest="1"/>
+    <room name="West corridor" boundsOriginX="19" boundsOriginY="23" boundsWidth="3" boundsHeight="34">
+        <pointOfInterest positionX="19" positionY="23"  interest="2"/>
+        <pointOfInterest positionX="19" positionY="23"  interest="3"/>
     </room>
-    <room name="Room 3" boundsOriginX="1" boundsOriginY="12" boundsWidth="15" boundsHeight="11">
-        <pointOfInterest positionX="1" positionY="16" interest="0"/>
-        <pointOfInterest positionX="13" positionY="22" interest="2"/>
+    <room name="East corridor" boundsOriginX="50" boundsOriginY="23" boundsWidth="3" boundsHeight="34">
+        <pointOfInterest positionX="50" positionY="23" interest="4"/>
+        <pointOfInterest positionX="50" positionY="23" interest="0"/>
     </room>
-    <room name="Room 4" boundsOriginX="17" boundsOriginY="12" boundsWidth="14" boundsHeight="11">
-        <pointOfInterest positionX="18" positionY="12" interest="3"/>
-        <pointOfInterest positionX="29" positionY="22" interest="4"/>
-        <pointOfInterest positionX="28" positionY="22" interest="6"/>
+    <room name="North corridor" boundsOriginX="19" boundsOriginY="20" boundsWidth="34" boundsHeight="3">
+        <pointOfInterest positionX="19" positionY="20" interest="1"/>
+        <pointOfInterest positionX="19" positionY="20" interest="6"/>
+    </room>
+    <room name="Bedroom 1" boundsOriginX="3" boundsOriginY="42" boundsWidth="14" boundsHeight="13">
+        <pointOfInterest positionX="3" positionY="42" interest="3"/>
+        <pointOfInterest positionX="3" positionY="42" interest="4"/>
+    </room>
+    <room name="Bedroom 2" boundsOriginX="3" boundsOriginY="26" boundsWidth="14" boundsHeight="13">
+        <pointOfInterest positionX="3" positionY="26" interest="0"/>
+        <pointOfInterest positionX="3" positionY="26" interest="1"/>
+    </room>
+    <room name="Bedroom 3" boundsOriginX="24" boundsOriginY="26" boundsWidth="11" boundsHeight="14">
+        <pointOfInterest positionX="24" positionY="26" interest="2"/>
+        <pointOfInterest positionX="24" positionY="26" interest="3"/>
+    </room>
+    <room name="Bedroom 4" boundsOriginX="37" boundsOriginY="26" boundsWidth="11" boundsHeight="14">
+        <pointOfInterest positionX="37" positionY="26" interest="4"/>
+        <pointOfInterest positionX="37" positionY="26" interest="0"/>
+    </room>
+    <room name="Study" boundsOriginX="3" boundsOriginY="8" boundsWidth="14" boundsHeight="15">
+        <pointOfInterest positionX="3" positionY="8" interest="1"/>
+        <pointOfInterest positionX="3" positionY="8" interest="2"/>
+    </room>
+    <room name="Library" boundsOriginX="19" boundsOriginY="6" boundsWidth="19" boundsHeight="11">
+        <pointOfInterest positionX="19" positionY="6" interest="6"/>
+        <pointOfInterest positionX="19" positionY="6" interest="4"/>
+    </room>
+    <room name="Game room" boundsOriginX="40" boundsOriginY="6" boundsWidth="13" boundsHeight="11">
+        <pointOfInterest positionX="40" positionY="6" interest="0"/>
+        <pointOfInterest positionX="40" positionY="6" interest="1"/>
+    </room>
+    <room name="Dining room" boundsOriginX="55" boundsOriginY="32" boundsWidth="14" boundsHeight="23">
+        <pointOfInterest positionX="55" positionY="32" interest="2"/>
+        <pointOfInterest positionX="55" positionY="32" interest="3"/>
+    </room>
+    <room name="Kitchen" boundsOriginX="55" boundsOriginY="16" boundsWidth="14" boundsHeight="13">
+        <pointOfInterest positionX="55" positionY="16" interest="4"/>
+        <pointOfInterest positionX="55" positionY="16" interest="0"/>
+    </room>
+    <room name="Pantry" boundsOriginX="55" boundsOriginY="8" boundsWidth="14" boundsHeight="5">
+        <pointOfInterest positionX="55" positionY="8" interest="1"/>
+        <pointOfInterest positionX="55" positionY="8" interest="2"/>
     </room>
 </mystery>

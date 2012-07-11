@@ -30,7 +30,7 @@ InvestigationScene::~InvestigationScene() {
 
 void InvestigationScene::setupScene() {
     
-    std::vector<TilemapLayer *> layers = TilemapLayer::parseTMXFile("res/rooms.tmx");
+    std::vector<TilemapLayer *> layers = TilemapLayer::parseTMXFile("res/mansion.tmx");
     std::vector<TilemapLayer *>::iterator it;
     
     TilemapLayer *firstLayer = layers[0];
@@ -51,7 +51,7 @@ void InvestigationScene::setupScene() {
     playerSprite = new Spritesheet("res/male_walkcycle.png", 64, 64);
     playerSprite->setTag(666);
     playerSprite->setCamera(camera);
-    playerSprite->setPosition(pointMake(100, 100));
+    playerSprite->setPosition(pointMake(35 * 32, 50 * 32));
     playerSprite->setAnchorPoint(pointMake(0.5, 0.9));
     playerSprite->setAutoZOrder(true);
     addToDisplayList(playerSprite);
