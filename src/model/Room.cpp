@@ -32,7 +32,7 @@ Room::~Room() {
     pointsOfInterest.clear();
 }
 
-std::vector<POI *> Room::getPointsOfInterest(Interest interest) {
+std::vector<POI *> Room::getPointsOfInterest(Interest interest, bool notSearchedOnly) {
     
     std::vector<POI *> ret;
     
@@ -40,6 +40,9 @@ std::vector<POI *> Room::getPointsOfInterest(Interest interest) {
     for (it = pointsOfInterest.begin(); it < pointsOfInterest.end(); ++it) {
         POI *poi = (POI *) *it;
         if (poi->interest == interest) {
+            if (notSearchedOnly && poi->searchedByMurderer) {
+                continue;
+            }
             ret.push_back(poi);
         }
     }

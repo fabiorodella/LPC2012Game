@@ -30,13 +30,12 @@
 
 typedef enum tInterest {
     InterestBooks = 0,
-    InterestGames,
     InterestPaintings,
     InterestPottery,
-    InterestFood,
-    InterestContainer,
+    InterestContainerVisible,
+    InterestContainerConceiled,
     InterestWeaponCutting,
-    InterestWeaponGun,
+    InterestWeaponStrangling,
     InterestWeaponBlunt,
     InterestAll
 } Interest;
@@ -47,13 +46,15 @@ public:
     
     std::string description;
     
-    std::string location;
-    
     Point position;
+    
+    Point visualPosition;
     
     Interest interest;
     
-    std::vector<POI *> contents;
+    POI *contents;
+    
+    bool searchedByMurderer;
     
     ~POI();
     

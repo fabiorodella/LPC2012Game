@@ -143,18 +143,11 @@ POI *Mystery::parsePOINode(xmlNode *node) {
     
     poi->position = pointMake(x, y);
     poi->interest = (Interest) interest;
-    
-    std::vector<xmlNode *> childNodes = xmlGetChildrenForName(node, "pointOfInterest");
-    std::vector<xmlNode *>::iterator it;
-    
-    for (it = childNodes.begin(); it < childNodes.end(); ++it) {
+    poi->description = xmlGetAttribute(node, "description");
+    poi->visualPosition = poi->position;
+    poi->contents = NULL;
+    poi->searchedByMurderer = false;
         
-        xmlNode *childNode = (xmlNode *) *it;
-        
-        POI *child = parsePOINode(childNode);
-        poi->contents.push_back(child);
-    }
-    
     return poi;
 }
 
@@ -162,7 +155,8 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
     
     srand(seed);
     
-    murderHappened = false;
+    corpseFound = false;
+    ended = false;
     
     this->mapWidth = mapWidth;
     this->mapHeight = mapHeight;
@@ -211,6 +205,30 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
         rooms.push_back(room);
     }
     
+    std::vector<xmlNode *> weaponNodes = xmlGetChildrenForName(root, "weapon");
+    
+    for (it = weaponNodes.begin(); it < weaponNodes.end(); ++it) {
+        
+        xmlNode *weaponNode = (xmlNode *) *it;
+        
+        POI *weapon = parsePOINode(weaponNode);
+        
+        int idx = rand() % rooms.size();
+        Room *room = rooms[idx];
+                
+        std::vector<POI *> containers = room->getPointsOfInterest(InterestContainerVisible, false);
+        std::vector<POI *> containers2 = room->getPointsOfInterest(InterestContainerConceiled, false);
+        
+        containers.insert(containers.end(), containers2.begin(), containers2.end());
+        
+        idx = rand() % containers.size();
+        
+        POI *container = containers[idx];
+        container->contents = weapon;
+        
+        printf("Weapon %d at %d,%d\n", weapon->interest, (int)container->position.x, (int)container->position.y);
+    }
+    
     for (int i = 0; i < numChars; i++) {
         
         Character *character = new Character();
@@ -219,7 +237,7 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
         character->male = rand() % 2 == 0;
                         
         character->name = generateName(character->male);
-        character->interest = (Interest) (rand() % InterestContainer);
+        character->interest = (Interest) (rand() % InterestContainerVisible);
         character->position = pointMake(i + 35, 50);
         character->currentRoom = firstRoom;
         character->idle = true;
@@ -241,11 +259,6 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
             case InterestPaintings:
                 strInt = "paintings";
                 break;
-            case InterestFood:
-                strInt = "food";
-                break;
-            case InterestGames:
-                strInt = "games";
             default:
                 break;
         }
@@ -256,14 +269,14 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
     }
     
     int murderTargetIdx = rand() % characters.size();
-    Character *murderTarget = characters[murderTargetIdx];
+    victim = characters[murderTargetIdx];
     
-    printf("*** %s is the murder target! ***\n", murderTarget->name.c_str());
+    printf("*** %s is the murder target! ***\n", victim->name.c_str());
     
     int murdererIdx = rand() % characters.size();
     Character *murderer = characters[murdererIdx];
     
-    while (murderer == murderTarget) {
+    while (murderer == victim) {
         murdererIdx = rand() % characters.size();
         murderer = characters[murdererIdx];
     }
@@ -274,8 +287,7 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
     murderer->timeBeforeTryMurder = rand() % MAX_DURATION_BEFORE_TRY_MURDER + MIN_DURATION_BEFORE_TRY_MURDER;
     
     printf("*** %s is the murderer! ***\n", murderer->name.c_str());
-    murderer->murderTarget = murderTarget;
-    murderer->interest = murderTarget->interest;
+    murderer->murderTarget = victim;
 }
 
 Mystery::~Mystery() {
@@ -308,6 +320,10 @@ bool Mystery::isCollision(int x, int y) {
 
 void Mystery::step() {
     
+    if (ended) {
+        return;
+    }
+    
     AStarSearch<MapSearchNode> astarsearch;
       
     std::vector<Character *>::iterator itChars;
@@ -339,7 +355,14 @@ void Mystery::step() {
             // Does the character want to chat?
             bool wantsToTalk = rand() % 2 == 0;
             
-            if (corpseInRoom != NULL && character->murderTarget == NULL) {
+            if (corpseFound && (character->murderTarget == NULL || (character->murderTarget != NULL && character->carryingWeapon == NULL))) {
+                
+                targetX = victim->position.x;
+                targetY = victim->position.y;
+                
+                character->currentTarget = NULL;
+                
+            } else if (corpseInRoom != NULL && character->murderTarget == NULL) {
                 
                 // Go look at the corpse
                 
@@ -348,15 +371,16 @@ void Mystery::step() {
                 
                 character->currentTarget = NULL;
                 
-            } else if (character->murderTarget != NULL && character->carryingWeapon != NULL && character->timeBeforeTryMurder == 0) {
+            } else if (character->murderTarget != NULL && !character->murderTarget->dead && character->carryingWeapon != NULL && character->timeBeforeTryMurder == 0) {
                 
-                // Murderer goes after its target
+                // Murderer goes after its target if he has a weapon and the target is
+                // not dead yet
                     
                 targetX = character->murderTarget->position.x;
                 targetY = character->murderTarget->position.y;
                     
                 character->currentTarget = NULL;
-                
+            
             } else if (wantsToTalk) {
                 
                 // Goes after another character
@@ -375,18 +399,28 @@ void Mystery::step() {
                 Room *room;
                 std::vector<POI *> points;
                 
+                bool notSearchedOnly = false;
+                
                 Interest interest = character->interest;
-                if (character->murderTarget != NULL && character->carryingWeapon == NULL && character->timeBeforeSearchWeapon == 0) {
+                if (character->murderTarget != NULL && ((character->carryingWeapon == NULL && character->timeBeforeSearchWeapon == 0 && !character->murderTarget->dead) || (character->carryingWeapon != NULL && character->murderTarget->dead))) {
                     
-                    // Murderer goes after its weapon of choice
+                    // If the character is a murderer and is looking for a weapon, or
+                    // if he/she already killed the target, he/she goes to a container
+                    // to grab/hide the weapon
                     
-                    interest = character->weaponInterest;
+                    interest = rand() % 2 == 0 ? InterestContainerVisible : InterestContainerConceiled;
+                    
+                    // If he has not weapon, searches only the containers not
+                    // searched yet
+                    
+                    notSearchedOnly = character->carryingWeapon == NULL;
                 }
                 
                 do {
                     int roomIdx = rand() % rooms.size();
                     room = rooms[roomIdx];
-                    points = room->getPointsOfInterest(interest);
+                    
+                    points = room->getPointsOfInterest(interest, notSearchedOnly);
                     
                 } while (points.size() == 0);
                 
@@ -515,6 +549,13 @@ void Mystery::step() {
                         }
                     }
                     
+                    if (victim->dead && other == victim && pointEqualsIntegral(character->position, other->position) && !corpseFound) {
+                        
+                        printf("*** %s found %s's body in the %s ***\n", character->name.c_str(), victim->name.c_str(), character->currentRoom->name.c_str());
+                        corpseFound = true;
+                        character->clearPath();
+                    }
+                    
                     // Looks for:
                     // - adjacent characters
                     // - one of them without a POI in mind
@@ -524,7 +565,7 @@ void Mystery::step() {
                     if (pointAdjacentIntegral(character->position, other->position) && 
                         (character->currentTarget == NULL || other->currentTarget == NULL) &&
                         (!character->havingConversation() && !other->havingConversation()) &&
-                        (character->conversationInterval == 0 && other->conversationInterval == 0)) {
+                        (character->conversationInterval == 0 && other->conversationInterval == 0) && !corpseFound) {
                         
                         int duration = rand() % MAX_DURATION_CONVERSATION + MIN_DURATION_CONVERSATION;
                         
@@ -563,37 +604,68 @@ void Mystery::step() {
             if (character->murderTarget != NULL) {
                 
                 // Grabs a weapon if:
-                // - not carrying a weapon already
-                // - near a weapon of choice
                 // - interval elapsed
+                // - not carrying a weapon already
+                // - murder target is not dead
+                // - has a target POI
+                // - reached the target POI
+                // - POI has contents
+                // - POI's content is a weapon matching interest
                 // - alone in the room
                 
-                if (character->carryingWeapon == NULL && character->currentTarget != NULL &&
+                if (character->timeBeforeSearchWeapon == 0 &&
+                    character->carryingWeapon == NULL &&
+                    !character->murderTarget->dead &&
+                    character->currentTarget != NULL &&
                     pointEqualsIntegral(character->position, character->currentTarget->position) &&
-                    character->currentTarget->isWeapon() &&
-                    character->timeBeforeSearchWeapon == 0 &&
+                    character->currentTarget->contents != NULL &&
+                    character->currentTarget->contents->interest == character->weaponInterest &&
                     aloneInRoom) {
                     
-                    character->carryingWeapon = character->currentTarget;
-                    character->currentRoom->removePointOfInterest(character->currentTarget);
+                    character->carryingWeapon = character->currentTarget->contents;
+                    character->currentTarget->contents = NULL;
                     
-                    printf("*** %s got a weapon! ***\n", character->name.c_str());
+                    printf("*** %s got a %s! ***\n", character->name.c_str(), character->carryingWeapon->description.c_str());
                 }
                 
                 // Kills the victim if:
+                // - interval elapsed
                 // - already got a weapon
                 // - near the victim
-                // - interval elapsed
+                // - murder target is not dead
                 // - alone in the room with victim
                 
-                if (character->carryingWeapon != NULL && character->timeBeforeTryMurder == 0 &&
+                if (character->timeBeforeTryMurder == 0 &&
+                    character->carryingWeapon != NULL && 
                     pointAdjacentIntegral(character->position, character->murderTarget->position) &&
                     !character->murderTarget->dead &&
                     aloneInRoomWithVictim) {
                     
                     printf("*** %s murdered %s! ***\n", character->name.c_str(), character->murderTarget->name.c_str());
                     character->murderTarget->dead = true;
-                    murderHappened = true;
+                    
+                    character->clearPath();
+                }
+                
+                // Hides the weapon if:
+                // - carrying a weapon
+                // - murder target is dead
+                // - has a target POI
+                // - reached the target POI
+                // - POI has no contents
+                // - alone in the room
+                
+                if (character->carryingWeapon != NULL && 
+                    character->murderTarget->dead &&
+                    character->currentTarget != NULL &&
+                    pointEqualsIntegral(character->position, character->currentTarget->position) &&
+                    character->currentTarget->contents == NULL &&
+                    aloneInRoom) {
+                    
+                    character->currentTarget->contents = character->carryingWeapon;
+                    character->carryingWeapon = NULL;
+                    
+                    printf("*** %s hid the %s in the %s, in the %s! ***\n", character->name.c_str(), character->currentTarget->contents->description.c_str(), character->currentTarget->description.c_str(), currentRoom->name.c_str());
                 }
             }
         }

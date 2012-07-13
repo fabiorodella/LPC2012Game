@@ -91,19 +91,19 @@ bool DebugCrimeScene::tick(double dt) {
     }
     
     if (al_key_down(&kbdstate, ALLEGRO_KEY_UP)) { 
-        dy -= 200 * dt;
+        dy -= 800 * dt;
     }
     
     if (al_key_down(&kbdstate, ALLEGRO_KEY_DOWN)) {
-        dy += 200 * dt;
+        dy += 800 * dt;
     }
     
     if (al_key_down(&kbdstate, ALLEGRO_KEY_LEFT)) {
-        dx -= 200 * dt;
+        dx -= 800 * dt;
     }
     
     if (al_key_down(&kbdstate, ALLEGRO_KEY_RIGHT)) {
-        dx += 200 * dt;
+        dx += 800 * dt;
     }
     
     camera->setCenter(pointOffset(camera->getCenter(), dx, dy));
@@ -145,8 +145,15 @@ void DebugCrimeScene::draw() {
         Character *character = (Character *) *itChars;
         
         Drawable *sprite = getByTag(character->tag);
+    
+        ALLEGRO_COLOR col = al_map_rgb(0, 0, 0);
+        if (character->murderTarget != NULL) {
+            col = al_map_rgb(255, 0, 0);
+        } else if (character == mystery->victim) {
+            col = al_map_rgb(255, 255, 255);
+        }
         
-        al_draw_text(font, al_map_rgb(0, 0, 0), sprite->getPosition().x - camera->getTop().x,  sprite->getPosition().y - camera->getTop().y, 0, character->name.c_str());
+        al_draw_text(font, col, sprite->getPosition().x - camera->getTop().x,  sprite->getPosition().y - camera->getTop().y, 0, character->name.c_str());
     }
     
     char *txt = new char[50];

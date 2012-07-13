@@ -53,19 +53,22 @@ void Character::updatePath() {
     
     if (!idle) {
         
-        Step *s = path[0];
-        
-        s->duration -= 1;
-        position = s->position;
-        
-        if (s->duration <= 0) {
+        if (path.size() > 0) {
             
-            path.erase(path.begin());
-            delete s;
+            Step *s = path[0];
             
-            if (path.size() == 0) {
-                idle = true;
+            s->duration -= 1;
+            position = s->position;
+            
+            if (s->duration <= 0) {
+                
+                path.erase(path.begin());
+                delete s;
             }
+        }
+        
+        if (path.size() == 0) {
+            idle = true;
         }
     }
 }

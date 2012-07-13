@@ -43,7 +43,7 @@ public:
     
     ~Room();
     
-    std::vector<POI *> getPointsOfInterest(Interest interest);
+    std::vector<POI *> getPointsOfInterest(Interest interest, bool notSearchedOnly);
     
     void removePointOfInterest(POI *poi);
 };

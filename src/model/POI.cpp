@@ -24,14 +24,9 @@
 
 POI::~POI() {
     
-    std::vector<POI *>::iterator it;
-    for (it = contents.begin(); it < contents.end(); it++) {
-        delete *it;
-    }
-    
-    contents.clear();
+    delete contents;
 }
 
 bool POI::isWeapon() {
-    return interest == InterestWeaponCutting || interest == InterestWeaponGun || interest == InterestWeaponBlunt;
+    return interest == InterestWeaponCutting || interest == InterestWeaponStrangling || interest == InterestWeaponBlunt;
 }

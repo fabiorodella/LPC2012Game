@@ -28,10 +28,10 @@
 #include "Character.h"
 
 #define STEP_DURATION 1
-#define MIN_DURATION_BEFORE_SEARCH_WEAPON 3600
-#define MAX_DURATION_BEFORE_SEARCH_WEAPON 7200
-#define MIN_DURATION_BEFORE_TRY_MURDER 3600
-#define MAX_DURATION_BEFORE_TRY_MURDER 7200
+#define MIN_DURATION_BEFORE_SEARCH_WEAPON 200
+#define MAX_DURATION_BEFORE_SEARCH_WEAPON 500
+#define MIN_DURATION_BEFORE_TRY_MURDER 200
+#define MAX_DURATION_BEFORE_TRY_MURDER 500
 #define MIN_DURATION_POI_INTERACTION 10
 #define MAX_DURATION_POI_INTERACTION 30
 #define MIN_DURATION_CONVERSATION 60
@@ -45,7 +45,7 @@ private:
     
     std::vector<Character *> characters;
     std::vector<Room *> rooms;
-    
+            
     POI *parsePOINode(xmlNode *node);
     
 public:
@@ -53,8 +53,11 @@ public:
     short *mapData;
     int mapWidth;
     int mapHeight;
-            
-    bool murderHappened;
+    
+    Character *victim;
+    
+    bool corpseFound;
+    bool ended;
     
     Mystery(const char *file, unsigned int seed, short *collisionData, int mapWidth, int mapHeight);
     ~Mystery();

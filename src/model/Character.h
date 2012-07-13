@@ -77,7 +77,7 @@ public:
     Room *currentRoom;
     
     bool dead;
-    
+            
     ~Character();
     
     void addMemory(Memory *m);
