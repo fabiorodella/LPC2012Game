@@ -56,6 +56,8 @@ public:
     
     Character *victim;
     
+    std::vector<POI *> weapons;
+    
     bool corpseFound;
     bool ended;
     

@@ -72,6 +72,29 @@ void DebugCrimeScene::setupScene() {
         addToDisplayList(sprite);        
     }
     
+    std::vector<POI *>::iterator itWeapons;
+    
+    int i = 0;
+    
+    for (itWeapons = mystery->weapons.begin(); itWeapons < mystery->weapons.end(); ++itWeapons) {
+        
+        POI *weapon = (POI *) *itWeapons;
+        
+        Spritesheet *sprite = new Spritesheet("res/weapons.png", 32, 32);
+        sprite->setTag(i);
+        sprite->setFrame(i);
+        sprite->setCamera(camera);
+        sprite->setAnchorPoint(pointMake(0.5, 0.9));
+        sprite->setZOrder(400);
+        
+        Rect tileRect = collision->getTileRect(weapon->position.x, weapon->position.y);
+        sprite->setPosition(rectMidPoint(tileRect));
+        
+        addToDisplayList(sprite);
+        
+        i++;
+    }
+    
     camera->setCenter(pointMake(400, 300));
     
     mysteryTime = 0;

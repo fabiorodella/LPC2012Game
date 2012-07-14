@@ -225,6 +225,13 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
         
         POI *container = containers[idx];
         container->contents = weapon;
+        weapon->position = container->visualPosition;
+        
+        if (container->interest == InterestContainerConceiled) {
+            weapon->position = pointMake(-20, -20);
+        }
+        
+        weapons.push_back(weapon);
         
         printf("Weapon %d at %d,%d\n", weapon->interest, (int)container->position.x, (int)container->position.y);
     }
@@ -305,6 +312,8 @@ Mystery::~Mystery() {
     }
     
     rooms.clear();
+    
+    weapons.clear();
 }
 
 bool Mystery::isCollision(int x, int y) {
