@@ -57,7 +57,19 @@ void InvestigationScene::setupScene() {
     addToDisplayList(playerSprite);
     
     mystery = new Mystery("res/mansion.xml", (unsigned int) time(0), collision->getData(), collision->getSize().width, collision->getSize().height);
-        
+    
+    long mysteryTime = 0;
+    while (!mystery->ended) {
+        mystery->step();
+        mysteryTime++;
+    }
+    
+    int hr = mysteryTime / (60 * 60);
+	int min = (((int)mysteryTime / 60) % 60);
+	int sec = (int)mysteryTime % 60; 
+    
+    printf("Total duration: %ld %.2d:%.2d:%.2d", mysteryTime, hr, min, sec);
+    
     std::vector<Character *> characters = mystery->getCharacters();
     std::vector<Character *>::iterator itChars;
     

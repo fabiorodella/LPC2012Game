@@ -233,7 +233,7 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
         
         weapons.push_back(weapon);
         
-        printf("Weapon %d at %d,%d\n", weapon->interest, (int)container->position.x, (int)container->position.y);
+        printf("%s is in the %s in the %s\n", weapon->description.c_str(), container->description.c_str(), room->name.c_str());
     }
     
     for (int i = 0; i < numChars; i++) {
@@ -544,10 +544,13 @@ void Mystery::step() {
             
             bool aloneInRoom = true;
             bool aloneInRoomWithVictim = true;
+            bool allNearCorpse = pointEqualsIntegral(character->position, victim->position);
             
             std::vector<Character *>::iterator itOthers;
             for (itOthers = characters.begin(); itOthers < characters.end(); ++itOthers) {
                 Character *other = (Character *) *itOthers;
+                
+                allNearCorpse = allNearCorpse && pointEqualsIntegral(other->position, victim->position);
                 
                 if (other != character) {
                     if (character->currentRoom == other->currentRoom) {
@@ -608,6 +611,11 @@ void Mystery::step() {
                 }
             }
             
+            if (allNearCorpse && corpseFound) {
+                ended = true;
+                printf("*** Mystery finished ***\n");
+            }
+            
             // Murderer-specific actions
             
             if (character->murderTarget != NULL) {
@@ -624,7 +632,7 @@ void Mystery::step() {
                 
                 if (character->timeBeforeSearchWeapon == 0 &&
                     character->carryingWeapon == NULL &&
-                    !character->murderTarget->dead &&
+                    !victim->dead &&
                     character->currentTarget != NULL &&
                     pointEqualsIntegral(character->position, character->currentTarget->position) &&
                     character->currentTarget->contents != NULL &&
@@ -646,12 +654,12 @@ void Mystery::step() {
                 
                 if (character->timeBeforeTryMurder == 0 &&
                     character->carryingWeapon != NULL && 
-                    pointAdjacentIntegral(character->position, character->murderTarget->position) &&
-                    !character->murderTarget->dead &&
+                    pointAdjacentIntegral(character->position, victim->position) &&
+                    !victim->dead &&
                     aloneInRoomWithVictim) {
                     
-                    printf("*** %s murdered %s! ***\n", character->name.c_str(), character->murderTarget->name.c_str());
-                    character->murderTarget->dead = true;
+                    printf("*** %s murdered %s! ***\n", character->name.c_str(), victim->name.c_str());
+                    victim->dead = true;
                     
                     character->clearPath();
                 }
@@ -665,7 +673,7 @@ void Mystery::step() {
                 // - alone in the room
                 
                 if (character->carryingWeapon != NULL && 
-                    character->murderTarget->dead &&
+                    victim->dead &&
                     character->currentTarget != NULL &&
                     pointEqualsIntegral(character->position, character->currentTarget->position) &&
                     character->currentTarget->contents == NULL &&

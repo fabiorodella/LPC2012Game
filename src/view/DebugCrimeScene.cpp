@@ -133,7 +133,7 @@ bool DebugCrimeScene::tick(double dt) {
     
     totalTime += 1;
         
-    if (totalTime % 3 == 0) {
+    if (totalTime % 3 == 0 && !mystery->ended) {
         
         mystery->step();
         
