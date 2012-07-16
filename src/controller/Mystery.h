@@ -45,8 +45,12 @@ private:
     
     std::vector<Character *> characters;
     std::vector<Room *> rooms;
-            
+    
+    long time;
+    
     POI *parsePOINode(xmlNode *node);
+    void registerEventFor(Character *target, Event event, Character *who, Room *where, POI *what);
+    void registerEventForAllInRoom(Event event, Character *who, Room *where, POI *what);
     
 public:
     

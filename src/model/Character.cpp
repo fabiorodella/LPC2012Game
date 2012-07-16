@@ -49,6 +49,13 @@ void Character::addStep(Step *s) {
     path.push_back(s);
 }
 
+Step *Character::getCurrentStep() {
+    if (path.size() > 0) {
+        return path[0];
+    }
+    return NULL;
+}
+
 void Character::updatePath() {
     
     if (!idle) {
@@ -84,9 +91,16 @@ void Character::clearPath() {
     idle = true;
 }
 
-bool Character::havingConversation() {
+bool Character::isHavingConversation() {
     if (path.size() > 0) {
-        return path[0]->conversation;
+        return path[0]->conversationWith != NULL;
+    }
+    return false;
+}
+
+bool Character::isInteractingWithPOI() {
+    if (path.size() > 0) {
+        return path[0]->duration > 1 && currentTarget != NULL && pointEqualsIntegral(currentTarget->position, position);
     }
     return false;
 }

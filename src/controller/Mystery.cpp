@@ -151,6 +151,33 @@ POI *Mystery::parsePOINode(xmlNode *node) {
     return poi;
 }
 
+void Mystery::registerEventFor(Character *target, Event event, Character *who, Room *where, POI *what) {
+    
+    Memory *memory = new Memory();
+    memory->event = event;
+    memory->who = who;
+    memory->where = where;
+    memory->what = what;
+    memory->when = time;
+    memory->suspicion = 1;
+    
+    target->addMemory(memory);
+}
+
+void Mystery::registerEventForAllInRoom(Event event, Character *who, Room *where, POI *what) {
+    
+    std::vector<Character *>::iterator it;
+    for (it = characters.begin(); it < characters.end(); ++it) {
+        
+        Character *character = (Character *) *it;
+        
+        if (character->currentRoom == where) {
+            
+            registerEventFor(character, event, who, where, what);
+        }
+    }
+}
+
 Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int mapWidth, int mapHeight) {
     
     srand(seed);
@@ -295,6 +322,8 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
     
     printf("*** %s is the murderer! ***\n", murderer->name.c_str());
     murderer->murderTarget = victim;
+    
+    time = 0;
 }
 
 Mystery::~Mystery() {
@@ -478,18 +507,46 @@ void Mystery::step() {
                     
                     Step *step = new Step();
                     step->position = pointMake(node->x, node->y);
-                    step->conversation = false;
+                    step->conversationWith = NULL;
+                    step->type = StepTypeWalk;
+                    step->duration = STEP_DURATION;
                     
                     if (character->currentTarget != NULL && pointEqualsIntegral(step->position, character->currentTarget->position)) {
                         
-                        // Stops to appreciate/interact with a POI
+                        Step *step = new Step();
+                        step->position = pointMake(node->x, node->y);
+                        step->conversationWith = NULL;
+                        step->type = StepTypeStartInteractPOI;
+                        step->duration = 2;
+                        
+                        character->addStep(step);
+                        
+                        step = new Step();
+                        step->position = pointMake(node->x, node->y);
+                        step->conversationWith = NULL;
+                        step->type = StepTypeInteractPOI;
                         step->duration = rand() % MAX_DURATION_POI_INTERACTION + MIN_DURATION_POI_INTERACTION;
                         
+                        character->addStep(step);
+                        
+                        step = new Step();
+                        step->position = pointMake(node->x, node->y);
+                        step->conversationWith = NULL;
+                        step->type = StepTypeEndInteractPOI;
+                        step->duration = 2;
+                        
+                        character->addStep(step);
+                        
                     } else {
+                        
+                        Step *step = new Step();
+                        step->position = pointMake(node->x, node->y);
+                        step->conversationWith = NULL;
+                        step->type = StepTypeWalk;
                         step->duration = STEP_DURATION;
+                        
+                        character->addStep(step);
                     }
-                    
-                    character->addStep(step);
                     
                     node = astarsearch.GetSolutionNext();
                 }
@@ -503,7 +560,7 @@ void Mystery::step() {
         
             character->updatePath();
             
-            if (!character->havingConversation() && character->conversationInterval > 0) {
+            if (!character->isHavingConversation() && character->conversationInterval > 0) {
                 character->conversationInterval--;
             }
             
@@ -533,12 +590,60 @@ void Mystery::step() {
                 
                 if (character->currentRoom != NULL) {
                     printf("%s left %s\n", character->name.c_str(), character->currentRoom->name.c_str());
+                    registerEventForAllInRoom(EventLeftRoom, character, character->currentRoom, NULL);
                 }
                 
                 character->currentRoom = currentRoom;
                 
                 if (character->currentRoom != NULL) {
                     printf("%s entered %s\n", character->name.c_str(), character->currentRoom->name.c_str());
+                    registerEventForAllInRoom(EventEnteredRoom, character, character->currentRoom, NULL);
+                    
+                    // Register visible weapons the character saw in the room
+                    std::vector<POI *>::iterator itPOI;
+                    for (itPOI = character->currentRoom->pointsOfInterest.begin(); itPOI < character->currentRoom->pointsOfInterest.end(); ++itPOI) {
+                        
+                        POI *poi = (POI *) *itPOI;
+                        
+                        if (poi->interest == InterestContainerVisible && poi->contents != NULL && poi->contents->isWeapon()) {
+                            registerEventFor(character, EventSawWeapon, NULL, character->currentRoom, poi);
+                        }
+                    }
+                    
+                    std::vector<Character *>::iterator itOthers;
+                    for (itOthers = characters.begin(); itOthers < characters.end(); ++itOthers) {
+                        Character *other = (Character *) *itOthers;
+                        
+                        if (other != character) {
+                            
+                            // Register others having conversations
+                            if (other->isHavingConversation()) {
+                                registerEventFor(character, EventStartConversation, other, character->currentRoom, NULL);
+                            }
+                            
+                            // Register others interacting with POIs
+                            if (other->isInteractingWithPOI()) {
+                                registerEventFor(character, EventStartInteractPOI, NULL, character->currentRoom, other->currentTarget);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if (character->getCurrentStep() != NULL) {
+                
+                switch (character->getCurrentStep()->type) {
+                    case StepTypeStartInteractPOI:
+                        registerEventForAllInRoom(EventStartInteractPOI, character, character->currentRoom, character->currentTarget);
+                        break;
+                    case StepTypeEndInteractPOI:
+                        registerEventForAllInRoom(EventEndInteractPOI, character, character->currentRoom, character->currentTarget);
+                        break;
+                    case StepTypeEndConversation:
+                        registerEventForAllInRoom(EventEndConversation, character, character->currentRoom, character->currentTarget);
+                        break;
+                    default:
+                        break;
                 }
             }
             
@@ -576,7 +681,7 @@ void Mystery::step() {
                     
                     if (pointAdjacentIntegral(character->position, other->position) && 
                         (character->currentTarget == NULL || other->currentTarget == NULL) &&
-                        (!character->havingConversation() && !other->havingConversation()) &&
+                        (!character->isHavingConversation() && !other->isHavingConversation()) &&
                         (character->conversationInterval == 0 && other->conversationInterval == 0) && !corpseFound) {
                         
                         int duration = rand() % MAX_DURATION_CONVERSATION + MIN_DURATION_CONVERSATION;
@@ -593,17 +698,36 @@ void Mystery::step() {
                         Step *step = new Step();
                         step->position = character->position;
                         step->duration = duration;
-                        step->conversation = true;
+                        step->conversationWith = other;
+                        step->type = StepTypeConversation;
+                        character->addStep(step);
+                        
+                        step = new Step();
+                        step->position = character->position;
+                        step->duration = 2;
+                        step->conversationWith = other;
+                        step->type = StepTypeEndConversation;
                         character->addStep(step);
                         
                         step = new Step();
                         step->position = other->position;
                         step->duration = duration;
-                        step->conversation = true;
+                        step->conversationWith = character;
+                        step->type = StepTypeConversation;
+                        other->addStep(step);
+                        
+                        step = new Step();
+                        step->position = other->position;
+                        step->duration = 2;
+                        step->conversationWith = character;
+                        step->type = StepTypeEndConversation;
                         other->addStep(step);
                         
                         character->conversationInterval = CONVERSATION_INTERVAL;
                         other->conversationInterval = CONVERSATION_INTERVAL;
+                        
+                        registerEventForAllInRoom(EventStartConversation, character, character->currentRoom, NULL);
+                        registerEventForAllInRoom(EventEndConversation, other, other->currentRoom, NULL);
                         
                         printf("%s and %s are having a conversation\n", character->name.c_str(), other->name.c_str());
                         
@@ -689,6 +813,8 @@ void Mystery::step() {
     }
 
     astarsearch.EnsureMemoryFreed();
+    
+    time++;
 }
 
 std::vector<Character *> Mystery::getCharacters() {

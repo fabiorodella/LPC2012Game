@@ -31,11 +31,25 @@
 #include "Memory.h"
 #include "POI.h"
 
+class Character;
+
+typedef enum tStepType {
+    StepTypeWalk = 0,
+    StepTypeStartInteractPOI,
+    StepTypeInteractPOI,
+    StepTypeEndInteractPOI,
+    StepTypeStartConversation,
+    StepTypeConversation,
+    StepTypeEndConversation,
+    StepTypeAll
+} StepType;
+
 struct Step {
     
     Point position;
     long duration;
-    bool conversation;
+    StepType type;
+    Character *conversationWith;
 };
 
 class Character {
@@ -84,11 +98,15 @@ public:
     
     void addStep(Step *s);
     
+    Step *getCurrentStep();
+    
     void updatePath();
     
     void clearPath();
     
-    bool havingConversation();
+    bool isHavingConversation();
+    
+    bool isInteractingWithPOI();
 };
 
 #endif

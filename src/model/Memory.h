@@ -30,7 +30,11 @@ class POI;
 typedef enum tEvent {
     EventEnteredRoom,
     EventLeftRoom,
-    EventInteractPOI,
+    EventStartInteractPOI,
+    EventEndInteractPOI,
+    EventSawWeapon,
+    EventStartConversation,
+    EventEndConversation,
     EventAll
 } Event;
 
