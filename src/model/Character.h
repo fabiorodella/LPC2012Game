@@ -107,6 +107,8 @@ public:
     bool isHavingConversation();
     
     bool isInteractingWithPOI();
+    
+    std::vector<Memory *> getMemories(MemoryFilter filter);
 };
 
 #endif

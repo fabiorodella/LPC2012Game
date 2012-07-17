@@ -104,3 +104,33 @@ bool Character::isInteractingWithPOI() {
     }
     return false;
 }
+
+std::vector<Memory *> Character::getMemories(MemoryFilter filter) {
+    
+    std::vector<Memory *> interval;
+    std::vector<Memory *>::iterator it;
+    
+    for (it = memories.begin(); it < memories.end(); ++it) {
+        
+        Memory *memory = (Memory *) *it;
+                        
+        if (memory->when >= filter.timeStart && memory->when <= filter.timeEnd) {
+                
+            bool shouldAdd = true;
+            
+            if (filter.who != NULL && memory->who != filter.who) {
+                shouldAdd = false;
+            }
+            
+            if (filter.where != NULL && memory->where != filter.where) {
+                shouldAdd = false;
+            }
+            
+            if (shouldAdd) {
+                interval.push_back(memory);
+            }
+        }
+    }
+    
+    return interval;
+}

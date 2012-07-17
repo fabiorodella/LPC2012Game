@@ -38,6 +38,17 @@ typedef enum tEvent {
     EventAll
 } Event;
 
+struct MemoryFilter {
+    
+    long timeStart;
+    
+    long timeEnd;
+    
+    Character *who;
+    
+    Room *where;
+};
+
 class Memory {
 
 public:
