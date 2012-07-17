@@ -31,5 +31,6 @@
 #include "Scene.h"
 #include "Spritesheet.h"
 #include "TilemapLayer.h"
+#include "Button.h"
 
 #endif

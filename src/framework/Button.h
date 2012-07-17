@@ -20,33 +20,49 @@
  
  */
 
-#ifndef LPC2012Game_Spritesheet_h
-#define LPC2012Game_Spritesheet_h
+#ifndef LPC2012Game_Button_h
+#define LPC2012Game_Button_h
 
 #include <allegro5/allegro.h>
 
 #include "Drawable.h"
 
-class Spritesheet : public Drawable {
+class Button;
+
+class ButtonHandler {
+
+public:
+    virtual void onButtonClicked(Button *sender) = 0;
+};
+
+class Button : public Drawable {
     
-    ALLEGRO_BITMAP *image;
+    ALLEGRO_BITMAP *normalImage;
     
-    Size frameSize;
-        
-    int numFrames;
-           
-    int frame;
+    ALLEGRO_BITMAP *pressedImage;
+    
+    Size size;
+    
+    bool pressed;
+    
+    bool enabled;
+    
+    ButtonHandler *handler;
     
 public:
     
-    Spritesheet(char const *file);
-    Spritesheet(char const *file, int fw, int fh);
-    ~Spritesheet();
+    Button(const char *normalImageFile, const char *pressedImageFile);
+    ~Button();
     
     virtual void draw();
     
-    void setFrame(int frame);
-    int getFrame();
+    virtual void handleEvent(ALLEGRO_EVENT ev);
+
+    void setEnabled(bool en);
+    bool isEnabled();    
+    
+    void setHandler(ButtonHandler *btnHandler);
+
 };
 
 #endif

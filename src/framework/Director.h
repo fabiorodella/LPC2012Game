@@ -37,6 +37,7 @@ private:
     Scene *currentScene;
     Scene *nextScene;
     
+    ALLEGRO_DISPLAY *display;
     ALLEGRO_TIMER *displayTimer;
     ALLEGRO_EVENT_QUEUE *eventQueue;
     
@@ -57,6 +58,8 @@ public:
     
     void startWithScene(Scene *scene);
     void enqueueScene(Scene *scene);
+    
+    ALLEGRO_DISPLAY *getDisplay();
 };
 
 #endif

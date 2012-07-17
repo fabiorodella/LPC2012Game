@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1502305115B5ABE80092CD3C /* Button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1502305015B5ABE70092CD3C /* Button.cpp */; };
 		155056FF1598943500D3FC38 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 155056FE1598943500D3FC38 /* libxml2.dylib */; };
 		1565FB6815A2124B00C2FF83 /* BitmapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB5915A2124B00C2FF83 /* BitmapLoader.cpp */; };
 		1565FB6915A2124B00C2FF83 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB5B15A2124B00C2FF83 /* Camera.cpp */; };
@@ -45,6 +46,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1502305015B5ABE70092CD3C /* Button.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Button.cpp; sourceTree = "<group>"; };
+		1502305215B5ABF80092CD3C /* Button.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
 		155056FE1598943500D3FC38 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/libxml2.dylib; sourceTree = DEVELOPER_DIR; };
 		1565FB5915A2124B00C2FF83 /* BitmapLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitmapLoader.cpp; sourceTree = "<group>"; };
 		1565FB5A15A2124B00C2FF83 /* BitmapLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapLoader.h; sourceTree = "<group>"; };
@@ -166,6 +169,8 @@
 				1565FB6415A2124B00C2FF83 /* Spritesheet.h */,
 				1565FB6515A2124B00C2FF83 /* TilemapLayer.cpp */,
 				1565FB6615A2124B00C2FF83 /* TilemapLayer.h */,
+				1502305015B5ABE70092CD3C /* Button.cpp */,
+				1502305215B5ABF80092CD3C /* Button.h */,
 				1565FB7615A2149200C2FF83 /* Framework.h */,
 			);
 			path = framework;
@@ -387,6 +392,7 @@
 				15FF755B15A5D63400D5EDFB /* DebugCrimeScene.cpp in Sources */,
 				15F7345F15A7055D00B25066 /* XmlHelper.cpp in Sources */,
 				15F7346215A7386D00B25066 /* NameGenerator.cpp in Sources */,
+				1502305115B5ABE80092CD3C /* Button.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

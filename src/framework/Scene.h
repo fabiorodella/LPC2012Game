@@ -43,6 +43,7 @@ public:
     virtual void draw();
     virtual void onKeyDown(int keycode, ALLEGRO_EVENT ev){};
     virtual void onKeyUp(int keycode, ALLEGRO_EVENT ev){};
+    virtual void handleEvent(ALLEGRO_EVENT ev);
     
     void addToDisplayList(Drawable *drawable);
     void removeFromDisplayList(Drawable *drawable);

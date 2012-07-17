@@ -96,7 +96,21 @@ void Scene::draw() {
     for(it = displayList.begin(); it < displayList.end(); ++it) {
         
         Drawable *drawable = (Drawable *) *it;
-        drawable->draw();
+        
+        if (drawable->isVisible()) {
+            drawable->draw();
+        }
+    }
+}
+
+void Scene::handleEvent(ALLEGRO_EVENT ev) {
+    
+    std::vector<Drawable *>::iterator it;
+    
+    for(it = displayList.begin(); it < displayList.end(); ++it) {
+        
+        Drawable *drawable = (Drawable *) *it;
+        drawable->handleEvent(ev);
     }
 }
 

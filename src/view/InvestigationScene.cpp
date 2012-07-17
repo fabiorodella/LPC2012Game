@@ -91,6 +91,12 @@ void InvestigationScene::setupScene() {
         addToDisplayList(sprite);        
     }
     
+    Button *button = new Button("res/btn_64x32.png", "res/btn_64x32_pressed.png");
+    button->setZOrder(500);
+    button->setHandler(this);
+    
+    addToDisplayList(button);
+    
     camera->setCenter(playerSprite->getPosition());
     
     moving = pointMake(0, 0);
@@ -246,4 +252,8 @@ void InvestigationScene::onKeyUp(int keycode, ALLEGRO_EVENT ev) {
         default:
             break;
     }
+}
+
+void InvestigationScene::onButtonClicked(Button *sender) {
+    printf("I was clicked!\n");
 }

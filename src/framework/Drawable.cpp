@@ -30,6 +30,7 @@ Drawable::Drawable() {
     anchorPoint = pointMake(0, 0);
     zOrder = 0;
     autoZOrder = false;
+    visible = true;
 }
 
 void Drawable::setTag(int t) {
@@ -78,4 +79,12 @@ void Drawable::setAutoZOrder(bool z) {
 
 bool Drawable::isAutoZOrder() {
     return autoZOrder;
+}
+
+void Drawable::setVisible(bool vis) {
+    visible = vis;
+}
+
+bool Drawable::isVisible() {
+    return visible;
 }

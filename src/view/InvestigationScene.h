@@ -27,7 +27,7 @@
 
 #include "Mystery.h"
 
-class InvestigationScene : public Scene {
+class InvestigationScene : public Scene, ButtonHandler {
     
     Mystery *mystery;
     
@@ -53,6 +53,8 @@ public:
     virtual void draw();
     virtual void onKeyDown(int keycode, ALLEGRO_EVENT ev);
     virtual void onKeyUp(int keycode, ALLEGRO_EVENT ev);
+    
+    virtual void onButtonClicked(Button *sender);
 };
 
 #endif

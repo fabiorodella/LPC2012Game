@@ -31,16 +31,16 @@ Director *Director::getInstance() {
 }
 
 void Director::initialize() {
-    
-    ALLEGRO_DISPLAY *display = NULL;
-    
+            
     al_init();    
     al_init_image_addon();
     al_init_primitives_addon();
     al_init_font_addon();
     al_init_ttf_addon();
+    al_install_mouse();
     al_install_keyboard();
     
+    display = NULL;
     display = al_create_display(800,600);
     
     eventQueue = al_create_event_queue();
@@ -49,6 +49,7 @@ void Director::initialize() {
     
     al_register_event_source(eventQueue, al_get_display_event_source(display));
     al_register_event_source(eventQueue, al_get_timer_event_source(displayTimer));
+    al_register_event_source(eventQueue, al_get_mouse_event_source());
     al_register_event_source(eventQueue, al_get_keyboard_event_source());
 }
 
@@ -75,6 +76,8 @@ void Director::startWithScene(Scene *scene) {
             ALLEGRO_EVENT ev;
             
             al_wait_for_event(eventQueue, &ev);
+            
+            currentScene->handleEvent(ev);
             
             if (ev.type == ALLEGRO_EVENT_TIMER) {
                 
@@ -119,5 +122,9 @@ void Director::enqueueScene(Scene *scene) {
     
     delete nextScene;
     nextScene = scene;
+}
+
+ALLEGRO_DISPLAY *Director::getDisplay() {
+    return display;
 }
 

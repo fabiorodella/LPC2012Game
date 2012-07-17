@@ -23,6 +23,8 @@
 #ifndef LPC2012Game_Drawable_h
 #define LPC2012Game_Drawable_h
 
+#include <allegro5/allegro.h>
+
 #include "Camera.h"
 
 #define Z_ORDER_AUTO_START 2
@@ -42,12 +44,15 @@ protected:
     int zOrder;
     bool autoZOrder;
     
+    bool visible;
+    
 public:
     
     Drawable();
     virtual ~Drawable() {}
     
     virtual void draw() = 0;
+    virtual void handleEvent(ALLEGRO_EVENT ev){};
     
     void setTag(int tag);
     int getTag();
@@ -66,6 +71,9 @@ public:
     
     void setAutoZOrder(bool z);
     bool isAutoZOrder();
+    
+    void setVisible(bool vis);
+    bool isVisible();
 };
 
 #endif
