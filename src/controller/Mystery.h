@@ -73,6 +73,7 @@ public:
     void step();
     
     std::vector<Character *> getCharacters();
+    std::vector<Room *> getRooms();
 };
 
 

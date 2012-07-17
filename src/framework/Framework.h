@@ -32,5 +32,6 @@
 #include "Spritesheet.h"
 #include "TilemapLayer.h"
 #include "Button.h"
+#include "Label.h"
 
 #endif

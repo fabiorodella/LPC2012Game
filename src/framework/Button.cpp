@@ -23,7 +23,10 @@
 #include "Button.h"
 #include "BitmapLoader.h"
 
-Button::Button(const char *normalImageFile, const char *pressedImageFile) {
+Button::Button(const char *text, ALLEGRO_FONT *fnt, const char *normalImageFile, const char *pressedImageFile) {
+    
+    labelText = text;
+    font = fnt;
     
     normalImage = BitmapLoader::getInstance()->getBitmap(normalImageFile);
     pressedImage = BitmapLoader::getInstance()->getBitmap(pressedImageFile);
@@ -55,6 +58,20 @@ void Button::draw() {
     ALLEGRO_BITMAP *bmp = pressed ? pressedImage : normalImage;
     
     al_draw_bitmap(bmp, (int)px, (int)py, 0);
+    
+    if (!labelText.empty()) {
+        
+        int tw = al_get_text_width(font, labelText.c_str());
+        int th = al_get_font_line_height(font);
+        int tx = px + (size.width / 2) - (tw / 2);
+        int ty = py + (size.height / 2) - (th / 2);
+        
+        if (pressed) {
+            ty++;
+        }
+        
+        al_draw_text(font, al_map_rgb(0, 0, 0), tx, ty, 0, labelText.c_str());
+    }
 }
 
 void Button::handleEvent(ALLEGRO_EVENT ev) {
@@ -91,6 +108,14 @@ void Button::handleEvent(ALLEGRO_EVENT ev) {
             handler->onButtonClicked(this);
         }
     }
+}
+
+void Button::setLabelText(const char *text) {
+    labelText = text;
+}
+
+const char *Button::getLabelText() {
+    return labelText.c_str();
 }
 
 void Button::setEnabled(bool en) {

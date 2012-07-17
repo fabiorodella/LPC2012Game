@@ -20,45 +20,41 @@
  
  */
 
-#ifndef LPC2012Game_InvestigationScene_h
-#define LPC2012Game_InvestigationScene_h
+#ifndef LPC2012Game_Label_h
+#define LPC2012Game_Label_h
 
-#include "Framework.h"
+#include <string>
 
-#include "Mystery.h"
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_ttf.h>
 
-class InvestigationScene : public Scene, ButtonHandler {
+#include "Drawable.h"
+
+class Label : public Drawable {
+    
+    std::string text;
+    
+    std::string processedText;
     
     ALLEGRO_FONT *font;
     
-    Mystery *mystery;
+    ALLEGRO_COLOR color;
     
-    Spritesheet *playerSprite;
+    Size size;
     
-    Camera *camera;
-    
-    TilemapLayer *collision;
-    
-    Label *currentRoomLabel;
-    
-    Point moving;
-    int moveDir;
-    float curFrame;
-    
-    bool escapePressed;
-    bool debug;
+    bool wrapText;
     
 public:
     
-    ~InvestigationScene();
+    Label(const char *txt, ALLEGRO_FONT *fnt, ALLEGRO_COLOR col);
     
-    virtual void setupScene();
-    virtual bool tick(double dt);
+    Label(const char *txt, ALLEGRO_FONT *fnt, ALLEGRO_COLOR col, int width);
+    
     virtual void draw();
-    virtual void onKeyDown(int keycode, ALLEGRO_EVENT ev);
-    virtual void onKeyUp(int keycode, ALLEGRO_EVENT ev);
     
-    virtual void onButtonClicked(Button *sender);
+    void setText(const char *txt);
+    const char *getText();
+    
 };
 
 #endif

@@ -24,11 +24,28 @@
 
 #include "InvestigationScene.h"
 
+#include "Room.h"
+
 InvestigationScene::~InvestigationScene() {
     delete mystery;
+    al_destroy_font(font);
 }
 
 void InvestigationScene::setupScene() {
+    
+    std::vector<Point> positions;
+    positions.push_back(pointMake(32, 48));
+    positions.push_back(pointMake(34, 48));
+    positions.push_back(pointMake(36, 48));
+    positions.push_back(pointMake(38, 48));
+    positions.push_back(pointMake(40, 49));
+    positions.push_back(pointMake(40, 51));
+    positions.push_back(pointMake(40, 53));
+    positions.push_back(pointMake(30, 49));
+    positions.push_back(pointMake(30, 51));
+    positions.push_back(pointMake(32, 52));
+    
+    font = al_load_font("res/DejaVuSans.ttf", 16, 0);
     
     std::vector<TilemapLayer *> layers = TilemapLayer::parseTMXFile("res/mansion.tmx");
     std::vector<TilemapLayer *>::iterator it;
@@ -72,18 +89,28 @@ void InvestigationScene::setupScene() {
     
     std::vector<Character *> characters = mystery->getCharacters();
     std::vector<Character *>::iterator itChars;
-    
+        
     int tag = 1;
     
     for (itChars = characters.begin(); itChars < characters.end(); ++itChars) {
         
         Character *character = (Character *) *itChars;
         
+        if (!character->dead) {
+            int idx = rand() % positions.size();
+            Point pos = positions[idx];
+            
+            character->position = pos;
+            
+            positions.erase(positions.begin() + idx);
+        }
+        
         Spritesheet *sprite = new Spritesheet("res/male_walkcycle.png", 64, 64);
         sprite->setTag(tag);
         sprite->setCamera(camera);
         sprite->setAnchorPoint(pointMake(0.5, 0.9));
         sprite->setAutoZOrder(true);
+        sprite->setFrame(18);
         
         Rect tileRect = collision->getTileRect(character->position.x, character->position.y);
         sprite->setPosition(rectMidPoint(tileRect));
@@ -91,11 +118,25 @@ void InvestigationScene::setupScene() {
         addToDisplayList(sprite);        
     }
     
-    Button *button = new Button("res/btn_64x32.png", "res/btn_64x32_pressed.png");
+    Button *button = new Button("Test", font, "res/btn_64x32.png", "res/btn_64x32_pressed.png");
     button->setZOrder(500);
     button->setHandler(this);
     
     addToDisplayList(button);
+    
+    currentRoomLabel = new Label("room", font, al_map_rgb(255, 255, 255));
+    currentRoomLabel->setPosition(pointMake(780, 580));
+    currentRoomLabel->setAnchorPoint(pointMake(1, 1));
+    currentRoomLabel->setZOrder(500);
+    
+    addToDisplayList(currentRoomLabel);
+    
+    /*
+    Label *testLabel = new Label("This is a long test label to see if the text is wrapping properly or not, what do you think?", font, al_map_rgb(255, 255, 255), 200);
+    testLabel->setZOrder(500);
+    
+    addToDisplayList(testLabel);
+    */
     
     camera->setCenter(playerSprite->getPosition());
     
@@ -108,6 +149,19 @@ void InvestigationScene::setupScene() {
 }
 
 bool InvestigationScene::tick(double dt) {
+    
+    int tx = playerSprite->getPosition().x / collision->getTileSize().width;
+    int ty = playerSprite->getPosition().y / collision->getTileSize().height;
+    
+    std::vector<Room *> rooms = mystery->getRooms();
+    std::vector<Room *>::iterator itRooms;
+    for (itRooms = rooms.begin(); itRooms < rooms.end(); ++itRooms) {
+        Room *room = (Room *) *itRooms;
+        
+        if (rectContainsPoint(room->bounds, pointMake(tx, ty))) {
+            currentRoomLabel->setText(room->name.c_str());
+        }
+    }
     
     float dx = 0;
     float dy = 0;

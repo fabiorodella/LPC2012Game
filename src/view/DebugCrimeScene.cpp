@@ -27,10 +27,11 @@
 
 DebugCrimeScene::~DebugCrimeScene() {
     delete mystery;
+    al_destroy_font(font);
 }
 
 void DebugCrimeScene::setupScene() {
-    
+            
     font = al_load_font("res/DejaVuSans.ttf", 16, 0);
     
     std::vector<TilemapLayer *> layers = TilemapLayer::parseTMXFile("res/mansion.tmx");

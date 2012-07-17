@@ -23,7 +23,10 @@
 #ifndef LPC2012Game_Button_h
 #define LPC2012Game_Button_h
 
+#include <string>
+
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_ttf.h>
 
 #include "Drawable.h"
 
@@ -36,6 +39,10 @@ public:
 };
 
 class Button : public Drawable {
+    
+    std::string labelText;
+    
+    ALLEGRO_FONT *font;
     
     ALLEGRO_BITMAP *normalImage;
     
@@ -51,13 +58,16 @@ class Button : public Drawable {
     
 public:
     
-    Button(const char *normalImageFile, const char *pressedImageFile);
+    Button(const char *text, ALLEGRO_FONT *fnt, const char *normalImageFile, const char *pressedImageFile);
     ~Button();
     
     virtual void draw();
     
     virtual void handleEvent(ALLEGRO_EVENT ev);
 
+    void setLabelText(const char *text);
+    const char *getLabelText();
+    
     void setEnabled(bool en);
     bool isEnabled();    
     

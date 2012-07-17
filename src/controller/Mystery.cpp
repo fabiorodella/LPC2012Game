@@ -820,3 +820,7 @@ void Mystery::step() {
 std::vector<Character *> Mystery::getCharacters() {
     return characters;
 }
+
+std::vector<Room *> Mystery::getRooms() {
+    return rooms;
+}
