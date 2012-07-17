@@ -40,6 +40,10 @@ class DebugCrimeScene : public Scene {
     long mysteryTime;
     long totalTime;
     
+    Point moving;
+    
+    bool escapePressed;
+    
 public:
     
     ~DebugCrimeScene();
@@ -47,6 +51,8 @@ public:
     virtual void setupScene();
     virtual bool tick(double dt);
     virtual void draw();
+    virtual void onKeyDown(int keycode, ALLEGRO_EVENT ev);
+    virtual void onKeyUp(int keycode, ALLEGRO_EVENT ev);
 };
 
 #endif

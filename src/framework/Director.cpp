@@ -49,6 +49,7 @@ void Director::initialize() {
     
     al_register_event_source(eventQueue, al_get_display_event_source(display));
     al_register_event_source(eventQueue, al_get_timer_event_source(displayTimer));
+    al_register_event_source(eventQueue, al_get_keyboard_event_source());
 }
 
 void Director::startWithScene(Scene *scene) {
@@ -88,6 +89,14 @@ void Director::startWithScene(Scene *scene) {
                 
                 running = false;
                 nextScene = NULL;
+                
+            } else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+                
+                currentScene->onKeyDown(ev.keyboard.keycode, ev);
+                
+            } else if (ev.type == ALLEGRO_EVENT_KEY_UP) {
+                
+                currentScene->onKeyUp(ev.keyboard.keycode, ev);
             }
             
             if (redraw && al_is_event_queue_empty(eventQueue)) {

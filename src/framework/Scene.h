@@ -41,6 +41,8 @@ public:
     virtual void setupScene(){};
     virtual bool tick(double dt);
     virtual void draw();
+    virtual void onKeyDown(int keycode, ALLEGRO_EVENT ev){};
+    virtual void onKeyUp(int keycode, ALLEGRO_EVENT ev){};
     
     void addToDisplayList(Drawable *drawable);
     void removeFromDisplayList(Drawable *drawable);

@@ -22,6 +22,8 @@
 
 #include <algorithm>
 
+#include <allegro5/allegro.h>
+
 #include "Scene.h"
 
 bool AutoZOrderSortPredicate(Drawable *d1, Drawable *d2) {
@@ -103,11 +105,11 @@ void Scene::addToDisplayList(Drawable *drawable) {
 }
 
 void Scene::removeFromDisplayList(Drawable *drawable) {
-    
+    //TODO implement this
 }
 
 void Scene::removeFromDisplayList(int tag) {
-    
+    //TODO implement this
 }
 
 Drawable *Scene::getByTag(int tag) {

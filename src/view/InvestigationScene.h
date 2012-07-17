@@ -37,9 +37,11 @@ class InvestigationScene : public Scene {
     
     TilemapLayer *collision;
     
+    Point moving;
     int moveDir;
     float curFrame;
     
+    bool escapePressed;
     bool debug;
     
 public:
@@ -49,6 +51,8 @@ public:
     virtual void setupScene();
     virtual bool tick(double dt);
     virtual void draw();
+    virtual void onKeyDown(int keycode, ALLEGRO_EVENT ev);
+    virtual void onKeyUp(int keycode, ALLEGRO_EVENT ev);
 };
 
 #endif

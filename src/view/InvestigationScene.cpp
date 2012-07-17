@@ -93,54 +93,41 @@ void InvestigationScene::setupScene() {
     
     camera->setCenter(playerSprite->getPosition());
     
+    moving = pointMake(0, 0);
     moveDir = 0;
     curFrame = 0;
     
+    escapePressed = false;
     debug = true;
 }
 
 bool InvestigationScene::tick(double dt) {
     
-    ALLEGRO_KEYBOARD_STATE kbdstate;
-    
     float dx = 0;
     float dy = 0;
     
-    bool moving = false;
+    bool isMoving = !pointEqualsIntegral(moving, pointMake(0, 0));
     
-    al_get_keyboard_state(&kbdstate);
-    if (al_key_down(&kbdstate, ALLEGRO_KEY_ESCAPE)) {
-        return false;
-    }
-    
-    if (al_key_down(&kbdstate, ALLEGRO_KEY_UP)) { 
-        dy -= 200 * dt;
-        moveDir = 0;
-        moving = true;
-    }
-    
-    if (al_key_down(&kbdstate, ALLEGRO_KEY_DOWN)) {
-        dy += 200 * dt;
-        moveDir = 18;
-        moving = true;
-    }
-    
-    if (al_key_down(&kbdstate, ALLEGRO_KEY_LEFT)) {
-        dx -= 200 * dt;
-        moveDir = 9;
-        moving = true;
-    }
-    
-    if (al_key_down(&kbdstate, ALLEGRO_KEY_RIGHT)) {
-        dx += 200 * dt;
-        moveDir = 27;
-        moving = true;
-    }
-    
-    if (moving) {
+    if (isMoving) {
+        
+        dx = moving.x * 200 * dt;
+        dy = moving.y * 200 * dt;
+        
+        if (dy < 0) {
+            moveDir = 0;
+        } else if (dy > 0) {
+            moveDir = 18;
+        } else if (dx < 0) {
+            moveDir = 9;
+        } else if (dx > 0) {
+            moveDir = 27;
+        }
+        
         curFrame += dt * 10;
         if (curFrame > 9) curFrame -= 9;
+        
     } else {
+        
         curFrame = 0;
     }
     
@@ -186,7 +173,7 @@ bool InvestigationScene::tick(double dt) {
     
     camera->setCenter(playerSprite->getPosition());
     
-    return true;
+    return !escapePressed;
 }
 
 void InvestigationScene::draw() {
@@ -215,5 +202,48 @@ void InvestigationScene::draw() {
                 }
             }
         }
+    }
+}
+
+void InvestigationScene::onKeyDown(int keycode, ALLEGRO_EVENT ev) {
+    
+    switch (keycode) {
+        case ALLEGRO_KEY_UP:
+            moving = pointOffset(moving, 0, -1);
+            break;
+        case ALLEGRO_KEY_DOWN:
+            moving = pointOffset(moving, 0, 1);
+            break;
+        case ALLEGRO_KEY_LEFT:
+            moving = pointOffset(moving, -1, 0);
+            break;
+        case ALLEGRO_KEY_RIGHT:
+            moving = pointOffset(moving, 1, 0);
+            break;
+        default:
+            break;
+    }
+}
+
+void InvestigationScene::onKeyUp(int keycode, ALLEGRO_EVENT ev) {
+    
+    switch (keycode) {
+        case ALLEGRO_KEY_UP:
+            moving = pointOffset(moving, 0, 1);
+            break;
+        case ALLEGRO_KEY_DOWN:
+            moving = pointOffset(moving, 0, -1);
+            break;
+        case ALLEGRO_KEY_LEFT:
+            moving = pointOffset(moving, 1, 0);
+            break;
+        case ALLEGRO_KEY_RIGHT:
+            moving = pointOffset(moving, -1, 0);
+            break;
+        case ALLEGRO_KEY_ESCAPE:
+            escapePressed = true;
+            break;
+        default:
+            break;
     }
 }

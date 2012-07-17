@@ -99,35 +99,15 @@ void DebugCrimeScene::setupScene() {
     
     mysteryTime = 0;
     totalTime = 0;
+    
+    moving = pointMake(0, 0);
+    escapePressed = false;
 }
 
 bool DebugCrimeScene::tick(double dt) {
     
-    ALLEGRO_KEYBOARD_STATE kbdstate;
-    
-    float dx = 0;
-    float dy = 0;
-    
-    al_get_keyboard_state(&kbdstate);
-    if (al_key_down(&kbdstate, ALLEGRO_KEY_ESCAPE)) {
-        return false;
-    }
-    
-    if (al_key_down(&kbdstate, ALLEGRO_KEY_UP)) { 
-        dy -= 800 * dt;
-    }
-    
-    if (al_key_down(&kbdstate, ALLEGRO_KEY_DOWN)) {
-        dy += 800 * dt;
-    }
-    
-    if (al_key_down(&kbdstate, ALLEGRO_KEY_LEFT)) {
-        dx -= 800 * dt;
-    }
-    
-    if (al_key_down(&kbdstate, ALLEGRO_KEY_RIGHT)) {
-        dx += 800 * dt;
-    }
+    float dx = moving.x * 800 * dt;
+    float dy = moving.y * 800 * dt;
     
     camera->setCenter(pointOffset(camera->getCenter(), dx, dy));
     
@@ -153,7 +133,7 @@ bool DebugCrimeScene::tick(double dt) {
         }
     }
     
-    return true;
+    return !escapePressed;
 }
 
 void DebugCrimeScene::draw() {
@@ -190,4 +170,47 @@ void DebugCrimeScene::draw() {
     al_draw_text(font, al_map_rgb(0, 0, 0), 10,  10, 0, txt);
     
     delete txt;
+}
+
+void DebugCrimeScene::onKeyDown(int keycode, ALLEGRO_EVENT ev) {
+    
+    switch (keycode) {
+        case ALLEGRO_KEY_UP:
+            moving = pointOffset(moving, 0, -1);
+            break;
+        case ALLEGRO_KEY_DOWN:
+            moving = pointOffset(moving, 0, 1);
+            break;
+        case ALLEGRO_KEY_LEFT:
+            moving = pointOffset(moving, -1, 0);
+            break;
+        case ALLEGRO_KEY_RIGHT:
+            moving = pointOffset(moving, 1, 0);
+            break;
+        default:
+            break;
+    }
+}
+
+void DebugCrimeScene::onKeyUp(int keycode, ALLEGRO_EVENT ev) {
+    
+    switch (keycode) {
+        case ALLEGRO_KEY_UP:
+            moving = pointOffset(moving, 0, 1);
+            break;
+        case ALLEGRO_KEY_DOWN:
+            moving = pointOffset(moving, 0, -1);
+            break;
+        case ALLEGRO_KEY_LEFT:
+            moving = pointOffset(moving, 1, 0);
+            break;
+        case ALLEGRO_KEY_RIGHT:
+            moving = pointOffset(moving, -1, 0);
+            break;
+        case ALLEGRO_KEY_ESCAPE:
+            escapePressed = true;
+            break;
+        default:
+            break;
+    }
 }
