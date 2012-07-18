@@ -20,7 +20,6 @@
  
  */
 
-#include "GameScene.h"
 #include "InvestigationScene.h"
 #include "DebugCrimeScene.h"
 
@@ -28,7 +27,6 @@ int main(int argc, char **argv) {
     
     Director::getInstance()->initialize();
     
-    //GameScene *scene = new GameScene();
     InvestigationScene *scene = new InvestigationScene();  
     //DebugCrimeScene *scene = new DebugCrimeScene();
     
