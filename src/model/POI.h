@@ -46,6 +46,8 @@ public:
     
     std::string description;
     
+    std::string shortDescription;
+    
     Point position;
     
     Point visualPosition;

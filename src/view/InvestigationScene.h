@@ -27,6 +27,8 @@
 
 #include "Mystery.h"
 
+#define PLAYER_SPRITE_TAG 666
+
 class InvestigationScene : public Scene, ButtonHandler {
     
     ALLEGRO_FONT *font;
@@ -41,10 +43,24 @@ class InvestigationScene : public Scene, ButtonHandler {
     
     Label *currentRoomLabel;
     
+    Button *actionButton;
+    
+    Spritesheet *bkgQuestion;
+    Label *questionLabel;
+    std::vector<Drawable *> questionElements;
+    
+    Character *activeCharacter;
+    POI *activePOI;
+    
+    Room *currentRoom;
+    
+    MemoryFilter currentFilter;
+    
     Point moving;
     int moveDir;
     float curFrame;
     
+    bool inputLocked;
     bool escapePressed;
     bool debug;
     
@@ -59,6 +75,13 @@ public:
     virtual void onKeyUp(int keycode, ALLEGRO_EVENT ev);
     
     virtual void onButtonClicked(Button *sender);
+    
+    void removeQuestionElements();
+    void questionStart();
+    void questionWho();
+    void questionWhere();
+    void questionWhen();
+    
 };
 
 #endif

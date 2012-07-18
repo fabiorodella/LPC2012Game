@@ -144,6 +144,12 @@ POI *Mystery::parsePOINode(xmlNode *node) {
     poi->position = pointMake(x, y);
     poi->interest = (Interest) interest;
     poi->description = xmlGetAttribute(node, "description");
+    poi->shortDescription = poi->description;
+    
+    if (xmlGetAttribute(node, "shortDescription") != NULL) {
+        poi->shortDescription = xmlGetAttribute(node, "shortDescription");
+    }
+    
     poi->visualPosition = poi->position;
     poi->contents = NULL;
     poi->searchedByMurderer = false;

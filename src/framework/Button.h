@@ -58,6 +58,8 @@ class Button : public Drawable {
     
 public:
     
+    void *data;
+    
     Button(const char *text, ALLEGRO_FONT *fnt, const char *normalImageFile, const char *pressedImageFile);
     ~Button();
     

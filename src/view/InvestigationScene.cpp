@@ -65,8 +65,8 @@ void InvestigationScene::setupScene() {
         }
     }
             
-    playerSprite = new Spritesheet("res/male_walkcycle.png", 64, 64);
-    playerSprite->setTag(666);
+    playerSprite = new Spritesheet("res/professor_walk_cycle_no_hat.png", 64, 64);
+    playerSprite->setTag(PLAYER_SPRITE_TAG);
     playerSprite->setCamera(camera);
     playerSprite->setPosition(pointMake(35 * 32, 50 * 32));
     playerSprite->setAnchorPoint(pointMake(0.5, 0.9));
@@ -85,12 +85,10 @@ void InvestigationScene::setupScene() {
 	int min = (((int)mysteryTime / 60) % 60);
 	int sec = (int)mysteryTime % 60; 
     
-    printf("Total duration: %ld %.2d:%.2d:%.2d", mysteryTime, hr, min, sec);
+    printf("Total duration: %ld %.2d:%.2d:%.2d\n", mysteryTime, hr, min, sec);
     
     std::vector<Character *> characters = mystery->getCharacters();
     std::vector<Character *>::iterator itChars;
-        
-    int tag = 1;
     
     for (itChars = characters.begin(); itChars < characters.end(); ++itChars) {
         
@@ -106,7 +104,7 @@ void InvestigationScene::setupScene() {
         }
         
         Spritesheet *sprite = new Spritesheet("res/male_walkcycle.png", 64, 64);
-        sprite->setTag(tag);
+        sprite->setTag(character->tag);
         sprite->setCamera(camera);
         sprite->setAnchorPoint(pointMake(0.5, 0.9));
         sprite->setAutoZOrder(true);
@@ -118,39 +116,65 @@ void InvestigationScene::setupScene() {
         addToDisplayList(sprite);        
     }
     
-    Button *button = new Button("Test", font, "res/btn_64x32.png", "res/btn_64x32_pressed.png");
-    button->setZOrder(500);
-    button->setHandler(this);
+    actionButton = new Button("action", font, "res/btn_action.png", "res/btn_action_pressed.png");
+    actionButton->setZOrder(500);
+    actionButton->setAnchorPoint(pointMake(0.5, 1));
+    actionButton->setPosition(pointMake(400, 400));
+    actionButton->setCamera(camera);
+    actionButton->setHandler(this);
     
-    addToDisplayList(button);
+    addToDisplayList(actionButton);
     
-    currentRoomLabel = new Label("room", font, al_map_rgb(255, 255, 255));
-    currentRoomLabel->setPosition(pointMake(780, 580));
-    currentRoomLabel->setAnchorPoint(pointMake(1, 1));
-    currentRoomLabel->setZOrder(500);
+    Spritesheet *bkgRoomLabel = new Spritesheet("res/bkg_room_name.png");
+    bkgRoomLabel->setAnchorPoint(pointMake(0.5, 0.5));
+    bkgRoomLabel->setPosition(pointMake(400, 40));
+    bkgRoomLabel->setZOrder(501);
+    
+    addToDisplayList(bkgRoomLabel);
+    
+    currentRoomLabel = new Label("room", font, al_map_rgb(0, 0, 0));
+    currentRoomLabel->setAnchorPoint(pointMake(0.5, 0.5));
+    currentRoomLabel->setPosition(bkgRoomLabel->getPosition());
+    currentRoomLabel->setZOrder(502);
     
     addToDisplayList(currentRoomLabel);
     
-    /*
-    Label *testLabel = new Label("This is a long test label to see if the text is wrapping properly or not, what do you think?", font, al_map_rgb(255, 255, 255), 200);
-    testLabel->setAnchorPoint(pointMake(0.5, 0.5));
-    testLabel->setPosition(pointMake(400, 300));
-    testLabel->setZOrder(500);
+    bkgQuestion = new Spritesheet("res/bkg_question.png");
+    bkgQuestion->setAnchorPoint(pointMake(0.5, 0.5));
+    bkgQuestion->setPosition(pointMake(400, 300));
+    bkgQuestion->setZOrder(503);
+    bkgQuestion->setVisible(false);
+        
+    addToDisplayList(bkgQuestion);
     
-    addToDisplayList(testLabel);
-    */
-     
+    questionLabel = new Label("question", font, al_map_rgb(0, 0, 0), 350);
+    questionLabel->setAnchorPoint(pointMake(0.5, 0.5));
+    questionLabel->setPosition(pointMake(400, 120));
+    questionLabel->setZOrder(504);
+    questionLabel->setVisible(false);
+    
+    addToDisplayList(questionLabel);
+    
     camera->setCenter(playerSprite->getPosition());
+    
+    activeCharacter = NULL;
+    activePOI = NULL;
+    currentRoom = NULL;
     
     moving = pointMake(0, 0);
     moveDir = 0;
     curFrame = 0;
     
+    inputLocked = false;
     escapePressed = false;
-    debug = true;
+    debug = false;
 }
 
 bool InvestigationScene::tick(double dt) {
+    
+    if (inputLocked) {
+        return true;
+    }
     
     int tx = playerSprite->getPosition().x / collision->getTileSize().width;
     int ty = playerSprite->getPosition().y / collision->getTileSize().height;
@@ -160,7 +184,8 @@ bool InvestigationScene::tick(double dt) {
     for (itRooms = rooms.begin(); itRooms < rooms.end(); ++itRooms) {
         Room *room = (Room *) *itRooms;
         
-        if (rectContainsPoint(room->bounds, pointMake(tx, ty))) {
+        if (rectContainsPoint(room->bounds, pointMake(tx, ty)) && room != currentRoom) {
+            currentRoom = room;
             currentRoomLabel->setText(room->name.c_str());
         }
     }
@@ -230,6 +255,70 @@ bool InvestigationScene::tick(double dt) {
         }
     }
     
+    actionButton->setVisible(false);
+    actionButton->setEnabled(false);
+    
+    activeCharacter = NULL;
+    activePOI = NULL;
+    
+    std::vector<Character *> characters = mystery->getCharacters();
+    std::vector<Character *>::iterator it;
+    
+    for (it = characters.begin(); it < characters.end(); ++it) {
+        
+        Character *character = (Character *) *it;
+        
+        std::string action;
+        
+        if (character->dead) {
+            action.append("Look at ");
+        } else {
+            action.append("Talk to ");
+        }
+        
+        action.append(character->name);
+        
+        Drawable *sprite = getByTag(character->tag);
+        
+        Rect otherColRect = rectMake(sprite->getPosition().x - 16, sprite->getPosition().y - 16, 32, 32);
+        
+        if (rectIntersectsRect(colRect, otherColRect)) {
+            actionButton->setLabelText(action.c_str());
+            actionButton->setPosition(pointMake(sprite->getPosition().x, sprite->getPosition().y - 32));
+            actionButton->setVisible(true);
+            actionButton->setEnabled(true);
+            
+            activeCharacter = character;
+        }
+    }
+    
+    if (currentRoom != NULL) {
+        
+        std::vector<POI *> POIList = currentRoom->pointsOfInterest;
+        std::vector<POI *>::iterator itPOI;
+        
+        for (itPOI = POIList.begin(); itPOI < POIList.end(); ++itPOI) {
+            
+            POI *poi = (POI *) *itPOI;
+            
+            Rect tileRect = collision->getTileRect(poi->position.x, poi->position.y);
+            tileRect = rectExpand(tileRect, 4, 4);
+            
+            if ((poi->interest == InterestContainerVisible || poi->interest == InterestContainerConceiled) && rectIntersectsRect(colRect, tileRect)) {
+                
+                std::string action = "Examine ";
+                action.append(poi->shortDescription);
+                
+                actionButton->setLabelText(action.c_str());
+                actionButton->setPosition(rectMidPoint(tileRect));
+                actionButton->setVisible(true);
+                actionButton->setEnabled(true);
+                
+                activePOI = poi;
+            }
+        }
+    }
+    
     playerSprite->setFrame(moveDir + (int)curFrame);
     playerSprite->setPosition(pointOffset(playerSprite->getPosition(), dx, dy));
     
@@ -269,6 +358,10 @@ void InvestigationScene::draw() {
 
 void InvestigationScene::onKeyDown(int keycode, ALLEGRO_EVENT ev) {
     
+    if (inputLocked) {
+        return;
+    }
+    
     switch (keycode) {
         case ALLEGRO_KEY_UP:
             moving = pointOffset(moving, 0, -1);
@@ -288,6 +381,10 @@ void InvestigationScene::onKeyDown(int keycode, ALLEGRO_EVENT ev) {
 }
 
 void InvestigationScene::onKeyUp(int keycode, ALLEGRO_EVENT ev) {
+    
+    if (inputLocked) {
+        return;
+    }
     
     switch (keycode) {
         case ALLEGRO_KEY_UP:
@@ -311,5 +408,195 @@ void InvestigationScene::onKeyUp(int keycode, ALLEGRO_EVENT ev) {
 }
 
 void InvestigationScene::onButtonClicked(Button *sender) {
-    printf("I was clicked!\n");
+    
+    if (sender == actionButton) {
+        
+        if (activeCharacter != NULL) {
+            
+            printf("Talked to %s\n", activeCharacter->name.c_str());
+            questionStart();
+            
+        } else if (activePOI != NULL) {
+            
+            printf("Interacted with %s\n", activePOI->description.c_str());
+        }
+        
+    } else if (sender->getTag() > 100 && sender->getTag() < 200) {
+        
+        switch (sender->getTag()) {
+            case 101:
+                questionWho();
+                break;
+            case 102:
+                questionWhere();
+            default:
+                break;
+        }
+        
+    } else if (sender->getTag() > 200 && sender->getTag() < 300) {
+        
+        currentFilter.where = (Room *) sender->data;
+        
+        questionWhen();
+        
+    } else if (sender->getTag() > 300 && sender->getTag() < 400) {
+        
+        currentFilter.who = (Character *) sender->data;
+        
+        questionWhen();
+        
+    }
 }
+
+void InvestigationScene::removeQuestionElements() {
+    
+    std::vector<Drawable *>::iterator it;
+    
+    for (it = questionElements.begin(); it < questionElements.end(); ++it) {
+        Drawable *drawable = (Drawable *) *it;
+        removeFromDisplayList(drawable, true);
+    }
+    
+    questionElements.clear();
+}
+
+void InvestigationScene::questionStart() {
+    
+    inputLocked = true;
+    
+    currentFilter.timeEnd = 0;
+    currentFilter.timeStart = 0;
+    currentFilter.where = NULL;
+    currentFilter.who = NULL;
+    
+    actionButton->setEnabled(false);
+    
+    removeQuestionElements();
+    
+    std::string question = "Select a question to ask ";
+    question.append(activeCharacter->name);
+    
+    questionLabel->setText(question.c_str());
+    questionLabel->setVisible(true);
+    
+    bkgQuestion->setVisible(true);
+    
+    Button *button = new Button("Who was in the...", font, "res/btn_action.png", "res/btn_action_pressed.png");
+    button->setZOrder(504);
+    button->setAnchorPoint(pointMake(0.5, 0.5));
+    button->setPosition(pointMake(400, 200));
+    button->setTag(101);
+    button->setHandler(this);
+    
+    addToDisplayList(button);
+    questionElements.push_back(button);
+    
+    button = new Button("Where was...", font, "res/btn_action.png", "res/btn_action_pressed.png");
+    button->setZOrder(504);
+    button->setAnchorPoint(pointMake(0.5, 0.5));
+    button->setPosition(pointMake(400, 300));
+    button->setTag(102);
+    button->setHandler(this);
+    
+    addToDisplayList(button);
+    questionElements.push_back(button);
+}
+
+void InvestigationScene::questionWho() {
+    
+    removeQuestionElements();
+    
+    questionLabel->setText("Who was in the ... ?");
+    
+    std::vector<Room *> rooms = mystery->getRooms();
+    std::vector<Room *>::iterator it;
+    
+    int i = 0;
+    
+    int px = 300;
+    int py = 200;
+    
+    for (it = rooms.begin(); it < rooms.end(); ++it) {
+        
+        Room *room = (Room *) *it;
+        
+        Button *button = new Button(room->name.c_str(), font, "res/btn_small.png", "res/btn_small_pressed.png");
+        button->setZOrder(504);
+        button->setAnchorPoint(pointMake(0.5, 0.5));
+        button->setPosition(pointMake(px, py));
+        button->setTag(201 + i);
+        button->data = room;
+        button->setHandler(this);
+        
+        addToDisplayList(button);
+        questionElements.push_back(button);
+        
+        py += 36;
+        
+        if (i == 6) {
+            py = 200;
+            px += 192;
+        }
+        
+        i++;
+    }
+}
+
+void InvestigationScene::questionWhere() {
+    
+    removeQuestionElements();
+    
+    questionLabel->setText("Where was ... ?");
+    
+    std::vector<Character *> characters = mystery->getCharacters();
+    std::vector<Character *>::iterator it;
+    
+    int i = 0;
+    
+    int px = 400;
+    int py = 200;
+    
+    for (it = characters.begin(); it < characters.end(); ++it) {
+        
+        Character *character = (Character *) *it;
+        
+        Button *button = new Button(character->name.c_str(), font, "res/btn_action.png", "res/btn_action_pressed.png");
+        button->setZOrder(504);
+        button->setAnchorPoint(pointMake(0.5, 0.5));
+        button->setPosition(pointMake(px, py));
+        button->setTag(301 + i);
+        button->data = character;
+        button->setHandler(this);
+        
+        addToDisplayList(button);
+        questionElements.push_back(button);
+        
+        py += 36;
+        
+        i++;
+    }
+}
+
+void InvestigationScene::questionWhen() {
+    
+    removeQuestionElements();
+    
+    std::string question;
+    
+    if (currentFilter.where == NULL) {
+        
+        question = "Where was ";
+        question.append(currentFilter.who->name);
+        
+    } else if (currentFilter.who == NULL) {
+        
+        question = "Who was in the ";
+        question.append(currentFilter.where->name);
+    }
+    
+    question.append(" between ... ?");
+    
+    questionLabel->setText(question.c_str());
+    
+}
+

@@ -18,7 +18,6 @@
 		1565FB6D15A2124B00C2FF83 /* Spritesheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB6315A2124B00C2FF83 /* Spritesheet.cpp */; };
 		1565FB6E15A2124B00C2FF83 /* TilemapLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB6515A2124B00C2FF83 /* TilemapLayer.cpp */; };
 		1565FB6F15A2124B00C2FF83 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB6715A2124B00C2FF83 /* main.cpp */; };
-		1565FB7515A212EE00C2FF83 /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB7415A212EE00C2FF83 /* GameScene.cpp */; };
 		159DC99D158F54690036D70F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC99C158F54690036D70F /* Cocoa.framework */; };
 		159DC9C3158F568D0036D70F /* liballegro_acodec.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9B7158F568D0036D70F /* liballegro_acodec.dylib */; };
 		159DC9C4158F568D0036D70F /* liballegro_audio.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 159DC9B8158F568D0036D70F /* liballegro_audio.dylib */; };
@@ -67,8 +66,6 @@
 		1565FB6515A2124B00C2FF83 /* TilemapLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TilemapLayer.cpp; sourceTree = "<group>"; };
 		1565FB6615A2124B00C2FF83 /* TilemapLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TilemapLayer.h; sourceTree = "<group>"; };
 		1565FB6715A2124B00C2FF83 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		1565FB7315A212E300C2FF83 /* GameScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
-		1565FB7415A212EE00C2FF83 /* GameScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameScene.cpp; sourceTree = "<group>"; };
 		1565FB7615A2149200C2FF83 /* Framework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Framework.h; sourceTree = "<group>"; };
 		1571E15115A3109600F98680 /* Geometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
 		159DC998158F54690036D70F /* LPC2012Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LPC2012Game.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -210,8 +207,6 @@
 		1565FB7215A212C100C2FF83 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				1565FB7415A212EE00C2FF83 /* GameScene.cpp */,
-				1565FB7315A212E300C2FF83 /* GameScene.h */,
 				15A1C95815A4B7A2000068F4 /* InvestigationScene.cpp */,
 				15A1C95A15A4B7AF000068F4 /* InvestigationScene.h */,
 				15FF755A15A5D63400D5EDFB /* DebugCrimeScene.cpp */,
@@ -387,7 +382,6 @@
 				1565FB6D15A2124B00C2FF83 /* Spritesheet.cpp in Sources */,
 				1565FB6E15A2124B00C2FF83 /* TilemapLayer.cpp in Sources */,
 				1565FB6F15A2124B00C2FF83 /* main.cpp in Sources */,
-				1565FB7515A212EE00C2FF83 /* GameScene.cpp in Sources */,
 				15A1C94715A47352000068F4 /* Character.cpp in Sources */,
 				15A1C94D15A475D9000068F4 /* Mystery.cpp in Sources */,
 				15A1C95015A4AA0C000068F4 /* Memory.cpp in Sources */,

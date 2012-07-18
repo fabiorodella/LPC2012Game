@@ -104,13 +104,9 @@ void Scene::draw() {
 }
 
 void Scene::handleEvent(ALLEGRO_EVENT ev) {
-    
-    std::vector<Drawable *>::iterator it;
-    
-    for(it = displayList.begin(); it < displayList.end(); ++it) {
-        
-        Drawable *drawable = (Drawable *) *it;
-        drawable->handleEvent(ev);
+            
+    for(int i = 0; i < displayList.size(); ++i) {
+        displayList[i]->handleEvent(ev);        
     }
 }
 
@@ -118,12 +114,42 @@ void Scene::addToDisplayList(Drawable *drawable) {
     displayList.push_back(drawable);
 }
 
-void Scene::removeFromDisplayList(Drawable *drawable) {
-    //TODO implement this
+void Scene::removeFromDisplayList(Drawable *drawable, bool alsoDelete) {
+    
+    std::vector<Drawable *>::iterator it = displayList.begin();
+    
+    while (it != displayList.end()) {
+        
+        Drawable *d = (Drawable *) *it;
+        
+        if (d != drawable) {
+            ++it;
+        } else {            
+            it = displayList.erase(it);
+            if (alsoDelete) {
+                delete d;
+            }
+        }
+    }
 }
 
-void Scene::removeFromDisplayList(int tag) {
-    //TODO implement this
+void Scene::removeFromDisplayList(int tag, bool alsoDelete) {
+    
+    std::vector<Drawable *>::iterator it = displayList.begin();
+    
+    while (it != displayList.end()) {
+        
+        Drawable *d = (Drawable *) *it;
+        
+        if (d->getTag() != tag) {
+            ++it;
+        } else {            
+            it = displayList.erase(it);
+            if (alsoDelete) {
+                delete d;
+            }
+        }
+    }
 }
 
 Drawable *Scene::getByTag(int tag) {

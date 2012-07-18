@@ -46,8 +46,8 @@ public:
     virtual void handleEvent(ALLEGRO_EVENT ev);
     
     void addToDisplayList(Drawable *drawable);
-    void removeFromDisplayList(Drawable *drawable);
-    void removeFromDisplayList(int tag);
+    void removeFromDisplayList(Drawable *drawable, bool alsoDelete);
+    void removeFromDisplayList(int tag, bool alsoDelete);
     Drawable *getByTag(int tag);
 };
 

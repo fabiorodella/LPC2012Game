@@ -37,6 +37,8 @@ Button::Button(const char *text, ALLEGRO_FONT *fnt, const char *normalImageFile,
     
     enabled = true;
     pressed = false;
+    
+    data = NULL;
 }
 
 Button::~Button() {
@@ -90,7 +92,7 @@ void Button::handleEvent(ALLEGRO_EVENT ev) {
     
     Rect rect = rectMake(px, py, size.width, size.height);
     
-    if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+    if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && !pressed) {
         
         Point mousePoint = pointMake(ev.mouse.x, ev.mouse.y);
         
@@ -98,7 +100,7 @@ void Button::handleEvent(ALLEGRO_EVENT ev) {
             pressed = true;
         }
         
-    } else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+    } else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && pressed) {
         
         pressed = false;
         

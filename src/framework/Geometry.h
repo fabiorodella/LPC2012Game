@@ -114,4 +114,8 @@ inline bool rectIntersectsRect(Rect r1, Rect r2) {
         (r1.origin.y + r1.size.height) > r2.origin.y;
 }
 
+inline Rect rectExpand(Rect r, float x, float y) {
+    return rectMake(r.origin.x - x, r.origin.y - y, r.size.width + (x * 2), r.size.height + (y * 2));
+}
+
 #endif
