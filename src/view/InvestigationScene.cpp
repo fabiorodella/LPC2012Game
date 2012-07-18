@@ -133,11 +133,13 @@ void InvestigationScene::setupScene() {
     
     /*
     Label *testLabel = new Label("This is a long test label to see if the text is wrapping properly or not, what do you think?", font, al_map_rgb(255, 255, 255), 200);
+    testLabel->setAnchorPoint(pointMake(0.5, 0.5));
+    testLabel->setPosition(pointMake(400, 300));
     testLabel->setZOrder(500);
     
     addToDisplayList(testLabel);
     */
-    
+     
     camera->setCenter(playerSprite->getPosition());
     
     moving = pointMake(0, 0);

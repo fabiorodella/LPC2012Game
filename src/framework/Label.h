@@ -34,7 +34,7 @@ class Label : public Drawable {
     
     std::string text;
     
-    std::string processedText;
+    std::vector<std::string> lines;
     
     ALLEGRO_FONT *font;
     
