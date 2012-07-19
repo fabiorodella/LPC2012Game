@@ -26,9 +26,28 @@
 
 #include "Room.h"
 
+std::string InvestigationScene::timeToString(long time, bool includeSeconds) {
+            
+    int hr = time / (60 * 60);
+	int min = (((int)time / 60) % 60);
+	int sec = (int)time % 60; 
+    
+    char buff[10];
+    
+    if (includeSeconds) {
+        sprintf(buff, "%.2d:%.2d:%.2d", hr, min, sec);
+    } else {
+        sprintf(buff, "%.2d:%.2d", hr, min);
+    }
+    
+    std::string ret = buff;
+    return ret;
+}
+
 InvestigationScene::~InvestigationScene() {
     delete mystery;
     al_destroy_font(font);
+    al_destroy_font(fontBig);
 }
 
 void InvestigationScene::setupScene() {
@@ -46,6 +65,7 @@ void InvestigationScene::setupScene() {
     positions.push_back(pointMake(32, 52));
     
     font = al_load_font("res/DejaVuSans.ttf", 16, 0);
+    fontBig = al_load_font("res/DejaVuSans.ttf", 26, 0);
     
     std::vector<TilemapLayer *> layers = TilemapLayer::parseTMXFile("res/mansion.tmx");
     std::vector<TilemapLayer *>::iterator it;
@@ -80,12 +100,8 @@ void InvestigationScene::setupScene() {
         mystery->step();
         mysteryTime++;
     }
-    
-    int hr = mysteryTime / (60 * 60);
-	int min = (((int)mysteryTime / 60) % 60);
-	int sec = (int)mysteryTime % 60; 
-    
-    printf("Total duration: %ld %.2d:%.2d:%.2d\n", mysteryTime, hr, min, sec);
+            
+    printf("Total duration: %ld %s\n", mysteryTime, timeToString(mysteryTime, true).c_str());
     
     std::vector<Character *> characters = mystery->getCharacters();
     std::vector<Character *>::iterator itChars;
@@ -155,6 +171,34 @@ void InvestigationScene::setupScene() {
     
     addToDisplayList(questionLabel);
     
+    whenLabel = new Label("00:00 and 00:15", fontBig, al_map_rgb(0, 0, 0));
+    whenLabel->setAnchorPoint(pointMake(0.5, 0.5));
+    whenLabel->setPosition(pointMake(400, 300));
+    whenLabel->setZOrder(504);
+    whenLabel->setVisible(false);
+    
+    addToDisplayList(whenLabel);
+    
+    askQuestionButton = new Button("Ask", font, "res/btn_med.png", "res/btn_med_pressed.png");
+    askQuestionButton->setZOrder(504);
+    askQuestionButton->setAnchorPoint(pointMake(0.5, 0.5));
+    askQuestionButton->setPosition(pointMake(480, 490));
+    askQuestionButton->setHandler(this);
+    askQuestionButton->setVisible(false);
+    askQuestionButton->setEnabled(false);
+    
+    addToDisplayList(askQuestionButton);
+    
+    cancelQuestionButton = new Button("Cancel", font, "res/btn_med.png", "res/btn_med_pressed.png");
+    cancelQuestionButton->setZOrder(504);
+    cancelQuestionButton->setAnchorPoint(pointMake(0.5, 0.5));
+    cancelQuestionButton->setPosition(pointMake(300, 490));
+    cancelQuestionButton->setHandler(this);
+    cancelQuestionButton->setVisible(false);
+    cancelQuestionButton->setEnabled(false);
+    
+    addToDisplayList(cancelQuestionButton);
+    
     camera->setCenter(playerSprite->getPosition());
     
     activeCharacter = NULL;
@@ -168,6 +212,9 @@ void InvestigationScene::setupScene() {
     inputLocked = false;
     escapePressed = false;
     debug = false;
+    
+    currentFilter.timeStart = 0;
+    currentFilter.timeEnd = QUESTION_INTERVAL;
 }
 
 bool InvestigationScene::tick(double dt) {
@@ -420,6 +467,14 @@ void InvestigationScene::onButtonClicked(Button *sender) {
             
             printf("Interacted with %s\n", activePOI->description.c_str());
         }
+    
+    } else if (sender == cancelQuestionButton) {
+        
+        questionEnd();
+    
+    } else if (sender == askQuestionButton) {
+            
+        questionEnd();
         
     } else if (sender->getTag() > 100 && sender->getTag() < 200) {
         
@@ -445,6 +500,29 @@ void InvestigationScene::onButtonClicked(Button *sender) {
         
         questionWhen();
         
+    } else if (sender->getTag() > 400 && sender->getTag() < 500) {
+        
+        int amnt = 0;
+        
+        switch (sender->getTag()) {
+            case 401:
+                amnt = -QUESTION_INTERVAL;
+                break;
+            case 402:
+                amnt = QUESTION_INTERVAL;
+            default:
+                break;
+        }
+        
+        if ((currentFilter.timeStart + amnt) < 0 || (currentFilter.timeEnd + amnt) > MAX_TIME) {
+            amnt = 0;
+        }
+        
+        currentFilter.timeStart += amnt;
+        currentFilter.timeEnd += amnt;
+        
+        questionWhen();
+        
     }
 }
 
@@ -464,12 +542,13 @@ void InvestigationScene::questionStart() {
     
     inputLocked = true;
     
-    currentFilter.timeEnd = 0;
-    currentFilter.timeStart = 0;
     currentFilter.where = NULL;
     currentFilter.who = NULL;
     
     actionButton->setEnabled(false);
+    
+    cancelQuestionButton->setEnabled(true);
+    cancelQuestionButton->setVisible(true);
     
     removeQuestionElements();
     
@@ -520,7 +599,7 @@ void InvestigationScene::questionWho() {
         
         Room *room = (Room *) *it;
         
-        Button *button = new Button(room->name.c_str(), font, "res/btn_small.png", "res/btn_small_pressed.png");
+        Button *button = new Button(room->name.c_str(), font, "res/btn_med.png", "res/btn_med_pressed.png");
         button->setZOrder(504);
         button->setAnchorPoint(pointMake(0.5, 0.5));
         button->setPosition(pointMake(px, py));
@@ -598,5 +677,52 @@ void InvestigationScene::questionWhen() {
     
     questionLabel->setText(question.c_str());
     
+    Button *button = new Button("<", fontBig, "res/btn_small.png", "res/btn_small_pressed.png");
+    button->setZOrder(504);
+    button->setAnchorPoint(pointMake(0.5, 0.5));
+    button->setPosition(pointMake(260, 300));
+    button->setTag(401);
+    button->setHandler(this);
+    
+    addToDisplayList(button);
+    questionElements.push_back(button);
+    
+    button = new Button(">", fontBig, "res/btn_small.png", "res/btn_small_pressed.png");
+    button->setZOrder(504);
+    button->setAnchorPoint(pointMake(0.5, 0.5));
+    button->setPosition(pointMake(540, 300));
+    button->setTag(402);
+    button->setHandler(this);
+    
+    addToDisplayList(button);
+    questionElements.push_back(button);
+    
+    char buff[20];
+    sprintf(buff, "%s and %s", timeToString(currentFilter.timeStart + START_TIME, false).c_str(), timeToString(currentFilter.timeEnd + START_TIME, false).c_str());
+    
+    whenLabel->setText(buff);
+    whenLabel->setVisible(true);
+    
+    askQuestionButton->setEnabled(true);
+    askQuestionButton->setVisible(true);
+}
+
+void InvestigationScene::questionEnd() {
+    
+    removeQuestionElements();
+    
+    askQuestionButton->setEnabled(false);
+    askQuestionButton->setVisible(false);
+    
+    cancelQuestionButton->setEnabled(false);
+    cancelQuestionButton->setVisible(false);
+    
+    bkgQuestion->setVisible(false);
+    
+    questionLabel->setVisible(false);
+    
+    whenLabel->setVisible(false);
+    
+    inputLocked = false;
 }
 

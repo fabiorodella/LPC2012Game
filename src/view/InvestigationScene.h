@@ -27,11 +27,16 @@
 
 #include "Mystery.h"
 
+#define START_TIME 18000
+#define MAX_TIME 10800
+#define QUESTION_INTERVAL 900
+
 #define PLAYER_SPRITE_TAG 666
 
 class InvestigationScene : public Scene, ButtonHandler {
     
     ALLEGRO_FONT *font;
+    ALLEGRO_FONT *fontBig;
     
     Mystery *mystery;
     
@@ -47,7 +52,10 @@ class InvestigationScene : public Scene, ButtonHandler {
     
     Spritesheet *bkgQuestion;
     Label *questionLabel;
+    Label *whenLabel;
     std::vector<Drawable *> questionElements;
+    Button *askQuestionButton;
+    Button *cancelQuestionButton;
     
     Character *activeCharacter;
     POI *activePOI;
@@ -63,6 +71,8 @@ class InvestigationScene : public Scene, ButtonHandler {
     bool inputLocked;
     bool escapePressed;
     bool debug;
+    
+    std::string timeToString(long time, bool includeSeconds);
     
 public:
     
@@ -81,6 +91,7 @@ public:
     void questionWho();
     void questionWhere();
     void questionWhen();
+    void questionEnd();
     
 };
 
