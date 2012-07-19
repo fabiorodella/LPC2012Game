@@ -41,10 +41,32 @@ Button::Button(const char *text, ALLEGRO_FONT *fnt, const char *normalImageFile,
     data = NULL;
 }
 
+Button::Button(Size sz) {
+    
+    normalImage = NULL;
+    pressedImage = NULL;
+    
+    size = sz;
+    
+    handler = NULL;
+    
+    enabled = true;
+    pressed = false;
+    
+    data = NULL;
+    
+    visible = false;
+}
+
 Button::~Button() {
-            
-    BitmapLoader::getInstance()->releaseBitmap(normalImage);
-    BitmapLoader::getInstance()->releaseBitmap(pressedImage);
+    
+    if (normalImage != NULL) {
+        BitmapLoader::getInstance()->releaseBitmap(normalImage);
+    }
+    
+    if (pressedImage != NULL) {
+        BitmapLoader::getInstance()->releaseBitmap(pressedImage);
+    }
 }
 
 void Button::draw() {
@@ -109,6 +131,12 @@ void Button::handleEvent(ALLEGRO_EVENT ev) {
         if (handler != NULL && rectContainsPoint(rect, mousePoint)) {
             handler->onButtonClicked(this);
         }
+    }
+}
+
+void Button::setVisible(bool vis) {
+    if (normalImage != NULL) {
+        visible = vis;
     }
 }
 

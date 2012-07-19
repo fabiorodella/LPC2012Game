@@ -61,12 +61,15 @@ public:
     void *data;
     
     Button(const char *text, ALLEGRO_FONT *fnt, const char *normalImageFile, const char *pressedImageFile);
+    Button(Size sz);
     ~Button();
     
     virtual void draw();
     
     virtual void handleEvent(ALLEGRO_EVENT ev);
 
+    virtual void setVisible(bool vis);
+    
     void setLabelText(const char *text);
     const char *getLabelText();
     

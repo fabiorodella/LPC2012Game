@@ -199,6 +199,31 @@ void InvestigationScene::setupScene() {
     
     addToDisplayList(cancelQuestionButton);
     
+    bkgSpeech = new Spritesheet("res/speech.png");
+    bkgSpeech->setAnchorPoint(pointMake(0.35, 1));
+    bkgSpeech->setCamera(camera);
+    bkgSpeech->setZOrder(503);
+    bkgSpeech->setVisible(false);
+    
+    addToDisplayList(bkgSpeech);
+    
+    speechLabel = new Label("speech", font, al_map_rgb(0, 0, 0), 280);
+    speechLabel->setAnchorPoint(pointMake(0.5, 0.5));
+    speechLabel->setCamera(camera);
+    speechLabel->setZOrder(504);
+    speechLabel->setVisible(false);
+    
+    addToDisplayList(speechLabel);
+    
+    speechButton = new Button(bkgSpeech->getFrameSize());
+    speechButton->setAnchorPoint(bkgSpeech->getAnchorPoint());
+    speechButton->setCamera(camera);
+    speechButton->setZOrder(504);
+    speechButton->setEnabled(false);
+    speechButton->setHandler(this);
+    
+    addToDisplayList(speechButton);
+    
     camera->setCenter(playerSprite->getPosition());
     
     activeCharacter = NULL;
@@ -471,10 +496,27 @@ void InvestigationScene::onButtonClicked(Button *sender) {
     } else if (sender == cancelQuestionButton) {
         
         questionEnd();
+        
+        inputLocked = false;
     
     } else if (sender == askQuestionButton) {
             
         questionEnd();
+        
+        dialogueStart();
+    
+    } else if (sender == speechButton) {
+        
+        if (speechIdx < speechLines.size()) {
+            
+            dialogueAdvance();
+            
+        } else {
+        
+            dialogueEnd();
+        
+            inputLocked = false;
+        }
         
     } else if (sender->getTag() > 100 && sender->getTag() < 200) {
         
@@ -546,6 +588,7 @@ void InvestigationScene::questionStart() {
     currentFilter.who = NULL;
     
     actionButton->setEnabled(false);
+    actionButton->setVisible(false);
     
     cancelQuestionButton->setEnabled(true);
     cancelQuestionButton->setVisible(true);
@@ -722,7 +765,44 @@ void InvestigationScene::questionEnd() {
     questionLabel->setVisible(false);
     
     whenLabel->setVisible(false);
-    
-    inputLocked = false;
 }
 
+void InvestigationScene::dialogueStart() {
+    
+    speechLines.clear();
+    
+    speechLines.push_back(std::string("what"));
+    speechLines.push_back(std::string("about"));
+    speechLines.push_back(std::string("it?"));
+    
+    speechIdx = 0;
+    
+    Drawable *sprite = getByTag(activeCharacter->tag);
+    
+    bkgSpeech->setVisible(true);
+    bkgSpeech->setPosition(pointMake(sprite->getPosition().x, sprite->getPosition().y - 20));
+    
+    speechLabel->setText(speechLines[speechIdx].c_str());
+    speechLabel->setVisible(true);
+    speechLabel->setPosition(pointOffset(bkgSpeech->getPosition(), 60, -175));
+    
+    speechButton->setEnabled(true);
+    speechButton->setPosition(bkgSpeech->getPosition());
+    
+    speechIdx++;
+}
+
+void InvestigationScene::dialogueAdvance() {
+    
+    speechLabel->setText(speechLines[speechIdx].c_str());
+    
+    speechIdx++;
+}
+
+void InvestigationScene::dialogueEnd() {
+    
+    bkgSpeech->setVisible(false);
+    speechLabel->setVisible(false);
+    speechButton->setEnabled(false);
+    
+}

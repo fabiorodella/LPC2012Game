@@ -57,6 +57,13 @@ class InvestigationScene : public Scene, ButtonHandler {
     Button *askQuestionButton;
     Button *cancelQuestionButton;
     
+    Spritesheet *bkgSpeech;
+    Label *speechLabel;
+    Button *speechButton;
+    
+    std::vector<std::string> speechLines;
+    int speechIdx;
+    
     Character *activeCharacter;
     POI *activePOI;
     
@@ -92,6 +99,10 @@ public:
     void questionWhere();
     void questionWhen();
     void questionEnd();
+    
+    void dialogueStart();
+    void dialogueAdvance();
+    void dialogueEnd();
     
 };
 

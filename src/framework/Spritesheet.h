@@ -47,6 +47,8 @@ public:
     
     void setFrame(int frame);
     int getFrame();
+    
+    Size getFrameSize();
 };
 
 #endif

@@ -94,3 +94,7 @@ void Spritesheet::setFrame(int fr) {
 int Spritesheet::getFrame() {
     return frame;
 }
+
+Size Spritesheet::getFrameSize() {
+    return frameSize;
+}
