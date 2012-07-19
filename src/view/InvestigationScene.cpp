@@ -23,26 +23,9 @@
 #include <allegro5/allegro_primitives.h>
 
 #include "InvestigationScene.h"
+#include "Utils.h"
 
 #include "Room.h"
-
-std::string InvestigationScene::timeToString(long time, bool includeSeconds) {
-            
-    int hr = time / (60 * 60);
-	int min = (((int)time / 60) % 60);
-	int sec = (int)time % 60; 
-    
-    char buff[10];
-    
-    if (includeSeconds) {
-        sprintf(buff, "%.2d:%.2d:%.2d", hr, min, sec);
-    } else {
-        sprintf(buff, "%.2d:%.2d", hr, min);
-    }
-    
-    std::string ret = buff;
-    return ret;
-}
 
 InvestigationScene::~InvestigationScene() {
     delete mystery;
@@ -682,7 +665,12 @@ void InvestigationScene::questionWhere() {
         
         Character *character = (Character *) *it;
         
-        Button *button = new Button(character->name.c_str(), font, "res/btn_action.png", "res/btn_action_pressed.png");
+        std::string name = character->name;
+        if (character == activeCharacter) {
+            name = "You";
+        }
+        
+        Button *button = new Button(name.c_str(), font, "res/btn_action.png", "res/btn_action_pressed.png");
         button->setZOrder(504);
         button->setAnchorPoint(pointMake(0.5, 0.5));
         button->setPosition(pointMake(px, py));
@@ -707,8 +695,14 @@ void InvestigationScene::questionWhen() {
     
     if (currentFilter.where == NULL) {
         
-        question = "Where was ";
-        question.append(currentFilter.who->name);
+        question = "Where ";
+        
+        if (currentFilter.who == activeCharacter) {
+            question.append("were you");
+        } else {
+            question.append("was ");
+            question.append(currentFilter.who->name);
+        }
         
     } else if (currentFilter.who == NULL) {
         
@@ -771,9 +765,13 @@ void InvestigationScene::dialogueStart() {
     
     speechLines.clear();
     
-    speechLines.push_back(std::string("what"));
-    speechLines.push_back(std::string("about"));
-    speechLines.push_back(std::string("it?"));
+    speechLines.push_back(std::string("I remember some things from around that time."));
+    
+    std::vector<std::string> memories = activeCharacter->getMemories(currentFilter, START_TIME);
+    
+    speechLines.insert(speechLines.end(), memories.begin(), memories.end());
+    
+    printf("Speech lines: %ld\n", speechLines.size());
     
     speechIdx = 0;
     

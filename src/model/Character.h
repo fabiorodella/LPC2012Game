@@ -108,7 +108,7 @@ public:
     
     bool isInteractingWithPOI();
     
-    std::vector<Memory *> getMemories(MemoryFilter filter);
+    std::vector<std::string> getMemories(MemoryFilter filter, long startTime);
 };
 
 #endif

@@ -50,6 +50,7 @@
 		1502305215B5ABF80092CD3C /* Button.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
 		1502BDD815B5C271005D73FC /* Label.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Label.cpp; sourceTree = "<group>"; };
 		1502BDDB15B5C27E005D73FC /* Label.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Label.h; sourceTree = "<group>"; };
+		1529AA4315B8509F0059841F /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		155056FE1598943500D3FC38 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/libxml2.dylib; sourceTree = DEVELOPER_DIR; };
 		1565FB5915A2124B00C2FF83 /* BitmapLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitmapLoader.cpp; sourceTree = "<group>"; };
 		1565FB5A15A2124B00C2FF83 /* BitmapLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapLoader.h; sourceTree = "<group>"; };
@@ -185,6 +186,7 @@
 				15A1C94E15A475F5000068F4 /* Mystery.h */,
 				15F7346115A7386D00B25066 /* NameGenerator.cpp */,
 				15F7346015A7386400B25066 /* NameGenerator.h */,
+				1529AA4315B8509F0059841F /* Utils.h */,
 			);
 			path = controller;
 			sourceTree = "<group>";

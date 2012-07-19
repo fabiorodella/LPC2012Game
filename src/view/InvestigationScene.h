@@ -79,8 +79,6 @@ class InvestigationScene : public Scene, ButtonHandler {
     bool escapePressed;
     bool debug;
     
-    std::string timeToString(long time, bool includeSeconds);
-    
 public:
     
     ~InvestigationScene();

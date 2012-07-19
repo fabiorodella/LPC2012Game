@@ -20,11 +20,25 @@
  
  */
 
-#ifndef LPC2012Game_NameGenerator_h
-#define LPC2012Game_NameGenerator_h
+#ifndef LPC2012Game_Utils_h
+#define LPC2012Game_Utils_h
 
-#include <string>
-
-std::string generateName(bool male);
+static std::string timeToString(long time, bool includeSeconds) {
+    
+    int hr = time / (60 * 60);
+	int min = (((int)time / 60) % 60);
+	int sec = (int)time % 60; 
+    
+    char buff[10];
+    
+    if (includeSeconds) {
+        sprintf(buff, "%.2d:%.2d:%.2d", hr, min, sec);
+    } else {
+        sprintf(buff, "%.2d:%.2d", hr, min);
+    }
+    
+    std::string ret = buff;
+    return ret;
+}
 
 #endif

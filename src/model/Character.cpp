@@ -23,6 +23,8 @@
 #include <stdio.h>
 
 #include "Character.h"
+#include "Room.h"
+#include "Utils.h"
 
 Character::~Character() {
     
@@ -105,7 +107,7 @@ bool Character::isInteractingWithPOI() {
     return false;
 }
 
-std::vector<Memory *> Character::getMemories(MemoryFilter filter) {
+std::vector<std::string> Character::getMemories(MemoryFilter filter, long startTime) {
     
     std::vector<Memory *> interval;
     std::vector<Memory *>::iterator it;
@@ -115,22 +117,94 @@ std::vector<Memory *> Character::getMemories(MemoryFilter filter) {
         Memory *memory = (Memory *) *it;
                         
         if (memory->when >= filter.timeStart && memory->when <= filter.timeEnd) {
+            
+            bool shouldAdd = false;
+            
+            if (filter.where == NULL) {
                 
-            bool shouldAdd = true;
-            
-            if (filter.who != NULL && memory->who != filter.who) {
-                shouldAdd = false;
+                if (memory->who == filter.who) {
+                    shouldAdd = true;
+                }
             }
             
-            if (filter.where != NULL && memory->where != filter.where) {
-                shouldAdd = false;
+            if (filter.who == NULL) {
+                if (memory->where == filter.where && (memory->event == EventEnteredRoom || memory->event == EventLeftRoom)) {
+                    shouldAdd = true;
+                }
             }
-            
+                        
             if (shouldAdd) {
                 interval.push_back(memory);
             }
         }
     }
     
-    return interval;
+    std::vector<std::string> ret;
+    
+    for (int i = 0; i < interval.size(); ++i) {
+        
+        Memory *memory = interval[i];
+        
+        if (memory->event == EventEnteredRoom) {
+            
+            int j = i + 1;
+            Memory *leftRoom = NULL;
+            
+            while (j < interval.size() && leftRoom == NULL) {
+                
+                if (interval[j]->event == EventEnteredRoom) {
+                    break;
+                }
+                
+                if (interval[j]->event == EventLeftRoom && interval[j]->where == memory->where) {
+                    leftRoom = interval[j];
+                } else {
+                    j++;
+                }
+            }
+            
+            if (leftRoom) {
+                
+                std::string mem;
+                mem.append(memory->who->name);
+                mem.append(" was in the ");
+                mem.append(memory->where->name);
+                mem.append(" from around ");
+                mem.append(timeToString(memory->when + startTime, false));
+                mem.append(" to ");
+                mem.append(timeToString(leftRoom->when + startTime, false));
+                mem.append(".");
+                
+                ret.push_back(mem);
+                
+                i = j;
+                
+            } else {
+                
+                std::string mem;
+                mem.append(memory->who->name);
+                mem.append(" entered the ");
+                mem.append(memory->where->name);
+                mem.append(" around ");
+                mem.append(timeToString(memory->when + startTime, false));
+                mem.append(".");
+                
+                ret.push_back(mem);
+            }
+            
+        } else if (memory->event == EventLeftRoom) {
+            
+            std::string mem;
+            mem.append(memory->who->name);
+            mem.append(" left the ");
+            mem.append(memory->where->name);
+            mem.append(" around ");
+            mem.append(timeToString(memory->when + startTime, false));
+            mem.append(".");
+            
+            ret.push_back(mem);
+        }
+    }
+    
+    return ret;
 }
