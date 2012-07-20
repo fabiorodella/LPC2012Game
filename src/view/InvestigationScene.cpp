@@ -49,8 +49,8 @@ void InvestigationScene::setupScene() {
     positions.push_back(pointMake(30, 51));
     positions.push_back(pointMake(32, 52));
     
-    font = al_load_font("res/DejaVuSans.ttf", 16, 0);
-    fontBig = al_load_font("res/DejaVuSans.ttf", 26, 0);
+    font = al_load_font("res/AveriaSerif-Regular.ttf", 18, 0);
+    fontBig = al_load_font("res/AveriaSerif-Regular.ttf", 26, 0);
     
     std::vector<TilemapLayer *> layers = TilemapLayer::parseTMXFile("res/mansion.tmx");
     std::vector<TilemapLayer *>::iterator it;

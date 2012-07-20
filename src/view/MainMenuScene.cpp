@@ -31,20 +31,20 @@ MainMenuScene::~MainMenuScene() {
 
 void MainMenuScene::setupScene() {
     
-    font = al_load_font("res/DejaVuSans.ttf", 24, 0);
+    font = al_load_font("res/AveriaSerif-Regular.ttf", 24, 0);
     
     addToDisplayList(new Spritesheet("res/title.png"));
     
     newCaseButton = new Button("New case", font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
     newCaseButton->setAnchorPoint(pointMake(0.5, 0.5));
-    newCaseButton->setPosition(pointMake(400, 300));
+    newCaseButton->setPosition(pointMake(400, 500));
     newCaseButton->setHandler(this);
     
     addToDisplayList(newCaseButton);
     
     quitButton = new Button("Quit game", font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
     quitButton->setAnchorPoint(pointMake(0.5, 0.5));
-    quitButton->setPosition(pointMake(400, 400));
+    quitButton->setPosition(pointMake(400, 550));
     quitButton->setHandler(this);
     
     addToDisplayList(quitButton);
