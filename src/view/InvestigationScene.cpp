@@ -218,7 +218,7 @@ void InvestigationScene::setupScene() {
     curFrame = 0;
     
     inputLocked = false;
-    escapePressed = false;
+    endScene = false;
     debug = false;
     
     currentFilter.timeStart = 0;
@@ -379,7 +379,7 @@ bool InvestigationScene::tick(double dt) {
     
     camera->setCenter(playerSprite->getPosition());
     
-    return !escapePressed;
+    return !endScene;
 }
 
 void InvestigationScene::draw() {
@@ -455,7 +455,10 @@ void InvestigationScene::onKeyUp(int keycode, ALLEGRO_EVENT ev) {
             moving = pointOffset(moving, -1, 0);
             break;
         case ALLEGRO_KEY_ESCAPE:
-            escapePressed = true;
+            
+            inputLocked = true;
+            quitToMenu();
+            
             break;
         default:
             break;
@@ -548,6 +551,26 @@ void InvestigationScene::onButtonClicked(Button *sender) {
         
         questionWhen();
         
+    }
+}
+
+void InvestigationScene::onConfirm(ModalDialog *sender) {
+    
+    if (sender->tag == 1) {
+        
+        endScene = true;
+        sender->removeFromScene(this);
+        inputLocked = false;
+    }
+    
+}
+
+void InvestigationScene::onCancel(ModalDialog *sender) {
+    
+    if (sender->tag == 1) {
+        
+        sender->removeFromScene(this);
+        inputLocked = false;
     }
 }
 
@@ -803,4 +826,12 @@ void InvestigationScene::dialogueEnd() {
     speechLabel->setVisible(false);
     speechButton->setEnabled(false);
     
+}
+
+void InvestigationScene::quitToMenu() {
+    
+    ModalDialog *dialog = new ModalDialog("Do you really want to quit the game?", font, "OK", "Cancel");
+    dialog->tag = 1;
+    dialog->setHandler(this);
+    dialog->showInScene(this, 1000);
 }

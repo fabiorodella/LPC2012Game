@@ -24,6 +24,7 @@
 #define LPC2012Game_Label_h
 
 #include <string>
+#include <vector>
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_ttf.h>

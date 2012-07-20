@@ -25,6 +25,8 @@
 
 #include "Framework.h"
 
+#include "ModalDialog.h"
+
 #include "Mystery.h"
 
 #define START_TIME 18000
@@ -33,7 +35,7 @@
 
 #define PLAYER_SPRITE_TAG 666
 
-class InvestigationScene : public Scene, ButtonHandler {
+class InvestigationScene : public Scene, ButtonHandler, ModalDialogHandler {
     
     ALLEGRO_FONT *font;
     ALLEGRO_FONT *fontBig;
@@ -76,7 +78,7 @@ class InvestigationScene : public Scene, ButtonHandler {
     float curFrame;
     
     bool inputLocked;
-    bool escapePressed;
+    bool endScene;
     bool debug;
     
 public:
@@ -91,6 +93,9 @@ public:
     
     virtual void onButtonClicked(Button *sender);
     
+    virtual void onConfirm(ModalDialog *sender);
+    virtual void onCancel(ModalDialog *sender);
+    
     void removeQuestionElements();
     void questionStart();
     void questionWho();
@@ -102,6 +107,7 @@ public:
     void dialogueAdvance();
     void dialogueEnd();
     
+    void quitToMenu();
 };
 
 #endif
