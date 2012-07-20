@@ -20,20 +20,31 @@
  
  */
 
-#include "MainMenuScene.h"
-#include "InvestigationScene.h"
-#include "DebugCrimeScene.h"
+#ifndef LPC2012Game_Defines_h
+#define LPC2012Game_Defines_h
 
-int main(int argc, char **argv) {
-    
-    Director::getInstance()->initialize();
-    
-    MainMenuScene *scene = new MainMenuScene();
-    //InvestigationScene *scene = new InvestigationScene();  
-    //DebugCrimeScene *scene = new DebugCrimeScene();
-    
-    Director::getInstance()->startWithScene(scene);
-    
-    return 0;
-}
+#define MAX_MYSTERY_DURATION 7200
 
+#define STEP_DURATION 2
+
+#define MIN_DURATION_BEFORE_SEARCH_WEAPON 200
+#define MAX_DURATION_BEFORE_SEARCH_WEAPON 500
+
+#define MIN_DURATION_BEFORE_TRY_MURDER 200
+#define MAX_DURATION_BEFORE_TRY_MURDER 500
+
+#define MIN_DURATION_POI_INTERACTION 10
+#define MAX_DURATION_POI_INTERACTION 30
+
+#define MIN_DURATION_CONVERSATION 60
+#define MAX_DURATION_CONVERSATION 60
+#define CONVERSATION_INTEREST_FACTOR 3
+#define CONVERSATION_INTERVAL 120
+
+#define START_TIME 18000
+#define MAX_TIME 10800
+#define QUESTION_INTERVAL 900
+
+#define PLAYER_SPRITE_TAG 666
+
+#endif

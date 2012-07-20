@@ -25,6 +25,7 @@
 #include "Character.h"
 #include "Room.h"
 #include "Utils.h"
+#include "Defines.h"
 
 std::string Character::getMemory(std::vector<Memory *>::iterator &it, std::vector<Memory *> &interval, MemoryFilter &filter) {
     
@@ -36,6 +37,8 @@ std::string Character::getMemory(std::vector<Memory *>::iterator &it, std::vecto
     
     if (memory->who != NULL && memory->who == this) {
         pronoum = "I";
+    } else if (filter.who == NULL) {
+        pronoum = memory->who->name;
     } else if (memory->who->male) {
         pronoum = "He";
     } else {
@@ -54,19 +57,19 @@ std::string Character::getMemory(std::vector<Memory *>::iterator &it, std::vecto
             ret.append(" was in the ");
             ret.append(memory->where->name);
             ret.append(" from around ");
-            ret.append(timeToString(memory->when, false));
+            ret.append(timeToString(memory->when + START_TIME, false));
             ret.append(" to ");
-            ret.append(timeToString(endMemory->when, false));
+            ret.append(timeToString(endMemory->when + START_TIME, false));
             ret.append(". ");
             
             ++it;
             
             while (it < endIt) {
                 Memory *other = (Memory *) *it;
-                if (other->who == memory->who) {
+                if (other->where == memory->where) {
                     ret.append(getMemory(it, interval, filter));
-                    ++it;
                 }
+                ++it;
             }
             
         } else {
@@ -75,7 +78,7 @@ std::string Character::getMemory(std::vector<Memory *>::iterator &it, std::vecto
             ret.append(" entered the ");
             ret.append(memory->where->name);
             ret.append(" around ");
-            ret.append(timeToString(memory->when, false));
+            ret.append(timeToString(memory->when + START_TIME, false));
             ret.append(".");
         }
         
@@ -85,7 +88,7 @@ std::string Character::getMemory(std::vector<Memory *>::iterator &it, std::vecto
         ret.append(" left the ");
         ret.append(memory->where->name);
         ret.append(" around ");
-        ret.append(timeToString(memory->when, false));
+        ret.append(timeToString(memory->when + START_TIME, false));
         ret.append(".");
         
     } else if (memory->event == EventStartInteractPOI) {
@@ -100,9 +103,9 @@ std::string Character::getMemory(std::vector<Memory *>::iterator &it, std::vecto
             ret.append(" looked at the ");
             ret.append(memory->what->description);
             ret.append(" from around ");
-            ret.append(timeToString(memory->when, false));
+            ret.append(timeToString(memory->when + START_TIME, false));
             ret.append(" to ");
-            ret.append(timeToString(endMemory->when, false));
+            ret.append(timeToString(endMemory->when + START_TIME, false));
             ret.append(". ");
             
             it = endIt;
@@ -115,7 +118,7 @@ std::string Character::getMemory(std::vector<Memory *>::iterator &it, std::vecto
             ret.append(" in the ");
             ret.append(memory->where->name);
             ret.append(" around ");
-            ret.append(timeToString(memory->when, false));
+            ret.append(timeToString(memory->when + START_TIME, false));
             ret.append(". ");
         }
         
@@ -127,7 +130,7 @@ std::string Character::getMemory(std::vector<Memory *>::iterator &it, std::vecto
         ret.append(" in the ");
         ret.append(memory->where->name);
         ret.append(" around ");
-        ret.append(timeToString(memory->when, false));
+        ret.append(timeToString(memory->when + START_TIME, false));
         ret.append(". ");
         
     } else if (memory->event == EventStartConversation) {
@@ -147,9 +150,9 @@ std::string Character::getMemory(std::vector<Memory *>::iterator &it, std::vecto
             ret.append(" was talking to ");
             ret.append(otherName);
             ret.append(" from around ");
-            ret.append(timeToString(memory->when, false));
+            ret.append(timeToString(memory->when + START_TIME, false));
             ret.append(" to ");
-            ret.append(timeToString(endMemory->when, false));
+            ret.append(timeToString(endMemory->when + START_TIME, false));
             ret.append(". ");
             
             it = endIt;
@@ -160,7 +163,7 @@ std::string Character::getMemory(std::vector<Memory *>::iterator &it, std::vecto
             ret.append(" started talking to ");
             ret.append(otherName);
             ret.append(" around ");
-            ret.append(timeToString(memory->when, false));
+            ret.append(timeToString(memory->when + START_TIME, false));
             ret.append(". ");
         }
         
@@ -175,7 +178,7 @@ std::string Character::getMemory(std::vector<Memory *>::iterator &it, std::vecto
         ret.append(" finished talking to ");
         ret.append(otherName);
         ret.append(" around ");
-        ret.append(timeToString(memory->when, false));
+        ret.append(timeToString(memory->when + START_TIME, false));
         ret.append(". ");
     }
     
@@ -296,7 +299,7 @@ bool Character::isInteractingWithPOI() {
     return false;
 }
 
-std::vector<std::string> Character::getMemories(MemoryFilter filter, long startTime) {
+std::vector<std::string> Character::getMemories(MemoryFilter filter) {
     
     std::vector<Memory *> interval;
     std::vector<Memory *>::iterator it;

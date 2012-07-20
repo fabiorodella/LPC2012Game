@@ -20,20 +20,32 @@
  
  */
 
-#include "MainMenuScene.h"
-#include "InvestigationScene.h"
-#include "DebugCrimeScene.h"
+#ifndef LPC2012Game_MainMenuScene_h
+#define LPC2012Game_MainMenuScene_h
 
-int main(int argc, char **argv) {
-    
-    Director::getInstance()->initialize();
-    
-    MainMenuScene *scene = new MainMenuScene();
-    //InvestigationScene *scene = new InvestigationScene();  
-    //DebugCrimeScene *scene = new DebugCrimeScene();
-    
-    Director::getInstance()->startWithScene(scene);
-    
-    return 0;
-}
+#include "Framework.h"
 
+class MainMenuScene : public Scene, ButtonHandler {
+    
+    ALLEGRO_FONT *font;
+    
+    Button *newCaseButton;
+    
+    Button *quitButton;
+    
+    Label *generatingLabel;
+    
+    bool optionSelected;
+    
+public:
+    
+    ~MainMenuScene();
+    
+    virtual void setupScene();
+    virtual bool tick(double dt);
+    
+    virtual void onButtonClicked(Button *sender);
+    
+};
+
+#endif

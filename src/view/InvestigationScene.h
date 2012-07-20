@@ -29,18 +29,13 @@
 
 #include "Mystery.h"
 
-#define START_TIME 18000
-#define MAX_TIME 10800
-#define QUESTION_INTERVAL 900
-
-#define PLAYER_SPRITE_TAG 666
-
 class InvestigationScene : public Scene, ButtonHandler, ModalDialogHandler {
     
     ALLEGRO_FONT *font;
     ALLEGRO_FONT *fontBig;
     
     Mystery *mystery;
+    long mysteryTime;
     
     Spritesheet *playerSprite;
     

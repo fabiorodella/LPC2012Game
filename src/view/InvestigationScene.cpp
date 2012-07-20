@@ -23,9 +23,11 @@
 #include <allegro5/allegro_primitives.h>
 
 #include "InvestigationScene.h"
+#include "MainMenuScene.h"
 #include "Utils.h"
 
 #include "Room.h"
+#include "Defines.h"
 
 InvestigationScene::~InvestigationScene() {
     delete mystery;
@@ -76,15 +78,28 @@ void InvestigationScene::setupScene() {
     playerSprite->setAutoZOrder(true);
     addToDisplayList(playerSprite);
     
-    mystery = new Mystery("res/mansion.xml", (unsigned int) time(0), collision->getData(), collision->getSize().width, collision->getSize().height);
+    unsigned int seed = 0;
     
-    long mysteryTime = 0;
-    while (!mystery->ended) {
-        mystery->step();
-        mysteryTime++;
-    }
-            
-    printf("Total duration: %ld %s\n", mysteryTime, timeToString(mysteryTime, true).c_str());
+    do {
+        
+        mysteryTime = 0;
+        seed = (unsigned int) time(0);
+        
+        mystery = new Mystery("res/mansion.xml", seed, collision->getData(), collision->getSize().width, collision->getSize().height);
+        
+        while (!mystery->ended && mysteryTime < MAX_MYSTERY_DURATION) {
+            mystery->step();
+            mysteryTime++;
+        }
+        
+        if (!mystery->ended) {
+            delete mystery;
+            mystery = NULL;
+        }
+        
+    } while (mystery == NULL);
+                    
+    printf("Case seed: %d Total duration: %ld %s\n", seed, mysteryTime, timeToString(mysteryTime, true).c_str());
     
     std::vector<Character *> characters = mystery->getCharacters();
     std::vector<Character *>::iterator itChars;
@@ -566,7 +581,9 @@ void InvestigationScene::onButtonClicked(Button *sender) {
                 break;
         }
         
-        if ((currentFilter.timeStart + amnt) < 0 || (currentFilter.timeEnd + amnt) > MAX_TIME) {
+        long maxTime = ((mysteryTime / QUESTION_INTERVAL) + 1) * QUESTION_INTERVAL;
+        
+        if ((currentFilter.timeStart + amnt) < 0 || (currentFilter.timeEnd + amnt) > maxTime) {
             amnt = 0;
         }
         
@@ -581,6 +598,9 @@ void InvestigationScene::onButtonClicked(Button *sender) {
 void InvestigationScene::onConfirm(ModalDialog *sender) {
     
     if (sender->tag == 1) {
+        
+        MainMenuScene *scene = new MainMenuScene();
+        Director::getInstance()->enqueueScene(scene);
         
         endScene = true;
         sender->removeFromScene(this);
@@ -828,13 +848,31 @@ void InvestigationScene::dialogueStart() {
     
     speechLines.clear();
     
-    speechLines.push_back(std::string("I remember some things from around that time."));
+    std::vector<std::string> memories = activeCharacter->getMemories(currentFilter);
     
-    std::vector<std::string> memories = activeCharacter->getMemories(currentFilter, START_TIME);
-    
-    speechLines.insert(speechLines.end(), memories.begin(), memories.end());
-    
-    printf("Speech lines: %ld\n", speechLines.size());
+    if (memories.size() > 0) {
+        
+        speechLines.insert(speechLines.end(), memories.begin(), memories.end());
+        
+    } else {
+        
+        if (currentFilter.who == NULL) {
+            speechLines.push_back(std::string("I don't remember seeing anyone there around that time."));
+        } else if (currentFilter.where == NULL) {
+            
+            std::string res = "I don't remember seeing ";
+            
+            if (currentFilter.who->male) {
+                res.append("him ");
+            } else {
+                res.append("her ");
+            }
+            
+            res.append("around that time.");
+            
+            speechLines.push_back(res);
+        }
+    }
     
     speechIdx = 0;
     

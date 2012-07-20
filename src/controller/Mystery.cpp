@@ -28,6 +28,7 @@
 #include "XmlHelper.h"
 #include "Mystery.h"
 #include "Room.h"
+#include "Defines.h"
 
 class MapSearchNode {
 
