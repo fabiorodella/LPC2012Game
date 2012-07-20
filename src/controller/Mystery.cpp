@@ -157,11 +157,12 @@ POI *Mystery::parsePOINode(xmlNode *node) {
     return poi;
 }
 
-void Mystery::registerEventFor(Character *target, Event event, Character *who, Room *where, POI *what) {
+void Mystery::registerEventFor(Character *target, Event event, Character *who, Character *whoElse, Room *where, POI *what) {
     
     Memory *memory = new Memory();
     memory->event = event;
     memory->who = who;
+    memory->whoElse = whoElse;
     memory->where = where;
     memory->what = what;
     memory->when = time;
@@ -170,7 +171,7 @@ void Mystery::registerEventFor(Character *target, Event event, Character *who, R
     target->addMemory(memory);
 }
 
-void Mystery::registerEventForAllInRoom(Event event, Character *who, Room *where, POI *what) {
+void Mystery::registerEventForAllInRoom(Event event, Character *who, Character *whoElse, Room *where, POI *what) {
     
     std::vector<Character *>::iterator it;
     for (it = characters.begin(); it < characters.end(); ++it) {
@@ -179,7 +180,7 @@ void Mystery::registerEventForAllInRoom(Event event, Character *who, Room *where
         
         if (character->currentRoom == where) {
             
-            registerEventFor(character, event, who, where, what);
+            registerEventFor(character, event, who, whoElse, where, what);
         }
     }
 }
@@ -523,7 +524,7 @@ void Mystery::step() {
                         step->position = pointMake(node->x, node->y);
                         step->conversationWith = NULL;
                         step->type = StepTypeStartInteractPOI;
-                        step->duration = 2;
+                        step->duration = 1;
                         
                         character->addStep(step);
                         
@@ -539,7 +540,7 @@ void Mystery::step() {
                         step->position = pointMake(node->x, node->y);
                         step->conversationWith = NULL;
                         step->type = StepTypeEndInteractPOI;
-                        step->duration = 2;
+                        step->duration = 1;
                         
                         character->addStep(step);
                         
@@ -596,14 +597,14 @@ void Mystery::step() {
                 
                 if (character->currentRoom != NULL) {
                     printf("%s left %s\n", character->name.c_str(), character->currentRoom->name.c_str());
-                    registerEventForAllInRoom(EventLeftRoom, character, character->currentRoom, NULL);
+                    registerEventForAllInRoom(EventLeftRoom, character, NULL, character->currentRoom, NULL);
                 }
                 
                 character->currentRoom = currentRoom;
                 
                 if (character->currentRoom != NULL) {
                     printf("%s entered %s\n", character->name.c_str(), character->currentRoom->name.c_str());
-                    registerEventForAllInRoom(EventEnteredRoom, character, character->currentRoom, NULL);
+                    registerEventForAllInRoom(EventEnteredRoom, character, NULL, character->currentRoom, NULL);
                     
                     // Register visible weapons the character saw in the room
                     std::vector<POI *>::iterator itPOI;
@@ -612,7 +613,7 @@ void Mystery::step() {
                         POI *poi = (POI *) *itPOI;
                         
                         if (poi->interest == InterestContainerVisible && poi->contents != NULL && poi->contents->isWeapon()) {
-                            registerEventFor(character, EventSawWeapon, NULL, character->currentRoom, poi);
+                            registerEventFor(character, EventSawWeapon, NULL, NULL, character->currentRoom, poi);
                         }
                     }
                     
@@ -624,12 +625,13 @@ void Mystery::step() {
                             
                             // Register others having conversations
                             if (other->isHavingConversation()) {
-                                registerEventFor(character, EventStartConversation, other, character->currentRoom, NULL);
+                                Character *another = other->getCurrentStep()->conversationWith;
+                                registerEventFor(character, EventStartConversation, other, another, character->currentRoom, NULL);
                             }
                             
                             // Register others interacting with POIs
                             if (other->isInteractingWithPOI()) {
-                                registerEventFor(character, EventStartInteractPOI, NULL, character->currentRoom, other->currentTarget);
+                                registerEventFor(character, EventStartInteractPOI, other, NULL, character->currentRoom, other->currentTarget);
                             }
                         }
                     }
@@ -638,15 +640,19 @@ void Mystery::step() {
             
             if (character->getCurrentStep() != NULL) {
                 
+                Character *another;
+                
                 switch (character->getCurrentStep()->type) {
                     case StepTypeStartInteractPOI:
-                        registerEventForAllInRoom(EventStartInteractPOI, character, character->currentRoom, character->currentTarget);
+                        registerEventForAllInRoom(EventStartInteractPOI, character, NULL, character->currentRoom, character->currentTarget);
                         break;
                     case StepTypeEndInteractPOI:
-                        registerEventForAllInRoom(EventEndInteractPOI, character, character->currentRoom, character->currentTarget);
+                        another = character->getCurrentStep()->conversationWith;
+                        registerEventForAllInRoom(EventEndInteractPOI, character, another, character->currentRoom, character->currentTarget);
                         break;
                     case StepTypeEndConversation:
-                        registerEventForAllInRoom(EventEndConversation, character, character->currentRoom, character->currentTarget);
+                        another = character->getCurrentStep()->conversationWith;
+                        registerEventForAllInRoom(EventEndConversation, character, another, character->currentRoom, character->currentTarget);
                         break;
                     default:
                         break;
@@ -710,7 +716,7 @@ void Mystery::step() {
                         
                         step = new Step();
                         step->position = character->position;
-                        step->duration = 2;
+                        step->duration = 1;
                         step->conversationWith = other;
                         step->type = StepTypeEndConversation;
                         character->addStep(step);
@@ -724,7 +730,7 @@ void Mystery::step() {
                         
                         step = new Step();
                         step->position = other->position;
-                        step->duration = 2;
+                        step->duration = 1;
                         step->conversationWith = character;
                         step->type = StepTypeEndConversation;
                         other->addStep(step);
@@ -732,8 +738,8 @@ void Mystery::step() {
                         character->conversationInterval = CONVERSATION_INTERVAL;
                         other->conversationInterval = CONVERSATION_INTERVAL;
                         
-                        registerEventForAllInRoom(EventStartConversation, character, character->currentRoom, NULL);
-                        registerEventForAllInRoom(EventEndConversation, other, other->currentRoom, NULL);
+                        registerEventForAllInRoom(EventStartConversation, character, other, character->currentRoom, NULL);
+                        registerEventForAllInRoom(EventStartConversation, other, character, character->currentRoom, NULL);
                         
                         printf("%s and %s are having a conversation\n", character->name.c_str(), other->name.c_str());
                         

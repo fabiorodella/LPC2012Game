@@ -476,7 +476,26 @@ void InvestigationScene::onButtonClicked(Button *sender) {
             
         } else if (activePOI != NULL) {
             
-            printf("Interacted with %s\n", activePOI->description.c_str());
+            char buff[200];
+            const char *confirmMsg = NULL;
+            const char *cancelMsg = NULL;
+            
+            if (activePOI->contents != NULL && activePOI->contents->isWeapon()) {
+                                                
+                sprintf(buff, "You found a %s, is this the murder weapon?", activePOI->contents->description.c_str());
+                confirmMsg = "Yes";
+                cancelMsg = "No";
+            } else {
+                sprintf(buff, "Nothing suspicious here.");
+                confirmMsg = "OK";
+            }
+            
+            ModalDialog *dialog = new ModalDialog(buff, font, confirmMsg, cancelMsg);
+            dialog->tag = 2;
+            dialog->setHandler(this);
+            dialog->showInScene(this, 1000);
+            
+            inputLocked = true;
         }
     
     } else if (sender == cancelQuestionButton) {
@@ -512,6 +531,11 @@ void InvestigationScene::onButtonClicked(Button *sender) {
                 break;
             case 102:
                 questionWhere();
+                break;
+            case 103:
+                questionEnd();
+                confirmSuspect();
+                break;
             default:
                 break;
         }
@@ -561,17 +585,23 @@ void InvestigationScene::onConfirm(ModalDialog *sender) {
         endScene = true;
         sender->removeFromScene(this);
         inputLocked = false;
-    }
-    
-}
-
-void InvestigationScene::onCancel(ModalDialog *sender) {
-    
-    if (sender->tag == 1) {
+        
+    } else if (sender->tag == 2) {
+        
+        sender->removeFromScene(this);
+        inputLocked = false;
+        
+    } else if (sender->tag == 3) {
         
         sender->removeFromScene(this);
         inputLocked = false;
     }
+}
+
+void InvestigationScene::onCancel(ModalDialog *sender) {
+    
+    sender->removeFromScene(this);
+    inputLocked = false;
 }
 
 void InvestigationScene::removeQuestionElements() {
@@ -624,6 +654,16 @@ void InvestigationScene::questionStart() {
     button->setAnchorPoint(pointMake(0.5, 0.5));
     button->setPosition(pointMake(400, 300));
     button->setTag(102);
+    button->setHandler(this);
+    
+    addToDisplayList(button);
+    questionElements.push_back(button);
+    
+    button = new Button("You are the murderer!", font, "res/btn_action.png", "res/btn_action_pressed.png");
+    button->setZOrder(504);
+    button->setAnchorPoint(pointMake(0.5, 0.5));
+    button->setPosition(pointMake(400, 400));
+    button->setTag(103);
     button->setHandler(this);
     
     addToDisplayList(button);
@@ -805,7 +845,7 @@ void InvestigationScene::dialogueStart() {
     
     speechLabel->setText(speechLines[speechIdx].c_str());
     speechLabel->setVisible(true);
-    speechLabel->setPosition(pointOffset(bkgSpeech->getPosition(), 60, -175));
+    speechLabel->setPosition(pointOffset(bkgSpeech->getPosition(), 54, -175));
     
     speechButton->setEnabled(true);
     speechButton->setPosition(bkgSpeech->getPosition());
@@ -832,6 +872,14 @@ void InvestigationScene::quitToMenu() {
     
     ModalDialog *dialog = new ModalDialog("Do you really want to quit the game?", font, "OK", "Cancel");
     dialog->tag = 1;
+    dialog->setHandler(this);
+    dialog->showInScene(this, 1000);
+}
+
+void InvestigationScene::confirmSuspect() {
+    
+    ModalDialog *dialog = new ModalDialog("Do you really want to charge this person with the murder?", font, "Yes", "No");
+    dialog->tag = 3;
     dialog->setHandler(this);
     dialog->showInScene(this, 1000);
 }

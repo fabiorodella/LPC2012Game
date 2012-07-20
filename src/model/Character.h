@@ -60,6 +60,10 @@ private:
     
     std::vector<Step *> path;
     
+    std::string getMemory(std::vector<Memory *>::iterator &it, std::vector<Memory *> &interval, MemoryFilter &filter);
+    
+    std::vector<Memory *>::iterator findEndMemory(std::vector<Memory *>::iterator startIt, std::vector<Memory *> &interval);
+    
 public:
     
     int tag;

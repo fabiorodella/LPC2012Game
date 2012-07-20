@@ -53,11 +53,15 @@ class Memory {
 
 public:
     
+    int index;
+    
     Event event;
     
     long when;
     
     Character *who;
+    
+    Character *whoElse;
     
     Room *where;
     

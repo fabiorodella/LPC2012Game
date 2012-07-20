@@ -27,7 +27,7 @@
 
 #include "Character.h"
 
-#define STEP_DURATION 1
+#define STEP_DURATION 2
 #define MIN_DURATION_BEFORE_SEARCH_WEAPON 200
 #define MAX_DURATION_BEFORE_SEARCH_WEAPON 500
 #define MIN_DURATION_BEFORE_TRY_MURDER 200
@@ -49,8 +49,8 @@ private:
     long time;
     
     POI *parsePOINode(xmlNode *node);
-    void registerEventFor(Character *target, Event event, Character *who, Room *where, POI *what);
-    void registerEventForAllInRoom(Event event, Character *who, Room *where, POI *what);
+    void registerEventFor(Character *target, Event event, Character *who, Character *whoElse, Room *where, POI *what);
+    void registerEventForAllInRoom(Event event, Character *who, Character *whoElse, Room *where, POI *what);
     
 public:
     

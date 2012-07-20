@@ -26,6 +26,193 @@
 #include "Room.h"
 #include "Utils.h"
 
+std::string Character::getMemory(std::vector<Memory *>::iterator &it, std::vector<Memory *> &interval, MemoryFilter &filter) {
+    
+    std::string ret;
+    
+    Memory *memory = (Memory *) *it;
+    
+    std::string pronoum;
+    
+    if (memory->who != NULL && memory->who == this) {
+        pronoum = "I";
+    } else if (memory->who->male) {
+        pronoum = "He";
+    } else {
+        pronoum = "She";
+    }
+
+    if (memory->event == EventEnteredRoom) {
+        
+        std::vector<Memory *>::iterator endIt = findEndMemory(it, interval);
+        
+        if (endIt != interval.end()) {
+            
+            Memory *endMemory = (Memory *) *endIt;
+            
+            ret.append(pronoum);
+            ret.append(" was in the ");
+            ret.append(memory->where->name);
+            ret.append(" from around ");
+            ret.append(timeToString(memory->when, false));
+            ret.append(" to ");
+            ret.append(timeToString(endMemory->when, false));
+            ret.append(". ");
+            
+            ++it;
+            
+            while (it < endIt) {
+                Memory *other = (Memory *) *it;
+                if (other->who == memory->who) {
+                    ret.append(getMemory(it, interval, filter));
+                    ++it;
+                }
+            }
+            
+        } else {
+            
+            ret.append(pronoum);
+            ret.append(" entered the ");
+            ret.append(memory->where->name);
+            ret.append(" around ");
+            ret.append(timeToString(memory->when, false));
+            ret.append(".");
+        }
+        
+    } else if (memory->event == EventLeftRoom) {
+        
+        ret.append(pronoum);
+        ret.append(" left the ");
+        ret.append(memory->where->name);
+        ret.append(" around ");
+        ret.append(timeToString(memory->when, false));
+        ret.append(".");
+        
+    } else if (memory->event == EventStartInteractPOI) {
+        
+        std::vector<Memory *>::iterator endIt = findEndMemory(it, interval);
+        
+        if (endIt != interval.end()) {
+            
+            Memory *endMemory = (Memory *) *endIt;
+            
+            ret.append(pronoum);
+            ret.append(" looked at the ");
+            ret.append(memory->what->description);
+            ret.append(" from around ");
+            ret.append(timeToString(memory->when, false));
+            ret.append(" to ");
+            ret.append(timeToString(endMemory->when, false));
+            ret.append(". ");
+            
+            it = endIt;
+            
+        } else {
+            
+            ret.append(pronoum);
+            ret.append(" started looking at the ");
+            ret.append(memory->what->description);
+            ret.append(" in the ");
+            ret.append(memory->where->name);
+            ret.append(" around ");
+            ret.append(timeToString(memory->when, false));
+            ret.append(". ");
+        }
+        
+    } else if (memory->event == EventEndInteractPOI) {
+        
+        ret.append(pronoum);
+        ret.append(" stopped looking at the ");
+        ret.append(memory->what->description);
+        ret.append(" in the ");
+        ret.append(memory->where->name);
+        ret.append(" around ");
+        ret.append(timeToString(memory->when, false));
+        ret.append(". ");
+        
+    } else if (memory->event == EventStartConversation) {
+        
+        std::vector<Memory *>::iterator endIt = findEndMemory(it, interval);
+        
+        std::string otherName = memory->whoElse->name;
+        if (memory->whoElse == this) {
+            otherName = "me";
+        }
+        
+        if (endIt != interval.end()) {
+            
+            Memory *endMemory = (Memory *) *endIt;
+            
+            ret.append(pronoum);
+            ret.append(" was talking to ");
+            ret.append(otherName);
+            ret.append(" from around ");
+            ret.append(timeToString(memory->when, false));
+            ret.append(" to ");
+            ret.append(timeToString(endMemory->when, false));
+            ret.append(". ");
+            
+            it = endIt;
+            
+        } else {
+            
+            ret.append(pronoum);
+            ret.append(" started talking to ");
+            ret.append(otherName);
+            ret.append(" around ");
+            ret.append(timeToString(memory->when, false));
+            ret.append(". ");
+        }
+        
+    } else if (memory->event == EventEndConversation) {
+        
+        std::string otherName = memory->whoElse->name;
+        if (memory->whoElse == this) {
+            otherName = "me";
+        }
+        
+        ret.append(pronoum);
+        ret.append(" finished talking to ");
+        ret.append(otherName);
+        ret.append(" around ");
+        ret.append(timeToString(memory->when, false));
+        ret.append(". ");
+    }
+    
+    return ret;
+}
+
+std::vector<Memory *>::iterator Character::findEndMemory(std::vector<Memory *>::iterator startIt, std::vector<Memory *> &interval) {
+    
+    Memory *first = (Memory *) *startIt;
+    
+    Event endEvent;
+    
+    if (first->event == EventEnteredRoom) {
+        endEvent = EventLeftRoom;
+    } else if (first->event == EventStartInteractPOI) {
+        endEvent = EventEndInteractPOI;
+    } else if (first->event == EventStartConversation) {
+        endEvent = EventEndConversation;
+    }
+    
+    ++startIt;
+    
+    while (startIt < interval.end()) {
+        
+        Memory *cur = (Memory *) *startIt;
+        
+        if (cur->event == endEvent && cur->what == first->what && cur->where == first->where && cur->who == first->who) {
+            
+            break;        
+        }
+        
+        ++startIt;
+    }
+    
+    return startIt;
+}
+
 Character::~Character() {
     
     std::vector<Memory *>::iterator itMem;
@@ -44,6 +231,8 @@ Character::~Character() {
 }
 
 void Character::addMemory(Memory *m) {
+    
+     m->index = memories.size();
     memories.push_back(m);
 }
 
@@ -140,70 +329,13 @@ std::vector<std::string> Character::getMemories(MemoryFilter filter, long startT
     }
     
     std::vector<std::string> ret;
-    
-    for (int i = 0; i < interval.size(); ++i) {
+            
+    for (it = interval.begin(); it < interval.end(); ++it) {
         
-        Memory *memory = interval[i];
+        std::string line = getMemory(it, interval, filter);
+        printf("%s\n\n", line.c_str());
         
-        if (memory->event == EventEnteredRoom) {
-            
-            int j = i + 1;
-            Memory *leftRoom = NULL;
-            
-            while (j < interval.size() && leftRoom == NULL) {
-                
-                if (interval[j]->event == EventEnteredRoom) {
-                    break;
-                }
-                
-                if (interval[j]->event == EventLeftRoom && interval[j]->where == memory->where) {
-                    leftRoom = interval[j];
-                } else {
-                    j++;
-                }
-            }
-            
-            if (leftRoom) {
-                
-                std::string mem;
-                mem.append(memory->who->name);
-                mem.append(" was in the ");
-                mem.append(memory->where->name);
-                mem.append(" from around ");
-                mem.append(timeToString(memory->when + startTime, false));
-                mem.append(" to ");
-                mem.append(timeToString(leftRoom->when + startTime, false));
-                mem.append(".");
-                
-                ret.push_back(mem);
-                
-                i = j;
-                
-            } else {
-                
-                std::string mem;
-                mem.append(memory->who->name);
-                mem.append(" entered the ");
-                mem.append(memory->where->name);
-                mem.append(" around ");
-                mem.append(timeToString(memory->when + startTime, false));
-                mem.append(".");
-                
-                ret.push_back(mem);
-            }
-            
-        } else if (memory->event == EventLeftRoom) {
-            
-            std::string mem;
-            mem.append(memory->who->name);
-            mem.append(" left the ");
-            mem.append(memory->where->name);
-            mem.append(" around ");
-            mem.append(timeToString(memory->when + startTime, false));
-            mem.append(".");
-            
-            ret.push_back(mem);
-        }
+        ret.push_back(line);
     }
     
     return ret;

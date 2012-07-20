@@ -108,6 +108,7 @@ public:
     void dialogueEnd();
     
     void quitToMenu();
+    void confirmSuspect();
 };
 
 #endif
