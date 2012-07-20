@@ -242,7 +242,7 @@ void InvestigationScene::setupScene() {
     std::string msg;
     msg.append(mystery->victim->name);
     msg.append("'s body was found around ");
-    msg.append(timeToString(mystery->corpseFoundTime, false));
+    msg.append(timeToString(mystery->corpseFoundTime + START_TIME, false));
     msg.append(" in the ");
     msg.append(mystery->corpseFoundRoom->name);
     msg.append(".");
