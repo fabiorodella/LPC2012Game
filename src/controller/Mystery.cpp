@@ -278,6 +278,8 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
         printf("%s is in the %s in the %s\n", weapon->description.c_str(), container->description.c_str(), room->name.c_str());
     }
     
+    crimeWeapon = NULL;
+    
     std::vector<xmlNode *> charNodes = xmlGetChildrenForName(root, "character");
 
     int i = 1;
@@ -335,8 +337,8 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
         murderer = characters[murdererIdx];
     }
     
-    //TODO randomize weapon types
-    murderer->weaponInterest = InterestWeaponCutting;
+    int weaponInterest = InterestWeaponCutting + rand() % 3;
+    murderer->weaponInterest = (Interest) weaponInterest;
     murderer->timeBeforeSearchWeapon = rand() % MAX_DURATION_BEFORE_SEARCH_WEAPON + MIN_DURATION_BEFORE_SEARCH_WEAPON;
     murderer->timeBeforeTryMurder = rand() % MAX_DURATION_BEFORE_TRY_MURDER + MIN_DURATION_BEFORE_TRY_MURDER;
     
@@ -695,6 +697,8 @@ void Mystery::step() {
                         
                         printf("*** %s found %s's body in the %s ***\n", character->name.c_str(), victim->name.c_str(), character->currentRoom->name.c_str());
                         corpseFound = true;
+                        corpseFoundTime = time;
+                        corpseFoundRoom = character->currentRoom;
                         character->clearPath();
                     }
                     
@@ -809,6 +813,7 @@ void Mystery::step() {
                     
                     printf("*** %s murdered %s! ***\n", character->name.c_str(), victim->name.c_str());
                     victim->dead = true;
+                    crimeWeapon = character->carryingWeapon;
                     
                     character->clearPath();
                 }

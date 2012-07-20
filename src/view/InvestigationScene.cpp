@@ -238,6 +238,18 @@ void InvestigationScene::setupScene() {
     
     currentFilter.timeStart = 0;
     currentFilter.timeEnd = QUESTION_INTERVAL;
+    
+    std::string msg;
+    msg.append(mystery->victim->name);
+    msg.append("'s body was found around ");
+    msg.append(timeToString(mystery->corpseFoundTime, false));
+    msg.append(" in the ");
+    msg.append(mystery->corpseFoundRoom->name);
+    msg.append(".");
+    
+    ModalDialog *dialog = new ModalDialog(msg.c_str(), font, "OK", NULL);
+    dialog->setHandler(this);
+    dialog->showInScene(this, 1000);
 }
 
 bool InvestigationScene::tick(double dt) {
@@ -487,7 +499,32 @@ void InvestigationScene::onButtonClicked(Button *sender) {
         if (activeCharacter != NULL) {
             
             printf("Talked to %s\n", activeCharacter->name.c_str());
-            questionStart();
+            
+            if (activeCharacter->dead) {
+                
+                std::string msg = "The cause of death appears to be ";
+                
+                switch (mystery->crimeWeapon->interest) {
+                    case InterestWeaponBlunt:
+                        msg.append("a blow to the head with a blunt object.");
+                        break;
+                    case InterestWeaponCutting:
+                        msg.append("stabbing with a blade or piercing object.");
+                        break;
+                    case InterestWeaponStrangling:
+                        msg.append("strangulation.");
+                        break;
+                    default:
+                        break;
+                }
+                
+                ModalDialog *dialog = new ModalDialog(msg.c_str(), font, "OK", NULL);
+                dialog->setHandler(this);
+                dialog->showInScene(this, 1000);
+                
+            } else {
+                questionStart();
+            }
             
         } else if (activePOI != NULL) {
             
@@ -597,24 +634,17 @@ void InvestigationScene::onButtonClicked(Button *sender) {
 
 void InvestigationScene::onConfirm(ModalDialog *sender) {
     
+    sender->removeFromScene(this);
+    inputLocked = false;
+    
     if (sender->tag == 1) {
         
         MainMenuScene *scene = new MainMenuScene();
         Director::getInstance()->enqueueScene(scene);
         
         endScene = true;
-        sender->removeFromScene(this);
         inputLocked = false;
         
-    } else if (sender->tag == 2) {
-        
-        sender->removeFromScene(this);
-        inputLocked = false;
-        
-    } else if (sender->tag == 3) {
-        
-        sender->removeFromScene(this);
-        inputLocked = false;
     }
 }
 

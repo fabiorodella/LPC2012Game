@@ -50,8 +50,11 @@ public:
     Character *victim;
     
     std::vector<POI *> weapons;
+    POI * crimeWeapon;
     
     bool corpseFound;
+    long corpseFoundTime;
+    Room *corpseFoundRoom;
     bool ended;
     
     Mystery(const char *file, unsigned int seed, short *collisionData, int mapWidth, int mapHeight);
