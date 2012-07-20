@@ -23,10 +23,11 @@
 #include "Button.h"
 #include "BitmapLoader.h"
 
-Button::Button(const char *text, ALLEGRO_FONT *fnt, const char *normalImageFile, const char *pressedImageFile) {
+Button::Button(const char *text, ALLEGRO_FONT *fnt, ALLEGRO_COLOR col, const char *normalImageFile, const char *pressedImageFile) {
     
     labelText = text;
     font = fnt;
+    color = col;
     
     normalImage = BitmapLoader::getInstance()->getBitmap(normalImageFile);
     pressedImage = BitmapLoader::getInstance()->getBitmap(pressedImageFile);
@@ -94,7 +95,7 @@ void Button::draw() {
             ty++;
         }
         
-        al_draw_text(font, al_map_rgb(0, 0, 0), tx, ty, 0, labelText.c_str());
+        al_draw_text(font, color, tx, ty, 0, labelText.c_str());
     }
 }
 

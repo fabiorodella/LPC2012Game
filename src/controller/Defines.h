@@ -47,4 +47,6 @@
 
 #define PLAYER_SPRITE_TAG 666
 
+#define BTN_TXT_COLOR al_map_rgb(73, 33, 24)
+
 #endif

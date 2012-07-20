@@ -21,6 +21,7 @@
  */
 
 #include "ModalDialog.h"
+#include "Defines.h"
 
 ModalDialog::ModalDialog(const char *text, ALLEGRO_FONT *fnt, const char *confirmMsg, const char *cancelMsg) {
     
@@ -28,12 +29,12 @@ ModalDialog::ModalDialog(const char *text, ALLEGRO_FONT *fnt, const char *confir
     
     label = new Label(text, fnt, al_map_rgb(0, 0, 0), 350);
     
-    confirmButton = new Button(confirmMsg, fnt, "res/btn_med.png", "res/btn_med_pressed.png");
+    confirmButton = new Button(confirmMsg, fnt, BTN_TXT_COLOR, "res/btn_med.png", "res/btn_med_pressed.png");
     
     cancelButton = NULL;
     
     if (cancelMsg != NULL) {
-        cancelButton = new Button(cancelMsg, fnt, "res/btn_med.png", "res/btn_med_pressed.png");
+        cancelButton = new Button(cancelMsg, fnt, BTN_TXT_COLOR, "res/btn_med.png", "res/btn_med_pressed.png");
     }
 }
 

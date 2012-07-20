@@ -22,6 +22,7 @@
 
 #include "MainMenuScene.h"
 #include "InvestigationScene.h"
+#include "Defines.h"
 
 MainMenuScene::~MainMenuScene() {
     
@@ -34,26 +35,19 @@ void MainMenuScene::setupScene() {
     
     addToDisplayList(new Spritesheet("res/title.png"));
     
-    newCaseButton = new Button("New case", font, "res/btn_action.png", "res/btn_action_pressed.png");
+    newCaseButton = new Button("New case", font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
     newCaseButton->setAnchorPoint(pointMake(0.5, 0.5));
     newCaseButton->setPosition(pointMake(400, 300));
     newCaseButton->setHandler(this);
     
     addToDisplayList(newCaseButton);
     
-    quitButton = new Button("Quit game", font, "res/btn_action.png", "res/btn_action_pressed.png");
+    quitButton = new Button("Quit game", font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
     quitButton->setAnchorPoint(pointMake(0.5, 0.5));
     quitButton->setPosition(pointMake(400, 400));
     quitButton->setHandler(this);
     
     addToDisplayList(quitButton);
-    
-    generatingLabel = new Label("Generating case...", font, al_map_rgb(0, 0, 0));
-    generatingLabel->setAnchorPoint(pointMake(0.5, 0.5));
-    generatingLabel->setPosition(pointMake(400, 300));
-    generatingLabel->setVisible(false);
-    
-    addToDisplayList(generatingLabel);
     
     optionSelected = false;
 }
@@ -68,13 +62,12 @@ void MainMenuScene::onButtonClicked(Button *sender) {
         InvestigationScene *scene = new InvestigationScene();
         Director::getInstance()->enqueueScene(scene);
         
-        newCaseButton->setVisible(false);
+        newCaseButton->setLabelText("Generating case...");
         newCaseButton->setEnabled(false);
         
         quitButton->setVisible(false);
         quitButton->setEnabled(false);
         
-        generatingLabel->setVisible(true);
     }
     
     optionSelected = true;

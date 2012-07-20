@@ -44,6 +44,8 @@ class Button : public Drawable {
     
     ALLEGRO_FONT *font;
     
+    ALLEGRO_COLOR color;
+    
     ALLEGRO_BITMAP *normalImage;
     
     ALLEGRO_BITMAP *pressedImage;
@@ -60,7 +62,7 @@ public:
     
     void *data;
     
-    Button(const char *text, ALLEGRO_FONT *fnt, const char *normalImageFile, const char *pressedImageFile);
+    Button(const char *text, ALLEGRO_FONT *fnt, ALLEGRO_COLOR col, const char *normalImageFile, const char *pressedImageFile);
     Button(Size sz);
     ~Button();
     

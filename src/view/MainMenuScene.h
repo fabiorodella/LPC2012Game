@@ -33,8 +33,6 @@ class MainMenuScene : public Scene, ButtonHandler {
     
     Button *quitButton;
     
-    Label *generatingLabel;
-    
     bool optionSelected;
     
 public:

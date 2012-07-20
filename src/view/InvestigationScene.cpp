@@ -130,7 +130,7 @@ void InvestigationScene::setupScene() {
         addToDisplayList(sprite);        
     }
     
-    actionButton = new Button("action", font, "res/btn_action.png", "res/btn_action_pressed.png");
+    actionButton = new Button("action", font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
     actionButton->setZOrder(500);
     actionButton->setAnchorPoint(pointMake(0.5, 1));
     actionButton->setPosition(pointMake(400, 400));
@@ -177,7 +177,7 @@ void InvestigationScene::setupScene() {
     
     addToDisplayList(whenLabel);
     
-    askQuestionButton = new Button("Ask", font, "res/btn_med.png", "res/btn_med_pressed.png");
+    askQuestionButton = new Button("Ask", font, BTN_TXT_COLOR, "res/btn_med.png", "res/btn_med_pressed.png");
     askQuestionButton->setZOrder(504);
     askQuestionButton->setAnchorPoint(pointMake(0.5, 0.5));
     askQuestionButton->setPosition(pointMake(480, 490));
@@ -187,7 +187,7 @@ void InvestigationScene::setupScene() {
     
     addToDisplayList(askQuestionButton);
     
-    cancelQuestionButton = new Button("Cancel", font, "res/btn_med.png", "res/btn_med_pressed.png");
+    cancelQuestionButton = new Button("Cancel", font, BTN_TXT_COLOR, "res/btn_med.png", "res/btn_med_pressed.png");
     cancelQuestionButton->setZOrder(504);
     cancelQuestionButton->setAnchorPoint(pointMake(0.5, 0.5));
     cancelQuestionButton->setPosition(pointMake(300, 490));
@@ -659,7 +659,7 @@ void InvestigationScene::questionStart() {
     
     bkgQuestion->setVisible(true);
     
-    Button *button = new Button("Who was in the...", font, "res/btn_action.png", "res/btn_action_pressed.png");
+    Button *button = new Button("Who was in the...", font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
     button->setZOrder(504);
     button->setAnchorPoint(pointMake(0.5, 0.5));
     button->setPosition(pointMake(400, 200));
@@ -669,7 +669,7 @@ void InvestigationScene::questionStart() {
     addToDisplayList(button);
     questionElements.push_back(button);
     
-    button = new Button("Where was...", font, "res/btn_action.png", "res/btn_action_pressed.png");
+    button = new Button("Where was...", font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
     button->setZOrder(504);
     button->setAnchorPoint(pointMake(0.5, 0.5));
     button->setPosition(pointMake(400, 300));
@@ -679,7 +679,7 @@ void InvestigationScene::questionStart() {
     addToDisplayList(button);
     questionElements.push_back(button);
     
-    button = new Button("You are the murderer!", font, "res/btn_action.png", "res/btn_action_pressed.png");
+    button = new Button("You are the murderer!", font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
     button->setZOrder(504);
     button->setAnchorPoint(pointMake(0.5, 0.5));
     button->setPosition(pointMake(400, 400));
@@ -708,7 +708,7 @@ void InvestigationScene::questionWho() {
         
         Room *room = (Room *) *it;
         
-        Button *button = new Button(room->name.c_str(), font, "res/btn_med.png", "res/btn_med_pressed.png");
+        Button *button = new Button(room->name.c_str(), font, BTN_TXT_COLOR, "res/btn_med.png", "res/btn_med_pressed.png");
         button->setZOrder(504);
         button->setAnchorPoint(pointMake(0.5, 0.5));
         button->setPosition(pointMake(px, py));
@@ -753,7 +753,7 @@ void InvestigationScene::questionWhere() {
             name = "You";
         }
         
-        Button *button = new Button(name.c_str(), font, "res/btn_action.png", "res/btn_action_pressed.png");
+        Button *button = new Button(name.c_str(), font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
         button->setZOrder(504);
         button->setAnchorPoint(pointMake(0.5, 0.5));
         button->setPosition(pointMake(px, py));
@@ -797,7 +797,7 @@ void InvestigationScene::questionWhen() {
     
     questionLabel->setText(question.c_str());
     
-    Button *button = new Button("<", fontBig, "res/btn_small.png", "res/btn_small_pressed.png");
+    Button *button = new Button("<", fontBig, BTN_TXT_COLOR, "res/btn_small.png", "res/btn_small_pressed.png");
     button->setZOrder(504);
     button->setAnchorPoint(pointMake(0.5, 0.5));
     button->setPosition(pointMake(260, 300));
@@ -807,7 +807,7 @@ void InvestigationScene::questionWhen() {
     addToDisplayList(button);
     questionElements.push_back(button);
     
-    button = new Button(">", fontBig, "res/btn_small.png", "res/btn_small_pressed.png");
+    button = new Button(">", fontBig, BTN_TXT_COLOR, "res/btn_small.png", "res/btn_small_pressed.png");
     button->setZOrder(504);
     button->setAnchorPoint(pointMake(0.5, 0.5));
     button->setPosition(pointMake(540, 300));
