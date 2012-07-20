@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mystery numCharacters="6">
+<mystery>
+    <character name="Logan" male="1"/>
+    <character name="Brent" male="1"/>
+    <character name="Irving" male="1"/>
+    <character name="Edith" male="0"/>
+    <character name="Melanie" male="0"/>
+    <character name="Susan" male="0"/>
     <room name="Living room" boundsOriginX="23" boundsOriginY="43" boundsWidth="26" boundsHeight="14" firstRoom="true">
         <pointOfInterest positionX="32" positionY="43" interest="1" description="painting to the left of the fireplace"/>
         <pointOfInterest positionX="41" positionY="43" interest="1" description="painting to the right of the fireplace"/>

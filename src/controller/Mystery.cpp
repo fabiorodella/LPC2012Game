@@ -28,7 +28,6 @@
 #include "XmlHelper.h"
 #include "Mystery.h"
 #include "Room.h"
-#include "NameGenerator.h"
 
 class MapSearchNode {
 
@@ -133,6 +132,16 @@ float MapSearchNode::GetCost( MapSearchNode &successor ) {
 	return mystery->isCollision(x, y) ? 9 : 0;
 }
 
+Character *Mystery::parseCharacterNode(xmlNode *node) {
+    
+    Character *character = new Character();
+    
+    character->name = xmlGetAttribute(node, "name");
+    character->male = atoi(xmlGetAttribute(node, "male")) == 1;
+    
+    return character;
+}
+
 POI *Mystery::parsePOINode(xmlNode *node) {
     
     POI *poi = new POI();
@@ -201,9 +210,7 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
     xmlDoc *doc = xmlReadFile(file, NULL, 0);
     
     xmlNode *root = xmlDocGetRootElement(doc);
-    
-    int numChars = atoi(xmlGetAttribute(root, "numCharacters"));
-            
+                    
     std::vector<xmlNode *> roomNodes = xmlGetChildrenForName(root, "room");
     std::vector<xmlNode *>::iterator it;
     
@@ -270,14 +277,17 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
         printf("%s is in the %s in the %s\n", weapon->description.c_str(), container->description.c_str(), room->name.c_str());
     }
     
-    for (int i = 0; i < numChars; i++) {
+    std::vector<xmlNode *> charNodes = xmlGetChildrenForName(root, "character");
+
+    int i = 1;
+    
+    for (it = charNodes.begin(); it < charNodes.end(); ++it) {
         
-        Character *character = new Character();
+        xmlNode *charNode = (xmlNode *) *it;
         
-        character->tag = i + 1;
-        character->male = rand() % 2 == 0;
-                        
-        character->name = generateName(character->male);
+        Character *character = parseCharacterNode(charNode);
+        
+        character->tag = i;
         character->interest = (Interest) (rand() % InterestContainerVisible);
         character->position = pointMake(i + 35, 50);
         character->currentRoom = firstRoom;
@@ -307,8 +317,10 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
         printf("%s interested in %s\n", character->name.c_str(), strInt);
         
         characters.push_back(character);
+        
+        i++;
     }
-    
+            
     int murderTargetIdx = rand() % characters.size();
     victim = characters[murderTargetIdx];
     
