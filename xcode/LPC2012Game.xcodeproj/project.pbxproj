@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1502305115B5ABE80092CD3C /* Button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1502305015B5ABE70092CD3C /* Button.cpp */; };
 		1502BDD915B5C271005D73FC /* Label.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1502BDD815B5C271005D73FC /* Label.cpp */; };
+		1507D7BC15BEC9C200F48416 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1507D7B715BEC9C200F48416 /* license.txt */; };
+		1507D7BD15BEC9C200F48416 /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1507D7B815BEC9C200F48416 /* readme.txt */; };
 		155056FF1598943500D3FC38 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 155056FE1598943500D3FC38 /* libxml2.dylib */; };
 		1565FB6815A2124B00C2FF83 /* BitmapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB5915A2124B00C2FF83 /* BitmapLoader.cpp */; };
 		1565FB6915A2124B00C2FF83 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1565FB5B15A2124B00C2FF83 /* Camera.cpp */; };
@@ -41,8 +43,6 @@
 		15EC4DF615B97A090096EC49 /* ModalDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15EC4DF515B97A090096EC49 /* ModalDialog.cpp */; };
 		15EC4DFA15B9B2E20096EC49 /* MainMenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15EC4DF915B9B2E20096EC49 /* MainMenuScene.cpp */; };
 		15F7345F15A7055D00B25066 /* XmlHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15F7345E15A7055D00B25066 /* XmlHelper.cpp */; };
-		15FF755715A5AE9300D5EDFB /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 15FF755215A5AE9300D5EDFB /* license.txt */; };
-		15FF755815A5AE9300D5EDFB /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 15FF755315A5AE9300D5EDFB /* readme.txt */; };
 		15FF755B15A5D63400D5EDFB /* DebugCrimeScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15FF755A15A5D63400D5EDFB /* DebugCrimeScene.cpp */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +51,10 @@
 		1502305215B5ABF80092CD3C /* Button.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
 		1502BDD815B5C271005D73FC /* Label.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Label.cpp; sourceTree = "<group>"; };
 		1502BDDB15B5C27E005D73FC /* Label.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Label.h; sourceTree = "<group>"; };
+		1507D7B615BEC9C200F48416 /* fsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fsa.h; sourceTree = "<group>"; };
+		1507D7B715BEC9C200F48416 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
+		1507D7B815BEC9C200F48416 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
+		1507D7B915BEC9C200F48416 /* stlastar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stlastar.h; sourceTree = "<group>"; };
 		1529AA4315B8509F0059841F /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		155056FE1598943500D3FC38 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/libxml2.dylib; sourceTree = DEVELOPER_DIR; };
 		1565FB5915A2124B00C2FF83 /* BitmapLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitmapLoader.cpp; sourceTree = "<group>"; };
@@ -108,10 +112,6 @@
 		15EC4DFC15B9B9100096EC49 /* Defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Defines.h; sourceTree = "<group>"; };
 		15F7345C15A7046B00B25066 /* XmlHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XmlHelper.h; sourceTree = "<group>"; };
 		15F7345E15A7055D00B25066 /* XmlHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XmlHelper.cpp; sourceTree = "<group>"; };
-		15FF755115A5AE9300D5EDFB /* fsa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fsa.h; sourceTree = "<group>"; };
-		15FF755215A5AE9300D5EDFB /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
-		15FF755315A5AE9300D5EDFB /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
-		15FF755415A5AE9300D5EDFB /* stlastar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stlastar.h; sourceTree = "<group>"; };
 		15FF755A15A5D63400D5EDFB /* DebugCrimeScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugCrimeScene.cpp; sourceTree = "<group>"; };
 		15FF755C15A5D64700D5EDFB /* DebugCrimeScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DebugCrimeScene.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -141,6 +141,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1507D7B215BEC9C200F48416 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				1507D7B315BEC9C200F48416 /* astar */,
+			);
+			name = lib;
+			path = ../../lib;
+			sourceTree = "<group>";
+		};
+		1507D7B315BEC9C200F48416 /* astar */ = {
+			isa = PBXGroup;
+			children = (
+				1507D7B615BEC9C200F48416 /* fsa.h */,
+				1507D7B715BEC9C200F48416 /* license.txt */,
+				1507D7B815BEC9C200F48416 /* readme.txt */,
+				1507D7B915BEC9C200F48416 /* stlastar.h */,
+			);
+			path = astar;
+			sourceTree = "<group>";
+		};
 		1565FB5715A2124B00C2FF83 /* src */ = {
 			isa = PBXGroup;
 			children = (
@@ -265,7 +285,7 @@
 		159DC9A2158F54690036D70F /* LPC2012Game */ = {
 			isa = PBXGroup;
 			children = (
-				15FF754D15A5AE9300D5EDFB /* lib */,
+				1507D7B215BEC9C200F48416 /* lib */,
 				1565FB5715A2124B00C2FF83 /* src */,
 				159DC9D3158F59410036D70F /* res */,
 				159DC9A3158F54690036D70F /* Supporting Files */,
@@ -298,25 +318,6 @@
 				159DC9C2158F568D0036D70F /* liballegro.dylib */,
 			);
 			name = Allegro;
-			sourceTree = "<group>";
-		};
-		15FF754D15A5AE9300D5EDFB /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				15FF754E15A5AE9300D5EDFB /* astar */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
-		15FF754E15A5AE9300D5EDFB /* astar */ = {
-			isa = PBXGroup;
-			children = (
-				15FF755215A5AE9300D5EDFB /* license.txt */,
-				15FF755315A5AE9300D5EDFB /* readme.txt */,
-				15FF755115A5AE9300D5EDFB /* fsa.h */,
-				15FF755415A5AE9300D5EDFB /* stlastar.h */,
-			);
-			path = astar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -371,8 +372,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				159DC9D4158F59410036D70F /* res in Resources */,
-				15FF755715A5AE9300D5EDFB /* license.txt in Resources */,
-				15FF755815A5AE9300D5EDFB /* readme.txt in Resources */,
+				1507D7BC15BEC9C200F48416 /* license.txt in Resources */,
+				1507D7BD15BEC9C200F48416 /* readme.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

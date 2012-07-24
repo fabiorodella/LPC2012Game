@@ -1,1 +1,25 @@
-This is the repository for the entry I'm hoping to submit to the Liberated Pixel Cup 2012 (http://lpc.opengameart.org/). For now, there's only a project for Xcode / Mac OS X, but I intend to also provide a MSVC project and a makefile and possibly another project format for Linux as soon as possible.
+This is the repository for the entry I'm hoping to submit to the Liberated Pixel Cup 2012 (http://lpc.opengameart.org/). The game (still not named) simulates a chain of events leading up to a murder, and then the player must question the people who where there and based on their responses make an accusation. The player must also find the murder weapon for additional points, which can be hidden or in plain sight.
+
+You move the player using the arrow keys, and the rest of the interactions are made using the mouse by clicking buttons. To return to the main menu, press ESC.
+
+*** BUILD INSTRUCTIONS ***
+
+This project has the following dependencies:
+- Allegro 5.0.6 (allegro also has some dependencies of its own, check the wiki: http://wiki.allegro.cc/)
+- libxml2
+
+On OS X: 
+open the project inside the xcode folder and run it.
+
+On Linux:
+Navigate to the project root directory and then:
+
+mkdir build
+cd build
+cmake ..
+make
+
+If you have the dependencies installed, this should generate the executable, which you must then move to the project root directory.
+
+On Windows:
+No instructions yet.

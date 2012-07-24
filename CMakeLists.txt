@@ -5,7 +5,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 Find_Package (LibXml2 REQUIRED)
 If (NOT LIBXML2_FOUND)
-  Message (FATAL_ERROR "Couldn't find SDL development files. On Debian-based systems (such as Ubuntu) you should install the 'libsdl1.2-dev' package.")
+  Message (FATAL_ERROR "Couldn't find libxml2 development files. On Debian-based systems (such as Ubuntu) you should install the 'libxml2-dev' package.")
 Else (NOT LIBXML2_FOUND)
   Include_Directories (${LIBXML2_INCLUDE_DIR})
 EndIf (NOT LIBXML2_FOUND)
