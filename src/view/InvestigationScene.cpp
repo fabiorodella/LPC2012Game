@@ -104,9 +104,13 @@ void InvestigationScene::setupScene() {
     std::vector<Character *> characters = mystery->getCharacters();
     std::vector<Character *>::iterator itChars;
     
+    int i = 0;
+    
     for (itChars = characters.begin(); itChars < characters.end(); ++itChars) {
         
         Character *character = (Character *) *itChars;
+        
+        int frame = i * 2;
         
         if (!character->dead) {
             int idx = rand() % positions.size();
@@ -115,19 +119,23 @@ void InvestigationScene::setupScene() {
             character->position = pos;
             
             positions.erase(positions.begin() + idx);
+        } else {
+            frame++;
         }
         
-        Spritesheet *sprite = new Spritesheet("res/male_walkcycle.png", 64, 64);
+        Spritesheet *sprite = new Spritesheet("res/characters.png", 64, 64);
         sprite->setTag(character->tag);
         sprite->setCamera(camera);
         sprite->setAnchorPoint(pointMake(0.5, 0.9));
         sprite->setAutoZOrder(true);
-        sprite->setFrame(18);
+        sprite->setFrame(frame);
         
         Rect tileRect = collision->getTileRect(character->position.x, character->position.y);
         sprite->setPosition(rectMidPoint(tileRect));
         
         addToDisplayList(sprite);        
+        
+        i++;
     }
     
     actionButton = new Button("action", font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
