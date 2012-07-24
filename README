@@ -2,6 +2,8 @@ This is the repository for the entry I'm hoping to submit to the Liberated Pixel
 
 You move the player using the arrow keys, and the rest of the interactions are made using the mouse by clicking buttons. To return to the main menu, press ESC.
 
+The game is based on this idea: http://www.squidi.net/three/entry.php?id=69
+
 *** BUILD INSTRUCTIONS ***
 
 This project has the following dependencies:
