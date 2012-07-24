@@ -36,6 +36,9 @@ class InvestigationScene : public Scene, ButtonHandler, ModalDialogHandler {
     
     Mystery *mystery;
     long mysteryTime;
+    unsigned int mysterySeed;
+    
+    unsigned int investigationStartTime;
     
     Spritesheet *playerSprite;
     
@@ -44,6 +47,10 @@ class InvestigationScene : public Scene, ButtonHandler, ModalDialogHandler {
     TilemapLayer *collision;
     
     Label *currentRoomLabel;
+    
+    Label *crimeWeaponLabel;
+    
+    Label *accusationsLabel;
     
     Button *actionButton;
     
@@ -66,7 +73,13 @@ class InvestigationScene : public Scene, ButtonHandler, ModalDialogHandler {
     
     Room *currentRoom;
     
+    POI *crimeWeapon;
+    
     MemoryFilter currentFilter;
+    
+    int accusationsLeft;
+    
+    int questionsAsked;
     
     Point moving;
     int moveDir;

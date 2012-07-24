@@ -13,7 +13,7 @@
         <pointOfInterest positionX="40" positionY="55" interest="2" description="vase to the right of the carpet"/>
         <pointOfInterest positionX="42" positionY="44" interest="0" description="bookshelf in the northeast corner of the room"/>
         <pointOfInterest positionX="46" positionY="54" interest="3" description="commode in the southeast corner of the room" shortDescription="commode"/>
-        <pointOfInterest positionX="26" positionY="45" interest="3" description="bar"/>
+        <pointOfInterest positionX="26" positionY="45" interest="3" description="bar" visualPositionX="27" visualPositionY="45"/>
         <pointOfInterest positionX="29" positionY="44" interest="4" description="closet in the northwest corner of the room" shortDescription="closet"/>
         <pointOfInterest positionX="36" positionY="44" interest="4" description="fireplace"/>
     </room>
@@ -51,7 +51,7 @@
         <pointOfInterest positionX="28" positionY="27" interest="0" description="bookshelf"/>
         <pointOfInterest positionX="25" positionY="30" interest="2" description="vase near the entrance of the room"/>
         <pointOfInterest positionX="25" positionY="27" interest="4" description="cabinet in the northwest corner of the room" shortDescription="cabinet"/>
-        <pointOfInterest positionX="34" positionY="27" interest="3" description="commode near the twin bed" shortDescription="commode"/>
+        <pointOfInterest positionX="34" positionY="27" interest="3" description="commode near the twin bed" shortDescription="commode" visualPositionX="34" visualPositionY="25"/>
     </room>
     <room name="Bedroom 4" boundsOriginX="37" boundsOriginY="26" boundsWidth="12" boundsHeight="14">
         <pointOfInterest positionX="38" positionY="26" interest="1" description="painting in the northwest corner of the room"/>
@@ -86,7 +86,7 @@
         <pointOfInterest positionX="42" positionY="6" interest="1" description="painting in the northwest corner of the room"/>
         <pointOfInterest positionX="43" positionY="7" interest="0" description="bookshelf"/>
         <pointOfInterest positionX="40" positionY="10" interest="2" description="vase"/>
-        <pointOfInterest positionX="44" positionY="7" interest="3" description="commode"/>
+        <pointOfInterest positionX="44" positionY="7" interest="3" description="commode" visualPositionX="44" visualPositionY="5"/>
         <pointOfInterest positionX="40" positionY="7" interest="4" description="closet in the northwest corner of the room" shortDescription="closet"/>
     </room>
     <room name="Dining room" boundsOriginX="54" boundsOriginY="31" boundsWidth="15" boundsHeight="24">
@@ -94,15 +94,15 @@
         <pointOfInterest positionX="68" positionY="33" interest="2" description="vase in the northeast corner of the room"/>
         <pointOfInterest positionX="68" positionY="47" interest="2" description="empty vase in the southeast corner of the room"/>
         <pointOfInterest positionX="61" positionY="33" interest="4" description="short cabinet"/>
-        <pointOfInterest positionX="60" positionY="39" interest="3" description="place at the table near the first seat on the left side" shortDescription="table"/>
-        <pointOfInterest positionX="64" positionY="45" interest="3" description="place at the table near the last seat on the right side" shortDescription="table"/>
+        <pointOfInterest positionX="60" positionY="39" interest="3" description="place at the table near the first seat on the left side" shortDescription="table" visualPositionX="61" visualPositionY="39"/>
+        <pointOfInterest positionX="64" positionY="45" interest="3" description="place at the table near the last seat on the right side" shortDescription="table" visualPositionX="63" visualPositionY="45"/>
     </room>
     <room name="Kitchen" boundsOriginX="54" boundsOriginY="15" boundsWidth="15" boundsHeight="16">
         <pointOfInterest positionX="62" positionY="23" interest="0" description="kitchen in general"/>
         <pointOfInterest positionX="62" positionY="23" interest="1" description="kitchen in general"/>
         <pointOfInterest positionX="62" positionY="23" interest="2" description="kitchen in general"/>
         <pointOfInterest positionX="62" positionY="20" interest="3" description="middle of the counter" shortDescription="counter"/>
-        <pointOfInterest positionX="58" positionY="16" interest="3" description="counter near the entrance to the pantry" shortDescription="counter"/>
+        <pointOfInterest positionX="58" positionY="16" interest="3" description="counter near the entrance to the pantry" shortDescription="counter" visualPositionX="59" visualPositionY="15"/>
         <pointOfInterest positionX="65" positionY="17" interest="4" description="cabinet near the stove" shortDescription="cabinet"/>
     </room>
     <room name="Pantry" boundsOriginX="55" boundsOriginY="8" boundsWidth="14" boundsHeight="7">

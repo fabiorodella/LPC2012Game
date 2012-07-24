@@ -47,6 +47,7 @@ public:
     int mapWidth;
     int mapHeight;
     
+    Character *murderer;
     Character *victim;
     
     std::vector<POI *> weapons;

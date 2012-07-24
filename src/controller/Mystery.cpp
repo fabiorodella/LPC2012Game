@@ -161,6 +161,13 @@ POI *Mystery::parsePOINode(xmlNode *node) {
     }
     
     poi->visualPosition = poi->position;
+    
+    if (xmlGetAttribute(node, "visualPositionX") != NULL) {
+        int vx = atoi(xmlGetAttribute(node, "visualPositionX"));
+        int vy = atoi(xmlGetAttribute(node, "visualPositionY"));
+        poi->visualPosition = pointMake(vx, vy);
+    }
+    
     poi->contents = NULL;
     poi->searchedByMurderer = false;
         
@@ -255,17 +262,27 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
         
         POI *weapon = parsePOINode(weaponNode);
         
-        int idx = rand() % rooms.size();
-        Room *room = rooms[idx];
-                
-        std::vector<POI *> containers = room->getPointsOfInterest(InterestContainerVisible, false);
-        std::vector<POI *> containers2 = room->getPointsOfInterest(InterestContainerConceiled, false);
+        POI *container;
+        Room *room;
         
-        containers.insert(containers.end(), containers2.begin(), containers2.end());
+        do {
+            
+            int idx = rand() % rooms.size();
+            room = rooms[idx];
+            
+            std::vector<POI *> containers = room->getPointsOfInterest(InterestContainerVisible, false);
+            std::vector<POI *> containers2 = room->getPointsOfInterest(InterestContainerConceiled, false);
+            
+            containers.insert(containers.end(), containers2.begin(), containers2.end());
+            
+            
+            idx = rand() % containers.size();
+            
+            container = containers[idx];
+            
+        } while (container->contents != NULL);
         
-        idx = rand() % containers.size();
         
-        POI *container = containers[idx];
         container->contents = weapon;
         weapon->position = container->visualPosition;
         
@@ -329,13 +346,12 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
     
     printf("*** %s is the murder target! ***\n", victim->name.c_str());
     
-    int murdererIdx = rand() % characters.size();
-    Character *murderer = characters[murdererIdx];
-    
-    while (murderer == victim) {
-        murdererIdx = rand() % characters.size();
+    do {
+        
+        int murdererIdx = rand() % characters.size();
         murderer = characters[murdererIdx];
-    }
+        
+    } while (murderer == victim);
     
     int weaponInterest = InterestWeaponCutting + rand() % 3;
     murderer->weaponInterest = (Interest) weaponInterest;
@@ -832,6 +848,12 @@ void Mystery::step() {
                     pointEqualsIntegral(character->position, character->currentTarget->position) &&
                     character->currentTarget->contents == NULL &&
                     aloneInRoom) {
+                    
+                    character->carryingWeapon->position = character->currentTarget->visualPosition;
+                    
+                    if (character->currentTarget->interest == InterestContainerConceiled) {
+                        character->carryingWeapon->position = pointMake(-20, -20);
+                    }
                     
                     character->currentTarget->contents = character->carryingWeapon;
                     character->carryingWeapon = NULL;

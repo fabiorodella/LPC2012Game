@@ -40,6 +40,7 @@
 		15A1C95315A4B087000068F4 /* POI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A1C95215A4B087000068F4 /* POI.cpp */; };
 		15A1C95615A4B114000068F4 /* Room.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A1C95515A4B114000068F4 /* Room.cpp */; };
 		15A1C95915A4B7A2000068F4 /* InvestigationScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A1C95815A4B7A2000068F4 /* InvestigationScene.cpp */; };
+		15A75BB415BEEE06000C95F6 /* CaseReportScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15A75BB315BEEE06000C95F6 /* CaseReportScene.cpp */; };
 		15EC4DF615B97A090096EC49 /* ModalDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15EC4DF515B97A090096EC49 /* ModalDialog.cpp */; };
 		15EC4DFA15B9B2E20096EC49 /* MainMenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15EC4DF915B9B2E20096EC49 /* MainMenuScene.cpp */; };
 		15F7345F15A7055D00B25066 /* XmlHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15F7345E15A7055D00B25066 /* XmlHelper.cpp */; };
@@ -105,6 +106,8 @@
 		15A1C95715A4B11D000068F4 /* Room.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
 		15A1C95815A4B7A2000068F4 /* InvestigationScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InvestigationScene.cpp; sourceTree = "<group>"; };
 		15A1C95A15A4B7AF000068F4 /* InvestigationScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InvestigationScene.h; sourceTree = "<group>"; };
+		15A75BB315BEEE06000C95F6 /* CaseReportScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CaseReportScene.cpp; sourceTree = "<group>"; };
+		15A75BB615BEEE11000C95F6 /* CaseReportScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaseReportScene.h; sourceTree = "<group>"; };
 		15EC4DF515B97A090096EC49 /* ModalDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ModalDialog.cpp; sourceTree = "<group>"; };
 		15EC4DF815B97A190096EC49 /* ModalDialog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ModalDialog.h; sourceTree = "<group>"; };
 		15EC4DF915B9B2E20096EC49 /* MainMenuScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenuScene.cpp; sourceTree = "<group>"; };
@@ -238,6 +241,8 @@
 				15A1C95A15A4B7AF000068F4 /* InvestigationScene.h */,
 				15FF755A15A5D63400D5EDFB /* DebugCrimeScene.cpp */,
 				15FF755C15A5D64700D5EDFB /* DebugCrimeScene.h */,
+				15A75BB315BEEE06000C95F6 /* CaseReportScene.cpp */,
+				15A75BB615BEEE11000C95F6 /* CaseReportScene.h */,
 				15EC4DF515B97A090096EC49 /* ModalDialog.cpp */,
 				15EC4DF815B97A190096EC49 /* ModalDialog.h */,
 			);
@@ -404,6 +409,7 @@
 				1502BDD915B5C271005D73FC /* Label.cpp in Sources */,
 				15EC4DF615B97A090096EC49 /* ModalDialog.cpp in Sources */,
 				15EC4DFA15B9B2E20096EC49 /* MainMenuScene.cpp in Sources */,
+				15A75BB415BEEE06000C95F6 /* CaseReportScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

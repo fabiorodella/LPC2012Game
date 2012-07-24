@@ -24,6 +24,7 @@
 
 #include "InvestigationScene.h"
 #include "MainMenuScene.h"
+#include "CaseReportScene.h"
 #include "Utils.h"
 
 #include "Room.h"
@@ -78,14 +79,14 @@ void InvestigationScene::setupScene() {
     playerSprite->setAutoZOrder(true);
     addToDisplayList(playerSprite);
     
-    unsigned int seed = 0;
+    mysterySeed = 0;
     
     do {
         
         mysteryTime = 0;
-        seed = (unsigned int) time(0);
+        mysterySeed = time(0);
         
-        mystery = new Mystery("res/mansion.xml", seed, collision->getData(), collision->getSize().width, collision->getSize().height);
+        mystery = new Mystery("res/mansion.xml", mysterySeed, collision->getData(), collision->getSize().width, collision->getSize().height);
         
         while (!mystery->ended && mysteryTime < MAX_MYSTERY_DURATION) {
             mystery->step();
@@ -99,7 +100,7 @@ void InvestigationScene::setupScene() {
         
     } while (mystery == NULL);
                     
-    printf("Case seed: %d Total duration: %ld %s\n", seed, mysteryTime, timeToString(mysteryTime, true).c_str());
+    printf("Case seed: %d Total duration: %ld %s\n", mysterySeed, mysteryTime, timeToString(mysteryTime, true).c_str());
     
     std::vector<Character *> characters = mystery->getCharacters();
     std::vector<Character *>::iterator itChars;
@@ -138,6 +139,29 @@ void InvestigationScene::setupScene() {
         i++;
     }
     
+    std::vector<POI *>::iterator itWeapons;
+    
+    i = 0;
+    
+    for (itWeapons = mystery->weapons.begin(); itWeapons < mystery->weapons.end(); ++itWeapons) {
+        
+        POI *weapon = (POI *) *itWeapons;
+        
+        Spritesheet *sprite = new Spritesheet("res/weapons.png", 32, 32);
+        sprite->setTag(i + 20);
+        sprite->setFrame(i);
+        sprite->setCamera(camera);
+        sprite->setAnchorPoint(pointMake(0.5, 0.5));
+        sprite->setZOrder(400);
+        
+        Rect tileRect = collision->getTileRect(weapon->position.x, weapon->position.y);
+        sprite->setPosition(rectMidPoint(tileRect));
+        
+        addToDisplayList(sprite);
+        
+        i++;
+    }
+    
     actionButton = new Button("action", font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
     actionButton->setZOrder(500);
     actionButton->setAnchorPoint(pointMake(0.5, 1));
@@ -160,6 +184,37 @@ void InvestigationScene::setupScene() {
     currentRoomLabel->setZOrder(502);
     
     addToDisplayList(currentRoomLabel);
+    
+    Spritesheet *bkgWeaponLabel = new Spritesheet("res/bkg_room_name.png");
+    bkgWeaponLabel->setAnchorPoint(pointMake(0.5, 0.5));
+    bkgWeaponLabel->setPosition(pointMake(720, 40));
+    bkgWeaponLabel->setZOrder(501);
+    
+    addToDisplayList(bkgWeaponLabel);
+    
+    crimeWeaponLabel = new Label("No weapon", font, al_map_rgb(0, 0, 0));
+    crimeWeaponLabel->setAnchorPoint(pointMake(0.5, 0.5));
+    crimeWeaponLabel->setPosition(bkgWeaponLabel->getPosition());
+    crimeWeaponLabel->setZOrder(502);
+    
+    addToDisplayList(crimeWeaponLabel);
+    
+    Spritesheet *bkgAccusationLabel = new Spritesheet("res/bkg_room_name.png");
+    bkgAccusationLabel->setAnchorPoint(pointMake(0.5, 0.5));
+    bkgAccusationLabel->setPosition(pointMake(80, 40));
+    bkgAccusationLabel->setZOrder(501);
+    
+    addToDisplayList(bkgAccusationLabel);
+    
+    char buf[100];
+    sprintf(buf, "%d accusations left", MAX_ACCUSATIONS);
+    
+    accusationsLabel = new Label(buf, font, al_map_rgb(0, 0, 0), 120);
+    accusationsLabel->setAnchorPoint(pointMake(0.5, 0.5));
+    accusationsLabel->setPosition(bkgAccusationLabel->getPosition());
+    accusationsLabel->setZOrder(502);
+    
+    addToDisplayList(accusationsLabel);
     
     bkgQuestion = new Spritesheet("res/bkg_question.png");
     bkgQuestion->setAnchorPoint(pointMake(0.5, 0.5));
@@ -235,12 +290,15 @@ void InvestigationScene::setupScene() {
     activeCharacter = NULL;
     activePOI = NULL;
     currentRoom = NULL;
+    crimeWeapon = NULL;
+    
+    accusationsLeft = MAX_ACCUSATIONS;
+    questionsAsked = 0;
     
     moving = pointMake(0, 0);
     moveDir = 0;
     curFrame = 0;
     
-    inputLocked = false;
     endScene = false;
     debug = false;
     
@@ -258,6 +316,10 @@ void InvestigationScene::setupScene() {
     ModalDialog *dialog = new ModalDialog(msg.c_str(), font, "OK", NULL);
     dialog->setHandler(this);
     dialog->showInScene(this, 1000);
+    
+    inputLocked = true;
+    
+    investigationStartTime = time(0);
 }
 
 bool InvestigationScene::tick(double dt) {
@@ -539,19 +601,22 @@ void InvestigationScene::onButtonClicked(Button *sender) {
             char buff[200];
             const char *confirmMsg = NULL;
             const char *cancelMsg = NULL;
+            int tag = 2;
             
             if (activePOI->contents != NULL && activePOI->contents->isWeapon()) {
                                                 
                 sprintf(buff, "You found a %s, is this the murder weapon?", activePOI->contents->description.c_str());
                 confirmMsg = "Yes";
                 cancelMsg = "No";
+                tag = 4;
+                
             } else {
                 sprintf(buff, "Nothing suspicious here.");
                 confirmMsg = "OK";
             }
             
             ModalDialog *dialog = new ModalDialog(buff, font, confirmMsg, cancelMsg);
-            dialog->tag = 2;
+            dialog->tag = tag;
             dialog->setHandler(this);
             dialog->showInScene(this, 1000);
             
@@ -651,8 +716,53 @@ void InvestigationScene::onConfirm(ModalDialog *sender) {
         Director::getInstance()->enqueueScene(scene);
         
         endScene = true;
-        inputLocked = false;
         
+    } else if (sender->tag == 3) {
+        
+        accusationsLeft--;
+        
+        unsigned int duration = time(0) - investigationStartTime;
+        bool weaponFound = crimeWeapon == mystery->crimeWeapon;
+        
+        if (activeCharacter == mystery->murderer) {
+            
+            CaseReportScene *scene = new CaseReportScene(mysterySeed, duration, questionsAsked, MAX_ACCUSATIONS - accusationsLeft, weaponFound, true);
+            
+            Director::getInstance()->enqueueScene(scene);
+            
+            endScene = true;
+            
+        } else {
+            
+            if (accusationsLeft > 0) {
+                
+                ModalDialog *dialog = new ModalDialog("You accused the wrong person!", font, "OK", NULL);
+                dialog->tag = 5;
+                dialog->setHandler(this);
+                dialog->showInScene(this, 1000);
+                
+                char buff[100];
+                sprintf(buff, "%d accusations left", accusationsLeft);
+                
+                accusationsLabel->setText(buff);
+                
+                inputLocked = true;
+                
+            } else {
+                
+                CaseReportScene *scene = new CaseReportScene(mysterySeed, duration, questionsAsked, MAX_ACCUSATIONS - accusationsLeft, weaponFound, false);
+                
+                Director::getInstance()->enqueueScene(scene);
+                
+                endScene = true;
+            }
+            
+        }
+    
+    } else if (sender->tag == 4) {
+        
+        crimeWeapon = activePOI->contents;
+        crimeWeaponLabel->setText(crimeWeapon->description.c_str());
     }
 }
 
@@ -660,6 +770,14 @@ void InvestigationScene::onCancel(ModalDialog *sender) {
     
     sender->removeFromScene(this);
     inputLocked = false;
+    
+    if (sender->tag == 4) {
+        
+        if (crimeWeapon == activePOI->contents) {
+            crimeWeapon = NULL;
+            crimeWeaponLabel->setText("No weapon");
+        }
+    }
 }
 
 void InvestigationScene::removeQuestionElements() {
@@ -883,6 +1001,8 @@ void InvestigationScene::questionEnd() {
 }
 
 void InvestigationScene::dialogueStart() {
+    
+    questionsAsked++;
     
     speechLines.clear();
     
