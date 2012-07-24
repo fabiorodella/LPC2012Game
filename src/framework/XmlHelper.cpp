@@ -20,6 +20,7 @@
  
  */
 
+#include <cstring>
 #include "XmlHelper.h"
 
 xmlNode *xmlGetFirstChildForName(xmlNode *parent, const char *name) {
