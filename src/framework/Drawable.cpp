@@ -30,6 +30,7 @@ Drawable::Drawable() {
     anchorPoint = pointMake(0, 0);
     zOrder = 0;
     autoZOrder = false;
+    opacity = 1;
     visible = true;
 }
 
@@ -79,6 +80,14 @@ void Drawable::setAutoZOrder(bool z) {
 
 bool Drawable::isAutoZOrder() {
     return autoZOrder;
+}
+
+void Drawable::setOpacity(float op) {
+    opacity = op;
+}
+
+float Drawable::getOpacity() {
+    return opacity;
 }
 
 void Drawable::setVisible(bool vis) {

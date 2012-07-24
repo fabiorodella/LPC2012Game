@@ -44,6 +44,8 @@ protected:
     int zOrder;
     bool autoZOrder;
     
+    float opacity;
+    
     bool visible;
     
 public:
@@ -71,6 +73,9 @@ public:
     
     void setAutoZOrder(bool z);
     bool isAutoZOrder();
+    
+    void setOpacity(float op);
+    float getOpacity();
     
     void setVisible(bool vis);
     bool isVisible();

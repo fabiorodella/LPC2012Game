@@ -82,8 +82,8 @@ void Button::draw() {
     
     ALLEGRO_BITMAP *bmp = pressed ? pressedImage : normalImage;
     
-    al_draw_bitmap(bmp, (int)px, (int)py, 0);
-    
+    al_draw_tinted_bitmap(bmp, al_map_rgba_f(1, 1, 1, opacity), (int)px, (int)py, 0);
+        
     if (!labelText.empty()) {
         
         int tw = al_get_text_width(font, labelText.c_str());

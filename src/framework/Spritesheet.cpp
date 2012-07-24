@@ -82,7 +82,7 @@ void Spritesheet::draw() {
     int x = frame % framesPerRow;
     int y = frame / framesPerRow;
     
-    al_draw_bitmap_region(image, x * frameSize.width, y * frameSize.height, frameSize.width, frameSize.height, (int)px, (int)py, 0);
+    al_draw_tinted_bitmap_region(image, al_map_rgba_f(1, 1, 1, opacity), x * frameSize.width, y * frameSize.height, frameSize.width, frameSize.height, (int)px, (int)py, 0);
 }
 
 void Spritesheet::setFrame(int fr) {

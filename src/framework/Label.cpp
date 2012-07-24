@@ -69,7 +69,9 @@ void Label::draw() {
     std::vector<std::string>::iterator it;        
     for (it = lines.begin(); it < lines.end(); ++it) {
         std::string line = (std::string) *it;
-        al_draw_text(font, color, px, py, 0, line.c_str());
+        float r, g, b;
+        al_unmap_rgb_f(color, &r, &g, &b);
+        al_draw_text(font, al_map_rgba_f(r, g, b, opacity), px, py, 0, line.c_str());
         py += al_get_font_line_height(font);
     }
 }

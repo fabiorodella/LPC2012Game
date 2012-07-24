@@ -147,6 +147,7 @@ void TilemapLayer::draw() {
             
                 short tile = getTileAt(i, j) - 1;
                 tileset->setFrame(tile);
+                tileset->setOpacity(opacity);
                 tileset->setPosition(pointMake(i * tileSize.width + ox, j * tileSize.height + oy));
                 tileset->draw();
             }
