@@ -4,6 +4,9 @@
   <image source="mansion.png" width="1024" height="1024"/>
  </tileset>
  <layer name="Tile Layer 1" width="72" height="60">
+  <properties>
+   <property name="z_order" value="0"/>
+  </properties>
   <data>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -4330,6 +4333,7 @@
  <layer name="Tile Layer 2" width="72" height="60">
   <properties>
    <property name="collision" value="true"/>
+   <property name="z_order" value="1"/>
   </properties>
   <data>
    <tile gid="0"/>
