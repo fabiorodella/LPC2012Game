@@ -20,6 +20,8 @@
  
  */
 
+#include <algorithm>
+
 #include "Room.h"
 
 Room::~Room() {
