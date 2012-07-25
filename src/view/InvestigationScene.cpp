@@ -363,7 +363,7 @@ bool InvestigationScene::tick(double dt) {
         }
         
         curFrame += dt * 10;
-        if (curFrame > 9) curFrame -= 9;
+        if (curFrame > 8) curFrame -= 8;
         
     } else {
         
@@ -471,7 +471,7 @@ bool InvestigationScene::tick(double dt) {
         }
     }
     
-    playerSprite->setFrame(moveDir + (int)curFrame);
+    playerSprite->setFrame(moveDir + (int)curFrame + (isMoving ? 1 : 0));
     playerSprite->setPosition(pointOffset(playerSprite->getPosition(), dx, dy));
     
     camera->setCenter(playerSprite->getPosition());
