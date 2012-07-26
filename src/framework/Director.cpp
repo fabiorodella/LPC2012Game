@@ -37,6 +37,8 @@ void Director::initialize() {
     al_init_primitives_addon();
     al_init_font_addon();
     al_init_ttf_addon();
+    al_init_acodec_addon();
+    
     al_install_mouse();
     al_install_keyboard();
     
@@ -46,6 +48,9 @@ void Director::initialize() {
     eventQueue = al_create_event_queue();
     
     displayTimer = al_create_timer(1.0 / 60);
+    
+    al_install_audio();
+    al_reserve_samples(10);
     
     al_register_event_source(eventQueue, al_get_display_event_source(display));
     al_register_event_source(eventQueue, al_get_timer_event_source(displayTimer));

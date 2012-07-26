@@ -34,6 +34,8 @@ InvestigationScene::~InvestigationScene() {
     delete mystery;
     al_destroy_font(font);
     al_destroy_font(fontBig);
+    al_destroy_sample(searchSound);
+    al_destroy_sample(clickSound);
 }
 
 void InvestigationScene::setupScene() {
@@ -52,6 +54,9 @@ void InvestigationScene::setupScene() {
     
     font = al_load_font("res/AveriaSerif-Regular.ttf", 18, 0);
     fontBig = al_load_font("res/AveriaSerif-Regular.ttf", 26, 0);
+    
+    searchSound = al_load_sample("res/search.wav");
+    clickSound = al_load_sample("res/click.wav");
     
     std::vector<TilemapLayer *> layers = TilemapLayer::parseTMXFile("res/mansion.tmx");
     std::vector<TilemapLayer *>::iterator it;
@@ -564,6 +569,8 @@ void InvestigationScene::onKeyUp(int keycode, ALLEGRO_EVENT ev) {
 
 void InvestigationScene::onButtonClicked(Button *sender) {
     
+    al_play_sample(clickSound, 1.0, 0.5, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+    
     if (sender == actionButton) {
         
         if (activeCharacter != NULL) {
@@ -597,6 +604,8 @@ void InvestigationScene::onButtonClicked(Button *sender) {
             }
             
         } else if (activePOI != NULL) {
+            
+            al_play_sample(searchSound, 1.0, 0.5, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
             
             char buff[200];
             const char *confirmMsg = NULL;
@@ -713,6 +722,8 @@ void InvestigationScene::onButtonClicked(Button *sender) {
 
 void InvestigationScene::onConfirm(ModalDialog *sender) {
     
+    al_play_sample(clickSound, 1.0, 0.5, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+    
     sender->removeFromScene(this);
     inputLocked = false;
     
@@ -773,6 +784,8 @@ void InvestigationScene::onConfirm(ModalDialog *sender) {
 }
 
 void InvestigationScene::onCancel(ModalDialog *sender) {
+    
+    al_play_sample(clickSound, 1.0, 0.5, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
     
     sender->removeFromScene(this);
     inputLocked = false;

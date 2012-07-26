@@ -34,6 +34,9 @@ class InvestigationScene : public Scene, ButtonHandler, ModalDialogHandler {
     ALLEGRO_FONT *font;
     ALLEGRO_FONT *fontBig;
     
+    ALLEGRO_SAMPLE *searchSound;
+    ALLEGRO_SAMPLE *clickSound;
+    
     Mystery *mystery;
     long mysteryTime;
     unsigned int mysterySeed;
