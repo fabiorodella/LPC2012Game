@@ -29,12 +29,17 @@ class POI;
 
 typedef enum tEvent {
     EventEnteredRoom,
+    EventWasInRoom,
     EventLeftRoom,
     EventStartInteractPOI,
+    EventWasInteractingPOI,
     EventEndInteractPOI,
     EventSawWeapon,
+    EventWeaponMissing,
     EventStartConversation,
+    EventWasHavingConversation,
     EventEndConversation,
+    EventFoundBody,
     EventAll
 } Event;
 
@@ -47,6 +52,8 @@ struct MemoryFilter {
     Character *who;
     
     Room *where;
+    
+    bool strange;
 };
 
 class Memory {
@@ -66,6 +73,8 @@ public:
     Room *where;
     
     POI *what;
+    
+    POI *whatInside;
     
     int suspicion;
 };

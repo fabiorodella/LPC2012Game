@@ -650,6 +650,8 @@ void InvestigationScene::onButtonClicked(Button *sender) {
         
     } else if (sender->getTag() > 100 && sender->getTag() < 200) {
         
+        currentFilter.strange = false;
+        
         switch (sender->getTag()) {
             case 101:
                 questionWho();
@@ -658,6 +660,10 @@ void InvestigationScene::onButtonClicked(Button *sender) {
                 questionWhere();
                 break;
             case 103:
+                currentFilter.strange = true;
+                questionWhen();
+                break;
+            case 104:
                 questionEnd();
                 confirmSuspect();
                 break;
@@ -828,8 +834,18 @@ void InvestigationScene::questionStart() {
     button = new Button("Where was...", font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
     button->setZOrder(504);
     button->setAnchorPoint(pointMake(0.5, 0.5));
-    button->setPosition(pointMake(400, 300));
+    button->setPosition(pointMake(400, 260));
     button->setTag(102);
+    button->setHandler(this);
+    
+    addToDisplayList(button);
+    questionElements.push_back(button);
+    
+    button = new Button("Anything strange...", font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
+    button->setZOrder(504);
+    button->setAnchorPoint(pointMake(0.5, 0.5));
+    button->setPosition(pointMake(400, 320));
+    button->setTag(103);
     button->setHandler(this);
     
     addToDisplayList(button);
@@ -838,8 +854,8 @@ void InvestigationScene::questionStart() {
     button = new Button("You are the murderer!", font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
     button->setZOrder(504);
     button->setAnchorPoint(pointMake(0.5, 0.5));
-    button->setPosition(pointMake(400, 400));
-    button->setTag(103);
+    button->setPosition(pointMake(400, 380));
+    button->setTag(104);
     button->setHandler(this);
     
     addToDisplayList(button);
@@ -932,7 +948,11 @@ void InvestigationScene::questionWhen() {
     
     std::string question;
     
-    if (currentFilter.where == NULL) {
+    if (currentFilter.strange) {
+        
+        question = "Did anything strange happen";
+        
+    } else if (currentFilter.where == NULL) {
         
         question = "Where ";
         
@@ -1006,7 +1026,7 @@ void InvestigationScene::dialogueStart() {
     
     speechLines.clear();
     
-    std::vector<std::string> memories = activeCharacter->getMemories(currentFilter);
+    std::vector<std::string> memories = activeCharacter->getFormattedMemories(currentFilter);
     
     if (memories.size() > 0) {
         
@@ -1015,7 +1035,13 @@ void InvestigationScene::dialogueStart() {
     } else {
         
         if (currentFilter.who == NULL) {
-            speechLines.push_back(std::string("I don't remember seeing anyone there around that time."));
+            
+            if (currentFilter.strange) {
+                speechLines.push_back(std::string("I don't remember anything strange happening there around that time."));
+            } else {
+                speechLines.push_back(std::string("I don't remember seeing anyone there around that time."));
+            }
+            
         } else if (currentFilter.where == NULL) {
             
             std::string res = "I don't remember seeing ";

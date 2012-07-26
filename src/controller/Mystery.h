@@ -38,8 +38,8 @@ private:
     
     POI *parsePOINode(xmlNode *node);
     Character *parseCharacterNode(xmlNode *node);
-    void registerEventFor(Character *target, Event event, Character *who, Character *whoElse, Room *where, POI *what);
-    void registerEventForAllInRoom(Event event, Character *who, Character *whoElse, Room *where, POI *what);
+    void registerEventFor(Character *target, Event event, Character *who, Character *whoElse, Room *where, POI *what, POI *whatInside);
+    void registerEventForAllInRoom(Event event, Character *who, Character *whoElse, Room *where, POI *what, POI *whatInside);
     
 public:
     

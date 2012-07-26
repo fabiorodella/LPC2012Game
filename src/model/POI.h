@@ -60,6 +60,8 @@ public:
     
     ~POI();
     
+    bool isContainer();
+    
     bool isWeapon();
 };
 

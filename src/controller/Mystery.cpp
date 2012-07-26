@@ -174,7 +174,7 @@ POI *Mystery::parsePOINode(xmlNode *node) {
     return poi;
 }
 
-void Mystery::registerEventFor(Character *target, Event event, Character *who, Character *whoElse, Room *where, POI *what) {
+void Mystery::registerEventFor(Character *target, Event event, Character *who, Character *whoElse, Room *where, POI *what, POI *whatInside) {
     
     Memory *memory = new Memory();
     memory->event = event;
@@ -182,13 +182,14 @@ void Mystery::registerEventFor(Character *target, Event event, Character *who, C
     memory->whoElse = whoElse;
     memory->where = where;
     memory->what = what;
+    memory->whatInside = whatInside;
     memory->when = time;
     memory->suspicion = 1;
     
     target->addMemory(memory);
 }
 
-void Mystery::registerEventForAllInRoom(Event event, Character *who, Character *whoElse, Room *where, POI *what) {
+void Mystery::registerEventForAllInRoom(Event event, Character *who, Character *whoElse, Room *where, POI *what, POI *whatInside) {
     
     std::vector<Character *>::iterator it;
     for (it = characters.begin(); it < characters.end(); ++it) {
@@ -197,7 +198,7 @@ void Mystery::registerEventForAllInRoom(Event event, Character *who, Character *
         
         if (character->currentRoom == where) {
             
-            registerEventFor(character, event, who, whoElse, where, what);
+            registerEventFor(character, event, who, whoElse, where, what, whatInside);
         }
     }
 }
@@ -271,16 +272,16 @@ Mystery::Mystery(const char *file, unsigned int seed, short *collisionData, int 
             room = rooms[idx];
             
             std::vector<POI *> containers = room->getPointsOfInterest(InterestContainerVisible, false);
-            std::vector<POI *> containers2 = room->getPointsOfInterest(InterestContainerConceiled, false);
             
-            containers.insert(containers.end(), containers2.begin(), containers2.end());
+            if (containers.size() > 0) {
+                
+                idx = rand() % containers.size();
+                container = containers[idx];
+            } else {
+                container = NULL;
+            }
             
-            
-            idx = rand() % containers.size();
-            
-            container = containers[idx];
-            
-        } while (container->contents != NULL);
+        } while (container == NULL || container->contents != NULL);
         
         
         container->contents = weapon;
@@ -484,12 +485,27 @@ void Mystery::step() {
                     // if he/she already killed the target, he/she goes to a container
                     // to grab/hide the weapon
                     
-                    interest = rand() % 2 == 0 ? InterestContainerVisible : InterestContainerConceiled;
+                    if (character->carryingWeapon != NULL) {
+                        interest = InterestContainerConceiled;
+                    } else {
+                        interest = InterestContainerVisible;
+                    }
                     
-                    // If he has not weapon, searches only the containers not
+                    // If he has no weapon, searches only the containers not
                     // searched yet
                     
                     notSearchedOnly = character->carryingWeapon == NULL;
+                    
+                } else {
+                    
+                    // There's a chance the character wants to see a container
+                    int chance = rand() % 100;
+                    
+                    if (chance < 25) {
+                        interest = InterestContainerVisible;
+                    } else if (chance < 50) {
+                        interest = InterestContainerConceiled;
+                    }
                 }
                 
                 do {
@@ -628,23 +644,57 @@ void Mystery::step() {
                 
                 if (character->currentRoom != NULL) {
                     printf("%s left %s\n", character->name.c_str(), character->currentRoom->name.c_str());
-                    registerEventForAllInRoom(EventLeftRoom, character, NULL, character->currentRoom, NULL);
+                    registerEventForAllInRoom(EventLeftRoom, character, NULL, character->currentRoom, NULL, NULL);
                 }
                 
                 character->currentRoom = currentRoom;
                 
                 if (character->currentRoom != NULL) {
                     printf("%s entered %s\n", character->name.c_str(), character->currentRoom->name.c_str());
-                    registerEventForAllInRoom(EventEnteredRoom, character, NULL, character->currentRoom, NULL);
+                    registerEventForAllInRoom(EventEnteredRoom, character, NULL, character->currentRoom, NULL, NULL);
                     
-                    // Register visible weapons the character saw in the room
+                    if (character != murderer) {
+                        // Register any weapons saw before but missing
+                        std::vector<Memory *>::iterator it;
+                        std::vector<Memory *> memories = character->getMemories();
+                        std::vector<Memory *> considered;
+                        
+                        for (it = memories.begin(); it < memories.end(); ++it) {
+                            
+                            Memory *memory = (Memory *) *it;
+                            
+                            if (memory->event == EventSawWeapon && memory->where == character->currentRoom && memory->when < time && !pointEqualsIntegral(memory->whatInside->position, memory->what->visualPosition)) {
+                                
+                                std::vector<Memory *>::iterator itOther;
+                                
+                                bool found = false;
+                                
+                                for (itOther = considered.begin(); itOther < considered.end(); ++itOther) {
+                                    
+                                    Memory *other = (Memory *) *itOther;
+                                    
+                                    if (other->where == memory->where && other->whatInside == memory->whatInside) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                
+                                if (!found) {
+                                    registerEventFor(character, EventWeaponMissing, NULL, NULL, character->currentRoom, memory->what, memory->whatInside);
+                                    considered.push_back(memory);
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Register visible weapons the character sees in the room
                     std::vector<POI *>::iterator itPOI;
                     for (itPOI = character->currentRoom->pointsOfInterest.begin(); itPOI < character->currentRoom->pointsOfInterest.end(); ++itPOI) {
                         
                         POI *poi = (POI *) *itPOI;
                         
                         if (poi->interest == InterestContainerVisible && poi->contents != NULL && poi->contents->isWeapon()) {
-                            registerEventFor(character, EventSawWeapon, NULL, NULL, character->currentRoom, poi);
+                            registerEventFor(character, EventSawWeapon, NULL, NULL, character->currentRoom, poi, poi->contents);
                         }
                     }
                     
@@ -652,17 +702,19 @@ void Mystery::step() {
                     for (itOthers = characters.begin(); itOthers < characters.end(); ++itOthers) {
                         Character *other = (Character *) *itOthers;
                         
-                        if (other != character) {
+                        if (other != character && other->currentRoom == character->currentRoom) {
+                            
+                            registerEventFor(character, EventWasInRoom, other, NULL, character->currentRoom, NULL, NULL);
                             
                             // Register others having conversations
                             if (other->isHavingConversation()) {
                                 Character *another = other->getCurrentStep()->conversationWith;
-                                registerEventFor(character, EventStartConversation, other, another, character->currentRoom, NULL);
+                                registerEventFor(character, EventWasHavingConversation, other, another, character->currentRoom, NULL, NULL);
                             }
                             
                             // Register others interacting with POIs
                             if (other->isInteractingWithPOI()) {
-                                registerEventFor(character, EventStartInteractPOI, other, NULL, character->currentRoom, other->currentTarget);
+                                registerEventFor(character, EventWasInteractingPOI, other, NULL, character->currentRoom, other->currentTarget, NULL);
                             }
                         }
                     }
@@ -675,15 +727,15 @@ void Mystery::step() {
                 
                 switch (character->getCurrentStep()->type) {
                     case StepTypeStartInteractPOI:
-                        registerEventForAllInRoom(EventStartInteractPOI, character, NULL, character->currentRoom, character->currentTarget);
+                        registerEventForAllInRoom(EventStartInteractPOI, character, NULL, character->currentRoom, character->currentTarget, NULL);
                         break;
                     case StepTypeEndInteractPOI:
                         another = character->getCurrentStep()->conversationWith;
-                        registerEventForAllInRoom(EventEndInteractPOI, character, another, character->currentRoom, character->currentTarget);
+                        registerEventForAllInRoom(EventEndInteractPOI, character, another, character->currentRoom, character->currentTarget, NULL);
                         break;
                     case StepTypeEndConversation:
                         another = character->getCurrentStep()->conversationWith;
-                        registerEventForAllInRoom(EventEndConversation, character, another, character->currentRoom, character->currentTarget);
+                        registerEventForAllInRoom(EventEndConversation, character, another, character->currentRoom, NULL, NULL);
                         break;
                     default:
                         break;
@@ -716,6 +768,11 @@ void Mystery::step() {
                         corpseFoundTime = time;
                         corpseFoundRoom = character->currentRoom;
                         character->clearPath();
+                        
+                        std::vector<Character *>::iterator itAll;
+                        for (itAll = characters.begin(); itAll < characters.end(); ++itAll) {
+                            registerEventFor(*itAll, EventFoundBody, character, NULL, corpseFoundRoom, NULL, NULL);
+                        }
                     }
                     
                     // Looks for:
@@ -771,8 +828,8 @@ void Mystery::step() {
                         character->conversationInterval = CONVERSATION_INTERVAL;
                         other->conversationInterval = CONVERSATION_INTERVAL;
                         
-                        registerEventForAllInRoom(EventStartConversation, character, other, character->currentRoom, NULL);
-                        registerEventForAllInRoom(EventStartConversation, other, character, character->currentRoom, NULL);
+                        registerEventForAllInRoom(EventStartConversation, character, other, character->currentRoom, NULL, NULL);
+                        registerEventForAllInRoom(EventStartConversation, other, character, character->currentRoom, NULL, NULL);
                         
                         printf("%s and %s are having a conversation\n", character->name.c_str(), other->name.c_str());
                         
@@ -809,6 +866,7 @@ void Mystery::step() {
                     aloneInRoom) {
                     
                     character->carryingWeapon = character->currentTarget->contents;
+                    character->carryingWeapon->position = pointMake(-20, -20);
                     character->currentTarget->contents = NULL;
                     
                     printf("*** %s got a %s! ***\n", character->name.c_str(), character->carryingWeapon->description.c_str());
@@ -832,6 +890,14 @@ void Mystery::step() {
                     crimeWeapon = character->carryingWeapon;
                     
                     character->clearPath();
+                    
+                    // Murderer will lie
+                    
+                    int idx = rand() % character->currentRoom->pointsOfInterest.size();
+                    POI *poi = character->currentRoom->pointsOfInterest[idx];
+                    
+                    registerEventFor(character, EventStartInteractPOI, character, NULL, character->currentRoom, poi, NULL);
+                    registerEventFor(character, EventEndInteractPOI, character, NULL, character->currentRoom, poi, NULL);
                 }
                 
                 // Hides the weapon if:

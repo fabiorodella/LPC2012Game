@@ -27,6 +27,10 @@ POI::~POI() {
     delete contents;
 }
 
+bool POI::isContainer() {
+    return interest == InterestContainerVisible || interest == InterestContainerConceiled;
+}
+
 bool POI::isWeapon() {
     return interest == InterestWeaponCutting || interest == InterestWeaponStrangling || interest == InterestWeaponBlunt;
 }

@@ -37,50 +37,31 @@ std::string Character::getMemory(std::vector<Memory *>::iterator &it, std::vecto
     
     if (memory->who != NULL && memory->who == this) {
         pronoum = "I";
-    } else if (filter.who == NULL) {
+    } else if (memory->who != NULL && filter.who == NULL) {
         pronoum = memory->who->name;
-    } else if (memory->who->male) {
+    } else if (memory->who != NULL && memory->who->male) {
         pronoum = "He";
-    } else {
+    } else if (memory->who != NULL) {
         pronoum = "She";
     }
 
     if (memory->event == EventEnteredRoom) {
         
-        std::vector<Memory *>::iterator endIt = findEndMemory(it, interval);
+        ret.append(pronoum);
+        ret.append(" entered the ");
+        ret.append(memory->where->name);
+        ret.append(" around ");
+        ret.append(timeToString(memory->when + START_TIME, false));
+        ret.append(".");
+      
+    } else if (memory->event == EventWasInRoom) {
         
-        if (endIt != interval.end()) {
-            
-            Memory *endMemory = (Memory *) *endIt;
-            
-            ret.append(pronoum);
-            ret.append(" was in the ");
-            ret.append(memory->where->name);
-            ret.append(" from around ");
-            ret.append(timeToString(memory->when + START_TIME, false));
-            ret.append(" to ");
-            ret.append(timeToString(endMemory->when + START_TIME, false));
-            ret.append(". ");
-            
-            ++it;
-            
-            while (it < endIt) {
-                Memory *other = (Memory *) *it;
-                if (other->where == memory->where) {
-                    ret.append(getMemory(it, interval, filter));
-                }
-                ++it;
-            }
-            
-        } else {
-            
-            ret.append(pronoum);
-            ret.append(" entered the ");
-            ret.append(memory->where->name);
-            ret.append(" around ");
-            ret.append(timeToString(memory->when + START_TIME, false));
-            ret.append(".");
-        }
+        ret.append(pronoum);
+        ret.append(" was there when I entered the ");
+        ret.append(memory->where->name);
+        ret.append(" around ");
+        ret.append(timeToString(memory->when + START_TIME, false));
+        ret.append(".");
         
     } else if (memory->event == EventLeftRoom) {
         
@@ -93,34 +74,25 @@ std::string Character::getMemory(std::vector<Memory *>::iterator &it, std::vecto
         
     } else if (memory->event == EventStartInteractPOI) {
         
-        std::vector<Memory *>::iterator endIt = findEndMemory(it, interval);
+        ret.append(pronoum);
+        ret.append(" started looking at the ");
+        ret.append(memory->what->description);
+        ret.append(" in the ");
+        ret.append(memory->where->name);
+        ret.append(" around ");
+        ret.append(timeToString(memory->when + START_TIME, false));
+        ret.append(". ");
+      
+    } else if (memory->event == EventWasInteractingPOI) {
         
-        if (endIt != interval.end()) {
-            
-            Memory *endMemory = (Memory *) *endIt;
-            
-            ret.append(pronoum);
-            ret.append(" looked at the ");
-            ret.append(memory->what->description);
-            ret.append(" from around ");
-            ret.append(timeToString(memory->when + START_TIME, false));
-            ret.append(" to ");
-            ret.append(timeToString(endMemory->when + START_TIME, false));
-            ret.append(". ");
-            
-            it = endIt;
-            
-        } else {
-            
-            ret.append(pronoum);
-            ret.append(" started looking at the ");
-            ret.append(memory->what->description);
-            ret.append(" in the ");
-            ret.append(memory->where->name);
-            ret.append(" around ");
-            ret.append(timeToString(memory->when + START_TIME, false));
-            ret.append(". ");
-        }
+        ret.append(pronoum);
+        ret.append(" was looking at the ");
+        ret.append(memory->what->description);
+        ret.append(" when I entered the ");
+        ret.append(memory->where->name);
+        ret.append(" around ");
+        ret.append(timeToString(memory->when + START_TIME, false));
+        ret.append(". ");
         
     } else if (memory->event == EventEndInteractPOI) {
         
@@ -135,37 +107,30 @@ std::string Character::getMemory(std::vector<Memory *>::iterator &it, std::vecto
         
     } else if (memory->event == EventStartConversation) {
         
-        std::vector<Memory *>::iterator endIt = findEndMemory(it, interval);
-        
         std::string otherName = memory->whoElse->name;
         if (memory->whoElse == this) {
             otherName = "me";
         }
         
-        if (endIt != interval.end()) {
-            
-            Memory *endMemory = (Memory *) *endIt;
-            
-            ret.append(pronoum);
-            ret.append(" was talking to ");
-            ret.append(otherName);
-            ret.append(" from around ");
-            ret.append(timeToString(memory->when + START_TIME, false));
-            ret.append(" to ");
-            ret.append(timeToString(endMemory->when + START_TIME, false));
-            ret.append(". ");
-            
-            it = endIt;
-            
-        } else {
-            
-            ret.append(pronoum);
-            ret.append(" started talking to ");
-            ret.append(otherName);
-            ret.append(" around ");
-            ret.append(timeToString(memory->when + START_TIME, false));
-            ret.append(". ");
-        }
+        ret.append(pronoum);
+        ret.append(" started talking to ");
+        ret.append(otherName);
+        ret.append(" in the ");
+        ret.append(memory->where->name);
+        ret.append(" around ");
+        ret.append(timeToString(memory->when + START_TIME, false));
+        ret.append(". ");
+    
+    } else if (memory->event == EventWasHavingConversation) {
+        
+        ret.append(pronoum);
+        ret.append(" was talking to ");
+        ret.append(memory->whoElse->name);
+        ret.append(" when I entered the ");
+        ret.append(memory->where->name);
+        ret.append(" around ");
+        ret.append(timeToString(memory->when + START_TIME, false));
+        ret.append(". ");
         
     } else if (memory->event == EventEndConversation) {
         
@@ -177,9 +142,55 @@ std::string Character::getMemory(std::vector<Memory *>::iterator &it, std::vecto
         ret.append(pronoum);
         ret.append(" finished talking to ");
         ret.append(otherName);
+        ret.append(" in the ");
+        ret.append(memory->where->name);
         ret.append(" around ");
         ret.append(timeToString(memory->when + START_TIME, false));
         ret.append(". ");
+        
+    } else if (memory->event == EventSawWeapon) {
+        
+        ret.append("I saw a ");
+        ret.append(memory->whatInside->description);
+        ret.append(" on the ");
+        ret.append(memory->what->description);
+        ret.append(" in the ");
+        ret.append(memory->where->name);
+        ret.append(" around ");
+        ret.append(timeToString(memory->when + START_TIME, false));
+        ret.append(". ");
+        
+    } else if (memory->event == EventWeaponMissing) {
+        
+        ret.append("I saw a ");
+        ret.append(memory->whatInside->description);
+        ret.append(" on the ");
+        ret.append(memory->what->description);
+        ret.append(" in the ");
+        ret.append(memory->where->name);
+        ret.append(" before, but it wasn't there around ");
+        ret.append(timeToString(memory->when + START_TIME, false));
+        ret.append(". ");
+        
+    } else if (memory->event == EventFoundBody) {
+        
+        if (memory->who == this) {
+            
+            ret.append("I found a dead body in the ");
+            ret.append(memory->where->name);
+            ret.append(" around ");
+            ret.append(timeToString(memory->when + START_TIME, false));
+            ret.append(". ");
+            
+        } else {
+            
+            ret.append("I heard ");
+            ret.append(memory->who->name);
+            ret.append(" screaming from the ");
+            ret.append(memory->where->name);
+            ret.append(" about finding a dead body. ");
+            
+        }
     }
     
     return ret;
@@ -200,10 +211,14 @@ std::vector<Memory *>::iterator Character::findEndMemory(std::vector<Memory *>::
     }
     
     ++startIt;
-    
+   
     while (startIt < interval.end()) {
         
         Memory *cur = (Memory *) *startIt;
+        
+        if (cur->where != first->where) {
+            return interval.end();
+        }
         
         if (cur->event == endEvent && cur->what == first->what && cur->where == first->where && cur->who == first->who) {
             
@@ -299,7 +314,11 @@ bool Character::isInteractingWithPOI() {
     return false;
 }
 
-std::vector<std::string> Character::getMemories(MemoryFilter filter) {
+std::vector<Memory *> Character::getMemories() {
+    return memories;
+}
+
+std::vector<std::string> Character::getFormattedMemories(MemoryFilter filter) {
     
     std::vector<Memory *> interval;
     std::vector<Memory *>::iterator it;
@@ -316,17 +335,94 @@ std::vector<std::string> Character::getMemories(MemoryFilter filter) {
                 
                 if (memory->who == filter.who) {
                     shouldAdd = true;
+                    
+                    if (filter.strange) {
+                        
+                        if ((memory->what != NULL && memory->what->isContainer()) || memory->event == EventSawWeapon || memory->event == EventWeaponMissing || memory->event == EventFoundBody) {
+                            shouldAdd = false;
+                        }
+                        
+                    }
                 }
             }
             
             if (filter.who == NULL) {
-                if (memory->where == filter.where && (memory->event == EventEnteredRoom || memory->event == EventLeftRoom)) {
+                
+                if (!filter.strange && memory->where == filter.where && (memory->event == EventEnteredRoom || memory->event == EventLeftRoom)) {
                     shouldAdd = true;
+                    
+                } else if (filter.strange) {
+                    
+                    if ((memory->what != NULL && memory->what->isContainer()) || memory->event == EventSawWeapon || memory->event == EventWeaponMissing || memory->event == EventFoundBody) {
+                        shouldAdd = true;
+                    }
                 }
             }
                         
             if (shouldAdd) {
                 interval.push_back(memory);
+                
+                std::string log;
+                log.append(timeToString(memory->when, true));
+                log.append(" ");
+                
+                switch (memory->event) {
+                    case EventEnteredRoom:
+                        log.append("EventEnteredRoom ");
+                        break;
+                    case EventWasInRoom:
+                        log.append("EventWasInRoom ");
+                        break;
+                    case EventLeftRoom:
+                        log.append("EventLeftRoom ");
+                        break;
+                    case EventStartInteractPOI:
+                        log.append("EventStartInteractPOI ");
+                        break;
+                    case EventWasInteractingPOI:
+                        log.append("EventWasInteractingPOI ");
+                        break;
+                    case EventEndInteractPOI:
+                        log.append("EventEndInteractPOI ");
+                        break;
+                    case EventStartConversation:
+                        log.append("EventStartConversation ");
+                        break;
+                    case EventWasHavingConversation:
+                        log.append("EventWasHavingConversation ");
+                        break;
+                    case EventEndConversation:
+                        log.append("EventEndConversation ");
+                        break;
+                    case EventSawWeapon:
+                        log.append("EventSawWeapon ");
+                        break;
+                    case EventWeaponMissing:
+                        log.append("EventWeaponMissing ");
+                        break;
+                    case EventFoundBody:
+                        log.append("EventFoundBody ");
+                        break;
+                    default:
+                        break;
+                }
+                
+                log.append("\nWho: ");
+                log.append(memory->who != NULL ? memory->who->name : "NULL");
+                
+                log.append("\nWho else: ");
+                log.append(memory->whoElse != NULL ? memory->whoElse->name : "NULL");
+                
+                log.append("\nWhere: ");
+                log.append(memory->where != NULL ? memory->where->name : "NULL");
+                
+                log.append("\nWhat: ");
+                log.append(memory->what != NULL ? memory->what->description : "NULL");
+                
+                log.append("\nWhat inside: ");
+                log.append(memory->whatInside != NULL ? memory->whatInside->description : "NULL");
+                
+                printf("%s\n\n", log.c_str());
             }
         }
     }

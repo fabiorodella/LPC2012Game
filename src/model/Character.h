@@ -112,7 +112,10 @@ public:
     
     bool isInteractingWithPOI();
     
-    std::vector<std::string> getMemories(MemoryFilter filter);
+    std::vector<Memory *> getMemories();
+    
+    std::vector<std::string> getFormattedMemories(MemoryFilter filter);
+    
 };
 
 #endif
