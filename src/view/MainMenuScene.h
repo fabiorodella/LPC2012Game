@@ -29,6 +29,8 @@ class MainMenuScene : public Scene, ButtonHandler {
     
     ALLEGRO_FONT *font;
     
+    ALLEGRO_SAMPLE *clickSound;
+    
     Button *newCaseButton;
     
     Button *quitButton;

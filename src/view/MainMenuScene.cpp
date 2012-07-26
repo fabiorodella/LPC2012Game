@@ -27,11 +27,14 @@
 MainMenuScene::~MainMenuScene() {
     
     al_destroy_font(font);
+    al_destroy_sample(clickSound);
 }
 
 void MainMenuScene::setupScene() {
     
     font = al_load_font("res/AveriaSerif-Regular.ttf", 24, 0);
+    
+    clickSound = al_load_sample("res/click.wav");
     
     addToDisplayList(new Spritesheet("res/title.png"));
     
@@ -57,6 +60,8 @@ bool MainMenuScene::tick(double dt) {
 }
 
 void MainMenuScene::onButtonClicked(Button *sender) {
+    
+    al_play_sample(clickSound, 1.0, 0.5, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
     
     if (sender == newCaseButton) {
         InvestigationScene *scene = new InvestigationScene();
