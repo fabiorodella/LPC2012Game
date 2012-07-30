@@ -62,6 +62,8 @@ public:
     void enqueueScene(Scene *scene);
     
     ALLEGRO_DISPLAY *getDisplay();
+    
+    void abortWithMessage(const char *format, ...);
 };
 
 #endif

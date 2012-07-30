@@ -22,6 +22,8 @@
 
 #include "Director.h"
 
+#include "allegro5/allegro_native_dialog.h"
+
 Director *Director::instance = NULL;
 
 Director *Director::getInstance() {
@@ -31,26 +33,58 @@ Director *Director::getInstance() {
 }
 
 void Director::initialize() {
-            
-    al_init();    
-    al_init_image_addon();
-    al_init_primitives_addon();
+    
+    if (!al_init()) {
+        abortWithMessage("Failed to init Allegro.\n");
+    }
+    
+    if (!al_init_image_addon()) {
+        abortWithMessage("Failed to init image add-on.\n");
+    }  
+    
+    if (!al_init_primitives_addon()) {
+        abortWithMessage("Failed to init primitives add-on.\n");
+    }
+    
     al_init_font_addon();
-    al_init_ttf_addon();
-    al_init_acodec_addon();
+    if (!al_init_ttf_addon()) {
+        abortWithMessage("Failed to init TTF add-on.\n");
+    }
     
-    al_install_mouse();
-    al_install_keyboard();
+    if (!al_init_acodec_addon()) {
+        abortWithMessage("Failed to init audio codec add-on.\n");
+    }
     
-    display = NULL;
+    if (!al_install_mouse()) {
+        abortWithMessage("Failed to init mouse.\n");
+    }
+    
+    if (!al_install_keyboard()) {
+        abortWithMessage("Failed to init keyboard.\n");
+    }
+    
     display = al_create_display(800,600);
+    if (!display) {
+        abortWithMessage("Failed to create display.\n");
+    }
     
     eventQueue = al_create_event_queue();
+    if (!eventQueue) {
+        abortWithMessage("Failed to create event queue.\n");
+    }
     
     displayTimer = al_create_timer(1.0 / 60);
+    if (!displayTimer) {
+        abortWithMessage("Failed to create display timer.\n");
+    }
     
-    al_install_audio();
-    al_reserve_samples(10);
+    if (!al_install_audio()) {
+        abortWithMessage("Failed to init audio.\n");
+    }
+    
+    if (!al_reserve_samples(10)) {
+        abortWithMessage("Failed to reserve samples.\n");
+    }
     
     al_register_event_source(eventQueue, al_get_display_event_source(display));
     al_register_event_source(eventQueue, al_get_timer_event_source(displayTimer));
@@ -133,3 +167,17 @@ ALLEGRO_DISPLAY *Director::getDisplay() {
     return display;
 }
 
+void Director::abortWithMessage(const char *format, ...) {
+    
+    char str[1024];
+    va_list args;
+    ALLEGRO_DISPLAY *curDisplay;
+    
+    va_start(args, format);
+    vsnprintf(str, sizeof str, format, args);
+    va_end(args);
+    
+    curDisplay = al_is_system_installed() ? al_get_current_display() : NULL;
+    al_show_native_message_box(curDisplay, "Error", "Initialization error", str, NULL, 0);
+    exit(1);
+}

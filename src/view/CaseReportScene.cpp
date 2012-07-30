@@ -45,8 +45,17 @@ CaseReportScene::~CaseReportScene() {
 
 void CaseReportScene::setupScene() {
     
-    font = al_load_font("res/gtw.ttf", 30, 0);
-    fontBig = al_load_font("res/gtw.ttf", 50, 0);
+    const char *fontFile = "res/gtw.ttf";
+    
+    font = al_load_font(fontFile, 30, 0);
+    if (!font) {
+        Director::getInstance()->abortWithMessage("%s not found or failed to load\n", fontFile);
+    }
+    
+    fontBig = al_load_font(fontFile, 50, 0);
+    if (!fontBig) {
+        Director::getInstance()->abortWithMessage("%s not found or failed to load\n", fontFile);
+    }
     
     int y = 40;
     

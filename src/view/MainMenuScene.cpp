@@ -33,8 +33,14 @@ MainMenuScene::~MainMenuScene() {
 void MainMenuScene::setupScene() {
     
     font = al_load_font("res/AveriaSerif-Regular.ttf", 24, 0);
+    if (!font) {
+        Director::getInstance()->abortWithMessage("%s not found or failed to load\n", "res/AveriaSerif-Regular.ttf");
+    }
     
     clickSound = al_load_sample("res/click.wav");
+    if (!clickSound) {
+        Director::getInstance()->abortWithMessage("%s not found or failed to load\n", "res/click.wav");
+    }
     
     addToDisplayList(new Spritesheet("res/title.png"));
     

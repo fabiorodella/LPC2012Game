@@ -21,6 +21,7 @@
  */
 
 #include "BitmapLoader.h"
+#include "Director.h"
 
 BitmapLoader *BitmapLoader::instance = NULL;
 
@@ -37,6 +38,9 @@ ALLEGRO_BITMAP *BitmapLoader::getBitmap(const char *file) {
     if (ret == NULL) {
         
         ALLEGRO_BITMAP *bmpRet = al_load_bitmap(file);
+        if (!bmpRet) {
+            Director::getInstance()->abortWithMessage("%s not found or failed to load\n", file);
+        }
         
         ret = new Bitmap();
         ret->bitmap = bmpRet;

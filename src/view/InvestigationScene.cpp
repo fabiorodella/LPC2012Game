@@ -52,11 +52,27 @@ void InvestigationScene::setupScene() {
     positions.push_back(pointMake(30, 51));
     positions.push_back(pointMake(32, 52));
     
-    font = al_load_font("res/AveriaSerif-Regular.ttf", 18, 0);
-    fontBig = al_load_font("res/AveriaSerif-Regular.ttf", 26, 0);
+    const char *fontFile = "res/AveriaSerif-Regular.ttf";
+    
+    font = al_load_font(fontFile, 18, 0);
+    if (!font) {
+        Director::getInstance()->abortWithMessage("%s not found or failed to load\n", fontFile);
+    }
+    
+    fontBig = al_load_font(fontFile, 26, 0);
+    if (!fontBig) {
+        Director::getInstance()->abortWithMessage("%s not found or failed to load\n", fontFile);
+    }
     
     searchSound = al_load_sample("res/search.wav");
+    if (!searchSound) {
+        Director::getInstance()->abortWithMessage("%s not found or failed to load\n", "res/search.wav");
+    }
+    
     clickSound = al_load_sample("res/click.wav");
+    if (!clickSound) {
+        Director::getInstance()->abortWithMessage("%s not found or failed to load\n", "res/click.wav");
+    }
     
     std::vector<TilemapLayer *> layers = TilemapLayer::parseTMXFile("res/mansion.tmx");
     std::vector<TilemapLayer *>::iterator it;
