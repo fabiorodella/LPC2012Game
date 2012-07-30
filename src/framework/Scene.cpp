@@ -71,7 +71,7 @@ void Scene::draw() {
         
         Drawable *drawable = (Drawable *) *it;
         
-        if (drawable->isAutoZOrder()) {
+        if (drawable->isVisible() && drawable->isAutoZOrder()) {
             autoSort.push_back(drawable);
         }
     }

@@ -23,6 +23,7 @@
 #ifndef LPC2012Game_BitmapLoader_h
 #define LPC2012Game_BitmapLoader_h
 
+#include <string>
 #include <map>
 
 #include <allegro5/allegro.h>
@@ -36,7 +37,7 @@ class BitmapLoader {
     
 private:
 
-    std::map<const char *, Bitmap *> bitmaps;
+    std::map<std::string, Bitmap *> bitmaps;
     
     static BitmapLoader *instance;
 
@@ -47,7 +48,7 @@ public:
 
     static BitmapLoader *getInstance();
     
-    ALLEGRO_BITMAP *getBitmap(const char *file);
+    ALLEGRO_BITMAP *getBitmap(std::string file);
     
     void releaseBitmap(ALLEGRO_BITMAP *bitmap);
 };

@@ -22,6 +22,7 @@
 
 #include "MainMenuScene.h"
 #include "InvestigationScene.h"
+#include "TutorialScene.h"
 #include "Defines.h"
 
 MainMenuScene::~MainMenuScene() {
@@ -46,10 +47,17 @@ void MainMenuScene::setupScene() {
     
     newCaseButton = new Button("New case", font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
     newCaseButton->setAnchorPoint(pointMake(0.5, 0.5));
-    newCaseButton->setPosition(pointMake(400, 500));
+    newCaseButton->setPosition(pointMake(400, 450));
     newCaseButton->setHandler(this);
     
     addToDisplayList(newCaseButton);
+    
+    tutorialButton = new Button("Tutorial", font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
+    tutorialButton->setAnchorPoint(pointMake(0.5, 0.5));
+    tutorialButton->setPosition(pointMake(400, 500));
+    tutorialButton->setHandler(this);
+    
+    addToDisplayList(tutorialButton);
     
     quitButton = new Button("Quit game", font, BTN_TXT_COLOR, "res/btn_action.png", "res/btn_action_pressed.png");
     quitButton->setAnchorPoint(pointMake(0.5, 0.5));
@@ -76,9 +84,16 @@ void MainMenuScene::onButtonClicked(Button *sender) {
         newCaseButton->setLabelText("Generating case...");
         newCaseButton->setEnabled(false);
         
+        tutorialButton->setVisible(false);
+        tutorialButton->setEnabled(false);
+        
         quitButton->setVisible(false);
         quitButton->setEnabled(false);
         
+    } else if (sender == tutorialButton) {
+        
+        TutorialScene *scene = new TutorialScene();
+        Director::getInstance()->enqueueScene(scene);
     }
     
     optionSelected = true;

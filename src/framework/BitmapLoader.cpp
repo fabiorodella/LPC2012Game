@@ -31,15 +31,15 @@ BitmapLoader *BitmapLoader::getInstance() {
         return instance;
 }
 
-ALLEGRO_BITMAP *BitmapLoader::getBitmap(const char *file) {
+ALLEGRO_BITMAP *BitmapLoader::getBitmap(std::string file) {
     
     Bitmap *ret = bitmaps[file];
             
     if (ret == NULL) {
         
-        ALLEGRO_BITMAP *bmpRet = al_load_bitmap(file);
+        ALLEGRO_BITMAP *bmpRet = al_load_bitmap(file.c_str());
         if (!bmpRet) {
-            Director::getInstance()->abortWithMessage("%s not found or failed to load\n", file);
+            Director::getInstance()->abortWithMessage("%s not found or failed to load\n", file.c_str());
         }
         
         ret = new Bitmap();
@@ -58,8 +58,8 @@ ALLEGRO_BITMAP *BitmapLoader::getBitmap(const char *file) {
 
 void BitmapLoader::releaseBitmap(ALLEGRO_BITMAP *bitmap) {
     
-    std::map<const char *, Bitmap *>::iterator it = bitmaps.begin();
-    std::map<const char *, Bitmap *>::iterator end = bitmaps.end();
+    std::map<std::string, Bitmap *>::iterator it = bitmaps.begin();
+    std::map<std::string, Bitmap *>::iterator end = bitmaps.end();
     
     while (it != end) {
         

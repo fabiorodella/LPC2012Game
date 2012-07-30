@@ -20,34 +20,23 @@
  
  */
 
-#ifndef LPC2012Game_MainMenuScene_h
-#define LPC2012Game_MainMenuScene_h
+#ifndef LPC2012Game_TutorialScene_h
+#define LPC2012Game_TutorialScene_h
 
 #include "Framework.h"
 
-class MainMenuScene : public Scene, ButtonHandler {
+class TutorialScene : public Scene {
     
-    ALLEGRO_FONT *font;
+    int idx;
     
-    ALLEGRO_SAMPLE *clickSound;
-    
-    Button *newCaseButton;
-    
-    Button *tutorialButton;
-    
-    Button *quitButton;
-    
-    bool optionSelected;
+    bool endScene;
     
 public:
-    
-    ~MainMenuScene();
     
     virtual void setupScene();
     virtual bool tick(double dt);
     
-    virtual void onButtonClicked(Button *sender);
-    
+    virtual void handleEvent(ALLEGRO_EVENT ev);
 };
 
 #endif

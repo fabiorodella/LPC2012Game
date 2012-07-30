@@ -28,6 +28,8 @@
 #include "Drawable.h"
 
 class Scene {
+
+protected:
     
     std::vector<Drawable *> displayList;
     

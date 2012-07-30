@@ -43,6 +43,7 @@ Set (GAME_SOURCES
 	./src/view/InvestigationScene.cpp
 	./src/view/DebugCrimeScene.cpp
 	./src/view/CaseReportScene.cpp
+	./src/view/TutorialScene.cpp
 	./src/view/ModalDialog.cpp
 	./src/controller/Mystery.cpp
 )
