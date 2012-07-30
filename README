@@ -1,6 +1,10 @@
-This is the repository for the entry I'm hoping to submit to the Liberated Pixel Cup 2012 (http://lpc.opengameart.org/). The game (still not named) simulates a chain of events leading up to a murder, and then the player must question the people who where there and based on their responses make an accusation. The player must also find the murder weapon for additional points, which can be hidden or in plain sight.
+===============
+Murderous Manor
+===============
 
-You move the player using the arrow keys, and the rest of the interactions are made using the mouse by clicking buttons. To return to the main menu, press ESC.
+Murderous Manor is the entry I will be submitting to the Liberated Pixel Cup 2012 (http://lpc.opengameart.org/). The game simulates a chain of events leading up to a murder, and then the player must question the people who where there and based on their responses make an accusation. The player must also find the murder weapon for additional points, which can be hidden or in plain sight.
+
+You move the player using the arrow (or WASD) keys, and the rest of the interactions are made using the mouse by clicking buttons. To return to the main menu, press ESC.
 
 The game is based on this idea: http://www.squidi.net/three/entry.php?id=69
 

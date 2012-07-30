@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.6)
-Project (LPC2012Game)
+Project (MurderousManor)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
@@ -60,6 +60,6 @@ Set (LIB_INC
 
 Include_Directories(${LIB_INC} ${FRAMEWORK_INC} ${GAME_INC})
 
-add_executable(LPC2012Game ${FRAMEWORK_SOURCES} ${GAME_SOURCES} ./src/main.cpp)
+add_executable(MurderousManor ${FRAMEWORK_SOURCES} ${GAME_SOURCES} ./src/main.cpp)
 
-Target_Link_Libraries(LPC2012Game ${LIBXML2_LIBRARIES} ${ALLEGRO_LIBRARIES})
+Target_Link_Libraries(MurderousManor ${LIBXML2_LIBRARIES} ${ALLEGRO_LIBRARIES})
