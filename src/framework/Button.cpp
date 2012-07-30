@@ -115,7 +115,7 @@ void Button::handleEvent(ALLEGRO_EVENT ev) {
     
     Rect rect = rectMake(px, py, size.width, size.height);
     
-    if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && !pressed) {
+    if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && !pressed && ev.mouse.button == 1) {
         
         Point mousePoint = pointMake(ev.mouse.x, ev.mouse.y);
         
@@ -123,7 +123,7 @@ void Button::handleEvent(ALLEGRO_EVENT ev) {
             pressed = true;
         }
         
-    } else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && pressed) {
+    } else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && pressed && ev.mouse.button == 1) {
         
         pressed = false;
         

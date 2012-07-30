@@ -330,6 +330,7 @@ void InvestigationScene::setupScene() {
     dialog->setHandler(this);
     dialog->showInScene(this, 1000);
     
+    inDialogue = false;
     inputLocked = true;
     
     investigationStartTime = time(0);
@@ -583,6 +584,17 @@ void InvestigationScene::onKeyUp(int keycode, ALLEGRO_EVENT ev) {
     }
 }
 
+void InvestigationScene::handleEvent(ALLEGRO_EVENT ev) {
+    
+    if (inDialogue && ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP && ev.mouse.button != 1) {
+        
+        dialogueEnd();
+        inputLocked = false;
+    }
+    
+    Scene::handleEvent(ev);
+}
+
 void InvestigationScene::onButtonClicked(Button *sender) {
     
     al_play_sample(clickSound, 1.0, 0.5, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -830,7 +842,7 @@ void InvestigationScene::removeQuestionElements() {
 void InvestigationScene::questionStart() {
     
     inputLocked = true;
-    
+        
     currentFilter.where = NULL;
     currentFilter.who = NULL;
     
@@ -1051,6 +1063,8 @@ void InvestigationScene::questionEnd() {
 
 void InvestigationScene::dialogueStart() {
     
+    inDialogue = true;
+    
     questionsAsked++;
     
     speechLines.clear();
@@ -1122,6 +1136,8 @@ void InvestigationScene::dialogueAdvance() {
 }
 
 void InvestigationScene::dialogueEnd() {
+    
+    inDialogue = false;
     
     bkgSpeech->setVisible(false);
     speechLabel->setVisible(false);

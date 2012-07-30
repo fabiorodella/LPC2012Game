@@ -90,6 +90,7 @@ class InvestigationScene : public Scene, ButtonHandler, ModalDialogHandler {
     float curFrame;
     
     bool inputLocked;
+    bool inDialogue;
     bool endScene;
     bool debug;
     
@@ -102,6 +103,8 @@ public:
     virtual void draw();
     virtual void onKeyDown(int keycode, ALLEGRO_EVENT ev);
     virtual void onKeyUp(int keycode, ALLEGRO_EVENT ev);
+    virtual void handleEvent(ALLEGRO_EVENT ev);
+
     
     virtual void onButtonClicked(Button *sender);
     
