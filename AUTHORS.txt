@@ -52,3 +52,4 @@ Skyler Robert Colladay
  - bkg_dialog.png
  - bkg_question.png
  - professor_walk_cycle_no_hat.png
+ - characters.png
