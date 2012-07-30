@@ -22,7 +22,8 @@
 
 #include "Director.h"
 
-#include "allegro5/allegro_native_dialog.h"
+#include <allegro5/allegro_native_dialog.h>
+#include <stdio.h>
 
 Director *Director::instance = NULL;
 
