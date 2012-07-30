@@ -37,6 +37,8 @@ class InvestigationScene : public Scene, ButtonHandler, ModalDialogHandler {
     ALLEGRO_SAMPLE *searchSound;
     ALLEGRO_SAMPLE *clickSound;
     
+    ALLEGRO_AUDIO_STREAM *music;
+    
     Mystery *mystery;
     long mysteryTime;
     unsigned int mysterySeed;

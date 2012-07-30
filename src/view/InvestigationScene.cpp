@@ -36,6 +36,7 @@ InvestigationScene::~InvestigationScene() {
     al_destroy_font(fontBig);
     al_destroy_sample(searchSound);
     al_destroy_sample(clickSound);
+    al_destroy_audio_stream(music);
 }
 
 void InvestigationScene::setupScene() {
@@ -345,6 +346,10 @@ void InvestigationScene::setupScene() {
     ModalDialog *dialog = new ModalDialog(msg.c_str(), font, "OK", NULL);
     dialog->setHandler(this);
     dialog->showInScene(this, 1000);
+    
+    music = al_load_audio_stream("res/mystery.ogg", 4, 2048);
+    al_set_audio_stream_playmode(music, ALLEGRO_PLAYMODE_LOOP);
+    al_attach_audio_stream_to_mixer(music, al_get_default_mixer());
     
     inDialogue = false;
     inputLocked = true;
