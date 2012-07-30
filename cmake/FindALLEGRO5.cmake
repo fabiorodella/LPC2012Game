@@ -20,11 +20,11 @@ FIND_PATH(ALLEGRO_INCLUDE_DIR allegro.h
 set(VERSION_NUMBER "5.0.6")
 
 if(UNIX AND NOT CYGWIN)
-	exec_program(pkg-config ARGS "allegro-${VERSION_NUMBER} allegro_ttf-${VERSION_NUMBER} allegro_memfile-${VERSION_NUMBER} allegro_image-${VERSION_NUMBER} allegro_primitives-${VERSION_NUMBER} allegro_audio-${VERSION_NUMBER} allegro_acodec-${VERSION_NUMBER} --libs" OUTPUT_VARIABLE ALLEGRO_LIBRARY)
+	exec_program(pkg-config ARGS "allegro-${VERSION_NUMBER} allegro_dialog-${VERSION_NUMBER} allegro_ttf-${VERSION_NUMBER} allegro_memfile-${VERSION_NUMBER} allegro_image-${VERSION_NUMBER} allegro_primitives-${VERSION_NUMBER} allegro_audio-${VERSION_NUMBER} allegro_acodec-${VERSION_NUMBER} --libs" OUTPUT_VARIABLE ALLEGRO_LIBRARY)
 	IF (NOT ${ALLEGRO_LIBRARY})
 	    # FALL BACK TO 5.0
 	    set(VERSION_NUMBER "5.0")
-	    exec_program(pkg-config ARGS "allegro-${VERSION_NUMBER} allegro_ttf-${VERSION_NUMBER} allegro_memfile-${VERSION_NUMBER} allegro_image-${VERSION_NUMBER} allegro_primitives-${VERSION_NUMBER} allegro_audio-${VERSION_NUMBER} allegro_acodec-${VERSION_NUMBER} --libs" OUTPUT_VARIABLE ALLEGRO_LIBRARY)
+	    exec_program(pkg-config ARGS "allegro-${VERSION_NUMBER} allegro_dialog-${VERSION_NUMBER} allegro_ttf-${VERSION_NUMBER} allegro_memfile-${VERSION_NUMBER} allegro_image-${VERSION_NUMBER} allegro_primitives-${VERSION_NUMBER} allegro_audio-${VERSION_NUMBER} allegro_acodec-${VERSION_NUMBER} --libs" OUTPUT_VARIABLE ALLEGRO_LIBRARY)
 	ENDIF (NOT ${ALLEGRO_LIBRARY})
 	# Check if any of these checks have found if so then cause failure)
 	STRING(REGEX MATCH "not found" LIB_CHECK ${ALLEGRO_LIBRARY})
