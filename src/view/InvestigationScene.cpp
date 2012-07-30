@@ -521,15 +521,19 @@ void InvestigationScene::onKeyDown(int keycode, ALLEGRO_EVENT ev) {
     
     switch (keycode) {
         case ALLEGRO_KEY_UP:
+        case ALLEGRO_KEY_W:
             moving = pointOffset(moving, 0, -1);
             break;
         case ALLEGRO_KEY_DOWN:
+        case ALLEGRO_KEY_S:
             moving = pointOffset(moving, 0, 1);
             break;
         case ALLEGRO_KEY_LEFT:
+        case ALLEGRO_KEY_A:
             moving = pointOffset(moving, -1, 0);
             break;
         case ALLEGRO_KEY_RIGHT:
+        case ALLEGRO_KEY_D:
             moving = pointOffset(moving, 1, 0);
             break;
         default:
@@ -545,15 +549,19 @@ void InvestigationScene::onKeyUp(int keycode, ALLEGRO_EVENT ev) {
     
     switch (keycode) {
         case ALLEGRO_KEY_UP:
+        case ALLEGRO_KEY_W:
             moving = pointOffset(moving, 0, 1);
             break;
         case ALLEGRO_KEY_DOWN:
+        case ALLEGRO_KEY_S:
             moving = pointOffset(moving, 0, -1);
             break;
         case ALLEGRO_KEY_LEFT:
+        case ALLEGRO_KEY_A:
             moving = pointOffset(moving, 1, 0);
             break;
         case ALLEGRO_KEY_RIGHT:
+        case ALLEGRO_KEY_D:
             moving = pointOffset(moving, -1, 0);
             break;
         case ALLEGRO_KEY_ESCAPE:
