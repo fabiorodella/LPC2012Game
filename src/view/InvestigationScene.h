@@ -66,6 +66,7 @@ class InvestigationScene : public Scene, ButtonHandler, ModalDialogHandler {
     
     Spritesheet *bkgSpeech;
     Label *speechLabel;
+    Label *speechCountLabel;
     Button *speechButton;
     
     std::vector<std::string> speechLines;

@@ -281,6 +281,14 @@ void InvestigationScene::setupScene() {
     
     addToDisplayList(speechLabel);
     
+    speechCountLabel = new Label("1/1", font, al_map_rgb(0, 0, 0));
+    speechCountLabel->setAnchorPoint(pointMake(1, 0.5));
+    speechCountLabel->setCamera(camera);
+    speechCountLabel->setZOrder(504);
+    speechCountLabel->setVisible(false);
+    
+    addToDisplayList(speechCountLabel);
+    
     speechButton = new Button(bkgSpeech->getFrameSize());
     speechButton->setAnchorPoint(bkgSpeech->getAnchorPoint());
     speechButton->setCamera(camera);
@@ -1090,6 +1098,12 @@ void InvestigationScene::dialogueStart() {
     speechLabel->setVisible(true);
     speechLabel->setPosition(pointOffset(bkgSpeech->getPosition(), 54, -175));
     
+    char buff[10];
+    sprintf(buff, "%d/%lu", speechIdx + 1, speechLines.size());
+    speechCountLabel->setText(buff);
+    speechCountLabel->setVisible(true);
+    speechCountLabel->setPosition(pointOffset(bkgSpeech->getPosition(), 188, -68));
+    
     speechButton->setEnabled(true);
     speechButton->setPosition(bkgSpeech->getPosition());
     
@@ -1097,6 +1111,10 @@ void InvestigationScene::dialogueStart() {
 }
 
 void InvestigationScene::dialogueAdvance() {
+    
+    char buff[10];
+    sprintf(buff, "%d/%lu", speechIdx + 1, speechLines.size());
+    speechCountLabel->setText(buff);
     
     speechLabel->setText(speechLines[speechIdx].c_str());
     
@@ -1107,6 +1125,7 @@ void InvestigationScene::dialogueEnd() {
     
     bkgSpeech->setVisible(false);
     speechLabel->setVisible(false);
+    speechCountLabel->setVisible(false);
     speechButton->setEnabled(false);
     
 }
