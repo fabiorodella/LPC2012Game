@@ -1,0 +1,54 @@
+Code authors
+============
+
+This program was written by Fabio Rodella.
+
+The STL AStar code was written by Justin Heyes-Jones.
+
+Asset attribution
+=================
+
+Assets were authored by the following people:
+
+Fabio Rodella
+ - mansion.png
+ - speech.png
+ - speech.svg
+ - weapons.png
+ - mansion.tmx
+ - mystery.ogg
+ 
+Lanea Zimmerman
+ - mansion.png
+ - characters.png
+ 
+Stephen Challener
+ - characters.png
+
+Manuel Riecke
+ - characters.png
+ 
+Guido Bos
+ - mansion.png
+ 
+Johnathan Roatch
+ - click.wav
+ - search.wav
+ 
+Casper Nilsson
+ - title.png
+ 
+Daniel Eddeland
+ - bkg_room_name.png
+ - btn_action_pressed.png
+ - btn_action.png
+ - btn_med_pressed.png
+ - btn_med.png
+ - btn_small_pressed.png
+ - btn_small.png
+ - mansion.png
+
+Skyler Robert Colladay
+ - bkg_dialog.png
+ - bkg_question.png
+ - professor_walk_cycle_no_hat.png
